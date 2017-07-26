@@ -39,7 +39,10 @@ namespace InstaMass.ActorModel.Actors
 
         InstaUserActionType[] _actions { get; }
 
+        IActorRef _informMeAboutFinish;
+
         public InstaUserActionActor(
+            IActorRef informMeAboutFinish,
             string instaLogin, string instaPassword,
             DateTime date,
             ICacheProvider cacheProvider,
@@ -57,6 +60,8 @@ namespace InstaMass.ActorModel.Actors
             _actions = actions;
 
             _state = new InstaUserActionActorState();
+
+            _informMeAboutFinish = informMeAboutFinish;
             
             Recover<ActionsExecuted>(e =>
             {
@@ -133,7 +138,7 @@ namespace InstaMass.ActorModel.Actors
 
         private void Finish()
         {
-            Context.Parent.Tell(new InstaUserActionActorFinished(Self.Path.Name));
+            _informMeAboutFinish.Tell(new InstaUserActionActorFinished(Self.Path.Name));
             Self.Tell(PoisonPill.Instance);
         }
 

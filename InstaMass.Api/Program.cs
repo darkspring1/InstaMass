@@ -4,31 +4,26 @@ using static System.Console;
 using Akka.Actor;
 using InstaMass.ActorModel.Commands;
 using Api.ActorModel.Actors;
+using Akka.Cluster.Tools.Singleton;
 
 namespace InstaMass
 {
     class Program
     {
-        private static ActorSystem System { get; set; }
+        static ActorSystem System { get; set; }
         private static IActorRef PlayerCoordinator { get; set; }
 
         static void Main(string[] args)
         {
-            System = ActorSystem.Create("InstaMass");
+            System = ActorSystem.Create("instamass");
 
             var userStoreActor = System.ActorOf(Props.Create<UserStoreActor>(), "userStore");
 
             var coordinatorActor = System.ActorOf(Props.Create(() => new CoordinatorActor(userStoreActor)), "coordinator");
 
-
             coordinatorActor.Tell(StartExecuting.Instance);
-            
-            //PlayerCoordinator = System.ActorOf<PlayerCoordinatorActor>("PlayerCoordinator");
 
-            Console.ReadKey();
-
-            
-            
+            System.WhenTerminated.Wait();
         }
 
         private static void ErrorPlayer(string playerName)

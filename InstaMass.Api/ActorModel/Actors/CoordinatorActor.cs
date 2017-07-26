@@ -1,12 +1,18 @@
 ﻿using Akka.Actor;
 using Akka.Actor.Dsl;
+using Akka.Cluster.Tools.Singleton;
 using Akka.Event;
+using Akka.Routing;
 using Api.ActorModel.Commands;
 using Api.ActorModel.Messages;
+using InstaMass;
 using InstaMass.ActorModel.Actors;
 using InstaMass.ActorModel.Commands;
 using InstaMfl.Core.Cache;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Api.ActorModel.Actors
 {
@@ -20,8 +26,6 @@ namespace Api.ActorModel.Actors
         }
     }
 
-    public class Kill { }
-
     public class CoordinatorActor : ReceiveActor
     {
         const int _take = 100;
@@ -29,7 +33,7 @@ namespace Api.ActorModel.Actors
         IActorRef _userStoreActor;
         ILoggingAdapter _logger = Context.GetLogger();
 
-        int _startedActors = 0;
+        const int maxChild = 2;
 
         public CoordinatorActor(IActorRef userStoreActor)
         {
@@ -38,29 +42,54 @@ namespace Api.ActorModel.Actors
 
             Receive<StartExecuting>(m =>
             {
-                _userStoreActor.Tell(new GetInstaUsers(_state.Skip, _take));
+                var children = Context.GetChildren();
+                var diff = maxChild - children.Count();
+
+                if (diff >= 0)
+                {
+                    _userStoreActor.Tell(new GetInstaUsers(_state.Skip, _take));
+                }
+                else
+                {
+                    KillChildren(children.ToArray(), diff)
+                    .ContinueWith(t => StartExecuting.Instance)
+                    .PipeTo(Self);
+                }
             });
 
             Receive<InstaUserInfoResponse>(m =>
             {
                 foreach (var u in m.Users)
                 {
-                    var userActor = Context.ActorOf(Props.Create(() =>
-                    new InstaUserActionActor(u.Login, u.Password, DateTime.UtcNow,
-                        new MemoryCacheProvider(),
-                        u.Tags, u.Actions
-                    )), $"InstaUserActionActor:{u.Login}");
-
-                    userActor.Tell(StartExecuting.Instance);
-                    _startedActors++;
+                    if (Context.Child(u.Login) != ActorRefs.Nobody)
+                    {
+                        _logger.Debug($"{u.Login} already exists");
+                    }
+                    else
+                    {
+                        var userActionActor = Context.ActorOf(Props.Create(() => new InstaUserActionSingletonActor(u)), u.Login);
+                        userActionActor.Tell(StartExecuting.Instance);
+                    }
                 }
+                ContinueExecuting();
             });
+        }
 
-            Receive<InstaUserActionActorFinished>(m => {
-                _startedActors--;
-                _logger.Debug($"{m.Name} finished");
-               
-            });
+        Task KillChildren(IActorRef[] children, int number)
+        {
+            _logger.Debug($"{number} will be killed");
+            LinkedList<Task> stopTasks = new LinkedList<Task>();
+            for (int i = 0; i < number; i++)
+            {
+                stopTasks.AddLast(children[i].GracefulStop(TimeSpan.FromSeconds(5)));
+            }
+            return Task.WhenAll(stopTasks);
+            //_logger.Debug($"{number} children were killed");
+        }
+
+        private void ContinueExecuting()
+        {
+            Context.System.Scheduler.ScheduleTellOnce(TimeSpan.FromSeconds(2), Self, StartExecuting.Instance, Self);
         }
 
         protected override void PreRestart(Exception reason, object message)
@@ -80,7 +109,5 @@ namespace Api.ActorModel.Actors
             _logger.Debug("Starting");
             base.PreStart();
         }
-
-
     }
 }
