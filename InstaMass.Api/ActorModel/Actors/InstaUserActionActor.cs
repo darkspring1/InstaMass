@@ -1,9 +1,11 @@
 ﻿using Akka.Actor;
+using Akka.Cluster.Sharding;
 using Akka.Event;
 using Akka.Persistence;
 using Api.ActorModel.Messages;
 using InstaMass.ActorModel.Commands;
 using InstaMass.ActorModel.Events;
+using InstaMass.Api.ActorModel.Commands;
 using InstaMfl.Core.Cache;
 using System;
 using System.Collections.Generic;
@@ -17,51 +19,29 @@ namespace InstaMass.ActorModel.Actors
 
         public InstaUserActionActorState()
         {
-             ExecutedActions = new LinkedList<InstaAction>();
-            
+             ExecutedActions = new LinkedList<InstaAction>();   
         }
     }
 
     public class InstaUserActionActor : ReceivePersistentActor
     {
-        private string _instaLogin;
-        private string _instaPassword;
-        private DateTime _date;
-        private string _persistentId;
         private InstaUserActionActorState _state;
         private ICacheProvider _cacheProvider;
 
         private readonly ILoggingAdapter _logger = Context.GetLogger();
 
-        string[] _tags { get; }
+        int _eventCount = 0;        
 
-        int _eventCount = 0;
-
-        InstaUserActionType[] _actions { get; }
-
-        IActorRef _informMeAboutFinish;
-
-        public InstaUserActionActor(
-            IActorRef informMeAboutFinish,
-            string instaLogin, string instaPassword,
-            DateTime date,
-            ICacheProvider cacheProvider,
-            string[] tags,
-            InstaUserActionType[] actions
-            )
+        public InstaUserActionActor()
         {
-            _cacheProvider = cacheProvider;
-            _instaLogin = instaLogin;
-            _instaPassword = instaPassword;
-            _date = date.ToUniversalTime();
-            _persistentId = $"{_date.ToString("dd.MM.yyyy")}_{_instaLogin}";
+            _cacheProvider = new MemoryCacheProvider();
+            //PersistenceId = Context.Parent.Path.Name + "-" Self.Path.Name;
 
-            _tags = tags;
-            _actions = actions;
+            PersistenceId = $"{DateTime.UtcNow.ToString("dd.MM.yyyy")}_{Self.Path.Name}";
 
+           
             _state = new InstaUserActionActorState();
 
-            _informMeAboutFinish = informMeAboutFinish;
             
             Recover<ActionsExecuted>(e =>
             {
@@ -82,12 +62,12 @@ namespace InstaMass.ActorModel.Actors
             
         }
 
-        public override string PersistenceId => _persistentId;
+        public override string PersistenceId { get; }
 
 
         private void Starting()
         {
-            Command<StartExecuting>(c => Start());
+            Command<InstaUserActionActorStart>(c => Start(c));
         }
 
         private void Executing()
@@ -106,9 +86,11 @@ namespace InstaMass.ActorModel.Actors
         }
 
 
-        private void Start()
+        private void Start(InstaUserActionActorStart m)
         {
-            ActionStrategy s = new ActionStrategy(_instaLogin, _instaPassword, _tags, _actions, _state.ExecutedActions, _cacheProvider);
+            ActionStrategy s = new ActionStrategy(
+                m.InstaLogin,
+                m.InstaPassword, m.Tags, m.Actions, _state.ExecutedActions, _cacheProvider);
             s
                 .Execute()
                 .ContinueWith(actions => new SaveResults(actions.Result))
@@ -138,8 +120,9 @@ namespace InstaMass.ActorModel.Actors
 
         private void Finish()
         {
-            _informMeAboutFinish.Tell(new InstaUserActionActorFinished(Self.Path.Name));
-            Self.Tell(PoisonPill.Instance);
+            //_informMeAboutFinish.Tell(new InstaUserActionActorFinished(Self.Path.Name));
+            //Self.Tell(PoisonPill.Instance);
+            Context.Parent.Tell(new Passivate(PoisonPill.Instance));
         }
 
         protected override void PreRestart(Exception reason, object message)

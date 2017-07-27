@@ -1,17 +1,12 @@
 ﻿using Akka.Actor;
-using Akka.Actor.Dsl;
-using Akka.Cluster.Tools.Singleton;
 using Akka.Event;
-using Akka.Routing;
 using Api.ActorModel.Commands;
 using Api.ActorModel.Messages;
-using InstaMass;
-using InstaMass.ActorModel.Actors;
 using InstaMass.ActorModel.Commands;
-using InstaMfl.Core.Cache;
+using InstaMass.Api.ActorModel.Commands;
+using InstaMass.Api.Sharding;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.ActorModel.Actors
@@ -31,30 +26,22 @@ namespace Api.ActorModel.Actors
         const int _take = 100;
         CoordinatorState _state;
         IActorRef _userStoreActor;
+        IActorRef _shardRegion;
         ILoggingAdapter _logger = Context.GetLogger();
 
         const int maxChild = 2;
 
-        public CoordinatorActor(IActorRef userStoreActor)
+        public CoordinatorActor(IActorRef userStoreActor, IActorRef shardRegion)
         {
             _userStoreActor = userStoreActor;
+            _shardRegion = shardRegion;
+
             _state = new CoordinatorState(0);
 
             Receive<StartExecuting>(m =>
             {
-                var children = Context.GetChildren();
-                var diff = maxChild - children.Count();
-
-                if (diff >= 0)
-                {
-                    _userStoreActor.Tell(new GetInstaUsers(_state.Skip, _take));
-                }
-                else
-                {
-                    KillChildren(children.ToArray(), diff)
-                    .ContinueWith(t => StartExecuting.Instance)
-                    .PipeTo(Self);
-                }
+                _userStoreActor.Tell(new GetInstaUsers(_state.Skip, _take));
+                  
             });
 
             Receive<InstaUserInfoResponse>(m =>
@@ -67,8 +54,11 @@ namespace Api.ActorModel.Actors
                     }
                     else
                     {
-                        var userActionActor = Context.ActorOf(Props.Create(() => new InstaUserActionSingletonActor(u)), u.Login);
-                        userActionActor.Tell(StartExecuting.Instance);
+                        //var userActionActor = Context.ActorOf(Props.Create(() => new InstaUserActionSingletonActor(u)), u.Login);
+                        //userActionActor.Tell(StartExecuting.Instance);
+
+                        var message = new InstaUserActionActorStart(u.Login, u.Password, u.Tags, u.Actions);
+                        _shardRegion.Tell(new ShardEnvelope(u.Login, message));
                     }
                 }
                 ContinueExecuting();

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3A3C0385-03C6-4684-BEDD-9E1D064894AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Api</RootNamespace>
-    <AssemblyName>Api</AssemblyName>
+    <RootNamespace>InstaMass.Api</RootNamespace>
+    <AssemblyName>InstaMass.Api</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -37,6 +37,9 @@
     </Reference>
     <Reference Include="Akka.Cluster, Version=1.2.3.41, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Akka.Cluster.1.2.3\lib\net45\Akka.Cluster.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.Cluster.Sharding, Version=1.2.3.43, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Akka.Cluster.Sharding.1.2.3.43-beta\lib\net45\Akka.Cluster.Sharding.dll</HintPath>
     </Reference>
     <Reference Include="Akka.Cluster.Tools, Version=1.2.3.41, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Akka.Cluster.Tools.1.2.3\lib\net45\Akka.Cluster.Tools.dll</HintPath>
@@ -115,31 +118,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionStrategy.cs" />
-    <Compile Include="ActorModel\Actors\InstaUserActionSingletonActor.cs" />
-    <Compile Include="ActorModel\Actors\SingletonActor.cs" />
     <Compile Include="ActorModel\Actors\CoordinatorActor.cs" />
     <Compile Include="ActorModel\Actors\InstaUserActionActor.cs" />
-    <Compile Include="ActorModel\Actors\PlayerActor.cs" />
-    <Compile Include="ActorModel\Actors\PlayerCoordinatorActor.cs" />
     <Compile Include="ActorModel\Actors\UserActor\UserActorState.cs" />
     <Compile Include="ActorModel\Actors\UserStoreActor.cs" />
-    <Compile Include="ActorModel\Commands\CreatePlayer.cs" />
-    <Compile Include="ActorModel\Commands\DisplayStatus.cs" />
     <Compile Include="ActorModel\Commands\FinishExecuting.cs" />
     <Compile Include="ActorModel\Commands\SaveResults.cs" />
     <Compile Include="ActorModel\Messages\GetInstaUsers.cs" />
-    <Compile Include="ActorModel\Commands\HitPlayer.cs" />
-    <Compile Include="ActorModel\Commands\SimulateError.cs" />
     <Compile Include="ActorModel\Commands\StartExecuting.cs" />
     <Compile Include="ActorModel\Events\ActionsExecuted.cs" />
     <Compile Include="ActorModel\Events\PlayerCreated.cs" />
     <Compile Include="ActorModel\Events\PlayerHit.cs" />
+    <Compile Include="ActorModel\Commands\InstaUserActionActorStart.cs" />
     <Compile Include="ActorModel\Messages\InstaUserActionActorFinished.cs" />
     <Compile Include="ActorModel\Messages\InstaUserInfoResponse.cs" />
     <Compile Include="DisplayHelper.cs" />
     <Compile Include="InstaAction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sharding\ShardEnvelope.cs" />
+    <Compile Include="Sharding\MessageExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
