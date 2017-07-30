@@ -41,40 +41,17 @@ namespace Api.ActorModel.Actors
             Receive<StartExecuting>(m =>
             {
                 _userStoreActor.Tell(new GetInstaUsers(_state.Skip, _take));
-                  
             });
 
             Receive<InstaUserInfoResponse>(m =>
             {
                 foreach (var u in m.Users)
                 {
-                    if (Context.Child(u.Login) != ActorRefs.Nobody)
-                    {
-                        _logger.Debug($"{u.Login} already exists");
-                    }
-                    else
-                    {
-                        //var userActionActor = Context.ActorOf(Props.Create(() => new InstaUserActionSingletonActor(u)), u.Login);
-                        //userActionActor.Tell(StartExecuting.Instance);
-
-                        var message = new InstaUserActionActorStart(u.Login, u.Password, u.Tags, u.Actions);
-                        _shardRegion.Tell(new ShardEnvelope(u.Login, message));
-                    }
+                    var message = new InstaUserActionActorStart(u.Login, u.Password, u.Tags, u.Actions);
+                    _shardRegion.Tell(new ShardEnvelope(u.Login, message));
                 }
                 ContinueExecuting();
             });
-        }
-
-        Task KillChildren(IActorRef[] children, int number)
-        {
-            _logger.Debug($"{number} will be killed");
-            LinkedList<Task> stopTasks = new LinkedList<Task>();
-            for (int i = 0; i < number; i++)
-            {
-                stopTasks.AddLast(children[i].GracefulStop(TimeSpan.FromSeconds(5)));
-            }
-            return Task.WhenAll(stopTasks);
-            //_logger.Debug($"{number} children were killed");
         }
 
         private void ContinueExecuting()

@@ -1,12 +1,7 @@
 ﻿using Akka.Actor;
 using Api.ActorModel.Commands;
 using Api.ActorModel.Messages;
-using InstaMass;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.ActorModel.Actors
 {
@@ -20,7 +15,6 @@ namespace Api.ActorModel.Actors
                 .Users
                 .Skip(m.Skip)
                 .Take(m.Take);
-
 
                 Sender.Tell(new InstaUserInfoResponse(users));
             });

@@ -2,7 +2,6 @@
 using Akka.Cluster.Sharding;
 using Akka.Event;
 using Akka.Persistence;
-using Api.ActorModel.Messages;
 using InstaMass.ActorModel.Commands;
 using InstaMass.ActorModel.Events;
 using InstaMass.Api.ActorModel.Commands;
@@ -36,13 +35,9 @@ namespace InstaMass.ActorModel.Actors
         {
             _cacheProvider = new MemoryCacheProvider();
             //PersistenceId = Context.Parent.Path.Name + "-" Self.Path.Name;
-
             PersistenceId = $"{DateTime.UtcNow.ToString("dd.MM.yyyy")}_{Self.Path.Name}";
-
-           
             _state = new InstaUserActionActorState();
 
-            
             Recover<ActionsExecuted>(e =>
             {
                 foreach (var a in e.Actions)
@@ -51,8 +46,7 @@ namespace InstaMass.ActorModel.Actors
                 }
                 _eventCount++;
             });
-            
-            
+                        
             Recover<SnapshotOffer>(offer =>
             {
                 _state = (InstaUserActionActorState)offer.Snapshot;
@@ -64,24 +58,36 @@ namespace InstaMass.ActorModel.Actors
 
         public override string PersistenceId { get; }
 
-
         private void Starting()
         {
             Command<InstaUserActionActorStart>(c => Start(c));
+            /*
+            var path = Context.Parent.Path.ToStringWithoutAddress();
+            var sel = Context.ActorSelection(path + "/*");
+
+            sel.Tell("Hello");
+
+            Command<string>(c => {
+                _logger.Debug(c);
+                });
+            */
         }
 
         private void Executing()
         {
-            Command<StartExecuting>(c => Log.Info($"{PersistenceId} is executing"));
+            Command<InstaUserActionActor>(c => Log.Info($"{PersistenceId} is executing"));
             Command<SaveResults>(c => c.ExecutedActions != null && c.ExecutedActions.Any(),
                 c => Save(c));
-
 
             Command<SaveSnapshotSuccess>(c => Finish());
             Command<SaveSnapshotFailure>(c =>
             {
                 _logger.Warning("Snapshot was't saved");
                 Finish();
+            });
+
+            Command<string>(c => {
+                _logger.Debug(c);
             });
         }
 
@@ -102,15 +108,12 @@ namespace InstaMass.ActorModel.Actors
         private void Save(SaveResults command)
         {
             var @event = new ActionsExecuted(command.ExecutedActions);
-
             Persist(@event, e =>
             {
-                
                 foreach (var a in e.Actions)
                 {
                     _state.ExecutedActions.AddLast(a);
                 }
-
                 _eventCount++;
                 SaveSnapshot(_state);
                 _eventCount = 0;
@@ -120,9 +123,8 @@ namespace InstaMass.ActorModel.Actors
 
         private void Finish()
         {
-            //_informMeAboutFinish.Tell(new InstaUserActionActorFinished(Self.Path.Name));
-            //Self.Tell(PoisonPill.Instance);
             Context.Parent.Tell(new Passivate(PoisonPill.Instance));
+            //Become(Starting);
         }
 
         protected override void PreRestart(Exception reason, object message)
