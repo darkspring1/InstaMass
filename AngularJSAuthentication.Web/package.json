@@ -1,0 +1,16 @@
+{
+  "name": "",
+  "description": "",
+  "version": "",
+  "homepage": "",
+  "scripts": {
+    "serve": "node server",
+    "build:dev": "cross-env NODE_ENV=development webpack -d --config webpack.dev.config.js --progress",
+    "build:prod": "cross-env NODE_ENV=production webpack -p --config webpack.prod.config.js --progress"
+  },
+
+  "devDependencies": {
+     "express": "^4.15.3",
+    "http-proxy": "^1.16.2"
+  }
+}

@@ -12,6 +12,11 @@ using StructureMap;
 using sm.web.api;
 using SM.WEB.API.Middlewares;
 using SM.WEB.API.Ioc;
+using Microsoft.Owin.Security.OAuth;
+using System;
+using System.Data.Entity;
+using AngularJSAuthentication.API;
+using SM.WEB.API.Providers;
 
 namespace SM.WEB.API
 {
@@ -19,6 +24,7 @@ namespace SM.WEB.API
     {
         //private static sb.core.log.ILogger _logger = new NLogLogger();
 
+        public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public static Container Container = new Container(new ApiRegistry());
 
         public void Configuration(IAppBuilder app)
@@ -51,9 +57,12 @@ namespace SM.WEB.API
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             app.UseLogger();
-           
+
             //AuthConfiguration(app);
-            
+            ConfigureOAuth(app);
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
+
             app
                 .UseWebApi(config)
                 .Use((c, next) =>
@@ -77,6 +86,47 @@ namespace SM.WEB.API
             //config.EnableCors(cors);
         }
 
+        public void ConfigureOAuth(IAppBuilder app)
+        {
+            //use a cookie to temporarily store information about a user logging in with a third party login provider
+            //app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
+            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
+
+            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
+            {
+
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                Provider = new SimpleAuthorizationServerProvider(),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider()
+            };
+
+            // Token Generation
+            app.UseOAuthAuthorizationServer(OAuthServerOptions);
+            app.UseOAuthBearerAuthentication(OAuthBearerOptions);
+            /*
+            //Configure Google External Login
+            googleAuthOptions = new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "xxxxxx",
+                ClientSecret = "xxxxxx",
+                Provider = new GoogleAuthProvider()
+            };
+            app.UseGoogleAuthentication(googleAuthOptions);
+
+            //Configure Facebook External Login
+            facebookAuthOptions = new FacebookAuthenticationOptions()
+            {
+                AppId = "xxxxxx",
+                AppSecret = "xxxxxx",
+                Provider = new FacebookAuthProvider()
+            };
+            app.UseFacebookAuthentication(facebookAuthOptions);
+            */
+
+        }
+
         /*
         private void AuthConfiguration(IAppBuilder app)
         {
@@ -85,6 +135,6 @@ namespace SM.WEB.API
             app.UseTokenAuthentication(tokenOptions);
         }
         */
-     
+
     }
 }
