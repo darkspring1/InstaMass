@@ -17,6 +17,9 @@ using System;
 using System.Data.Entity;
 using AngularJSAuthentication.API;
 using SM.WEB.API.Providers;
+using Microsoft.Owin.Security.Facebook;
+using AngularJSAuthentication.API.Providers;
+using Microsoft.Owin.Security.Google;
 
 namespace SM.WEB.API
 {
@@ -26,6 +29,8 @@ namespace SM.WEB.API
 
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public static Container Container = new Container(new ApiRegistry());
+        public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
+        public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
 
         public void Configuration(IAppBuilder app)
         {
@@ -89,7 +94,7 @@ namespace SM.WEB.API
         public void ConfigureOAuth(IAppBuilder app)
         {
             //use a cookie to temporarily store information about a user logging in with a third party login provider
-            //app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
+            app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
             OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
@@ -105,7 +110,7 @@ namespace SM.WEB.API
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(OAuthBearerOptions);
-            /*
+            
             //Configure Google External Login
             googleAuthOptions = new GoogleOAuth2AuthenticationOptions()
             {
@@ -114,7 +119,7 @@ namespace SM.WEB.API
                 Provider = new GoogleAuthProvider()
             };
             app.UseGoogleAuthentication(googleAuthOptions);
-
+            
             //Configure Facebook External Login
             facebookAuthOptions = new FacebookAuthenticationOptions()
             {
@@ -123,7 +128,7 @@ namespace SM.WEB.API
                 Provider = new FacebookAuthProvider()
             };
             app.UseFacebookAuthentication(facebookAuthOptions);
-            */
+            
 
         }
 
