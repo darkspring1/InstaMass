@@ -42,7 +42,6 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.3.3",
     "webpack-dev-server": "^2.4.4",
-    "webpack-notifier": "^1.5.0",
-    "prop-types" : "^15.5.10"
+    "webpack-notifier": "^1.5.0"
   }
 }

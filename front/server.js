@@ -10,9 +10,9 @@ const apiProxy = httpProxy.createProxyServer();
 
 const host = `localhost:${port}`;
 
-const proxyTarget = 'moskva.stage.beeline.ru';
+//const proxyTarget = 'moskva.stage.beeline.ru';
 
-const target = { target: `http://${proxyTarget}:80` };
+//const target = { target: `http://${proxyTarget}:80` };
 
 
 process.on('uncaughtException', (err) => {
@@ -20,7 +20,7 @@ process.on('uncaughtException', (err) => {
   console.log(err);
 });
 
-
+/*
 function replaceInHeader(req, header) {
   if (req.headers[header]) {
     req.headers[header] = req.headers[header].replace(host, proxyTarget);
@@ -34,9 +34,10 @@ function requestProxy(req, res) {
   replaceInHeader(req, 'referer');
   apiProxy.web(req, res, target);
 }
-
+*/
 app.use(express.static(`${__dirname}/`));
-
+app.use(express.static(`${__dirname}/dist`));
+/*
 app.get('/abtest/inlinescript*', (req, res) => {
   console.log(req.url);
 
@@ -52,7 +53,7 @@ app.get('/abtest/inlinescript*', (req, res) => {
 app.post('/*', requestProxy);
 
 app.get('/*', requestProxy);
-
+*/
 
 app.listen(port);
 
