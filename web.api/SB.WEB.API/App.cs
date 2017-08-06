@@ -123,10 +123,11 @@ namespace SM.WEB.API
             //Configure Facebook External Login
             facebookAuthOptions = new FacebookAuthenticationOptions()
             {
-                AppId = "xxxxxx",
-                AppSecret = "xxxxxx",
+                AppId = "196483557554508",
+                AppSecret = "601ca0e2d0898e7105785db885bca4c9",
                 Provider = new FacebookAuthProvider()
             };
+            facebookAuthOptions.Scope.Add("email");
             app.UseFacebookAuthentication(facebookAuthOptions);
             
 
