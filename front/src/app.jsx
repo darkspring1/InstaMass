@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Layout from './layout';
 import Auth from './auth';
 
-export default function () {
+
+function App() {
   const isAuth = true;
   let redirectDefault = '/auth';
   if (isAuth) {
@@ -19,3 +21,10 @@ export default function () {
     </Router>
   );
 }
+
+
+export default connect(
+  state => ({ state }), // map state to props
+  // dispatch => ({})
+)(App)
+;
