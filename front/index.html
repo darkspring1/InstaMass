@@ -34,114 +34,14 @@
   <link rel="stylesheet" href="../bower_components/angular-ui-select/dist/select.css" />
  
   <link rel="stylesheet" href="app/main.css">
+
+   <!-- <link rel="stylesheet" href="app/auth.css"> -->
  
 </head>
 
-
 <body>
-<div class="body-bg"></div>
-
-<main>
-
-    <aside class="al-sidebar">
-  <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 219px;">
-    <ul class="al-sidebar-list"
-    slimscroll="{height: '219px'}"
-    slimscroll-watch="menuHeight"
-    style="overflow: hidden; width: auto; height: 219px;">
-    
-    <li class="al-sidebar-list-item selected" >
-      <a  class="al-sidebar-list-link" href="#/dashboard">
-        <i class="ion-android-home"></i>
-        <span class="ng-binding">Dashboard</span>
-      </a>
-    </li>
-    <!-- end ngRepeat: item in ::menuItems -->
-    <li ng-repeat="item in ::menuItems" class="al-sidebar-list-item with-sub-menu" ng-class="::{'with-sub-menu': item.subMenu}" ui-sref-active="selected" ba-sidebar-toggling-item="item" style="">
-      <a class="al-sidebar-list-link">
-        <i class="ion-gear-a"></i>
-        <span class="ng-binding">Components</span>
-        <b class="fa fa-angle-down"></b>
-      </a>
-
-      <!-- ngIf: ::item.subMenu -->
-      <ul ng-if="::item.subMenu" class="al-sidebar-sublist" ng-class="{'slide-right': item.slideRight}" ba-ui-sref-toggling-submenu="">
-        <li class="ba-sidebar-sublist-item">
-          <a
-          target="_self" 
-          class="ng-binding" href="#/components/mail">
-            Mail
-          </a>
-        </li><!-- end ngRepeat: subitem in ::item.subMenu -->
-      </ul><!-- end ngIf: ::item.subMenu -->
-    </li><!-- end ngRepeat: item in ::menuItems -->
-    
-    
-  </ul>
-  
-  
-  <div class="slimScrollBar"
-    style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 121.114px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-  <div class="sidebar-hover-elem"></div>
-</aside>
-
-  <div class="page-top clearfix" scroll-position="scrolled" max-height="50">
-    <a href="#/dashboard" class="al-logo clearfix"><span>Blur</span>Admin</a>
-    <a href="" class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu=""></a>
-
-    <div class="search">
-      <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
-      <input id="searchInput" type="text" placeholder="Search for...">
-    </div>
-  </div>
-
-  <div class="al-main">
-    <div class="al-content">
-      
-      <div class="content-top clearfix">
-        <h1 class="al-title ng-binding">Dashboard</h1>
-
-        <ul class="breadcrumb al-breadcrumb">
-          <li>
-            <a href="#/dashboard">Home</a></li>
-          <li class="ng-binding">Dashboard</li>
-        </ul>
-      </div>
-
-      <!-- uiView: -->
-      <div ui-view="" id="root" autoscroll="true" autoscroll-body-top="">
-      </div>
-    </div>
-  </div>
-
-  <footer class="al-footer clearfix">
-    <div class="al-footer-right">Created with <i class="ion-heart"></i></div>
-    <div class="al-footer-main clearfix">
-      <div class="al-copy">Blur Admin 2016</div>
-      <ul class="al-share clearfix">
-        <li><i class="socicon socicon-facebook"></i></li>
-        <li><i class="socicon socicon-twitter"></i></li>
-        <li><i class="socicon socicon-google"></i></li>
-        <li><i class="socicon socicon-github"></i></li>
-      </ul>
-    </div>
-  </footer>
-
-  <back-top>
-    <i class="fa fa-angle-up back-top white" id="backTop" title="Back to Top" style="right: 40px; bottom: 40px; position: fixed;"></i>
-  </back-top>
-</main><!-- end ngIf: $pageFinishedLoading -->
-
-<div id="preloader"  style="display: none">
-  <div></div>
-</div>
-
-
-
-<input id="textAngular-editableFix-010203040506070809" class="ta-hidden-input" aria-hidden="true" unselectable="on" tabindex="-1">
-
-<script type="text/javascript" src="main.bundle.js"></script>
+  <div id="root"></div>
+  <script type="text/javascript" src="main.bundle.js"></script>
 </body>
-
 
 </html>

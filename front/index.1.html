@@ -43,46 +43,34 @@
 
 <main>
 
-    <aside class="al-sidebar">
-  <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 219px;">
-    <ul class="al-sidebar-list"
-    slimscroll="{height: '219px'}"
-    slimscroll-watch="menuHeight"
-    style="overflow: hidden; width: auto; height: 219px;">
+  <aside class="al-sidebar">
+  <div class="slimScrollDiv">
+    <ul class="al-sidebar-list">
     
     <li class="al-sidebar-list-item selected" >
       <a  class="al-sidebar-list-link" href="#/dashboard">
         <i class="ion-android-home"></i>
-        <span class="ng-binding">Dashboard</span>
+        <span>Dashboard_</span>
       </a>
     </li>
-    <!-- end ngRepeat: item in ::menuItems -->
-    <li ng-repeat="item in ::menuItems" class="al-sidebar-list-item with-sub-menu" ng-class="::{'with-sub-menu': item.subMenu}" ui-sref-active="selected" ba-sidebar-toggling-item="item" style="">
+    
+    <li  class="al-sidebar-list-item with-sub-menu"  ba-sidebar-toggling-item="item">
       <a class="al-sidebar-list-link">
         <i class="ion-gear-a"></i>
-        <span class="ng-binding">Components</span>
+        <span >Components</span>
         <b class="fa fa-angle-down"></b>
       </a>
 
-      <!-- ngIf: ::item.subMenu -->
-      <ul ng-if="::item.subMenu" class="al-sidebar-sublist" ng-class="{'slide-right': item.slideRight}" ba-ui-sref-toggling-submenu="">
+      <ul  class="al-sidebar-sublist"  ba-ui-sref-toggling-submenu="">
         <li class="ba-sidebar-sublist-item">
-          <a
-          target="_self" 
-          class="ng-binding" href="#/components/mail">
+          <a target="_self" href="#/components/mail">
             Mail
           </a>
-        </li><!-- end ngRepeat: subitem in ::item.subMenu -->
-      </ul><!-- end ngIf: ::item.subMenu -->
-    </li><!-- end ngRepeat: item in ::menuItems -->
-    
-    
+        </li>
+      </ul>
+    </li>
   </ul>
   
-  
-  <div class="slimScrollBar"
-    style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 121.114px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-  <div class="sidebar-hover-elem"></div>
 </aside>
 
   <div class="page-top clearfix" scroll-position="scrolled" max-height="50">
@@ -109,7 +97,7 @@
       </div>
 
       <!-- uiView: -->
-      <div ui-view="" autoscroll="true" autoscroll-body-top="">
+      <div ui-view="" id="root" autoscroll="true" autoscroll-body-top="">
       </div>
     </div>
   </div>
@@ -138,7 +126,10 @@
 
 
 
-<input id="textAngular-editableFix-010203040506070809" class="ta-hidden-input" aria-hidden="true" unselectable="on" tabindex="-1"></body>
+<input id="textAngular-editableFix-010203040506070809" class="ta-hidden-input" aria-hidden="true" unselectable="on" tabindex="-1">
+
+<script type="text/javascript" src="main.bundle.js"></script>
+</body>
 
 
 </html>
