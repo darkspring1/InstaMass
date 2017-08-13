@@ -3,7 +3,7 @@ using System.Web.Http.ExceptionHandling;
 using NLog;
 using System.Net.Http;
 
-namespace sm.web.api
+namespace SM.web.api
 {
     public class NLogExceptionLogger : ExceptionLogger
     {

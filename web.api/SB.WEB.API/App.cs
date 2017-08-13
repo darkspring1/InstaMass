@@ -9,7 +9,7 @@ using Owin;
 using Microsoft.Owin;
 using System.Web.Http.Dispatcher;
 using StructureMap;
-using sm.web.api;
+using SM.web.api;
 using SM.WEB.API.Middlewares;
 using SM.WEB.API.Ioc;
 using Microsoft.Owin.Security.OAuth;

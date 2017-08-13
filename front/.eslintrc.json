@@ -24,7 +24,8 @@
       "ignoreStrings": false,
       "ignoreTemplateLiterals": false,
       "ignoreRegExpLiterals": false
-    }]
+    }],
+    "react/prop-types": "off"
   },
   "globals": {
         "NODE_ENV": true,

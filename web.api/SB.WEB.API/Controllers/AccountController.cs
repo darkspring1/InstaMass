@@ -1,4 +1,5 @@
-﻿using AngularJSAuthentication.API.Models;
+﻿using AngularJSAuthentication.API;
+using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.API.Results;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -6,7 +7,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
-using SM.WEB.API;
+using SM.Common.Log;
+using SM.WEB.Application.Services;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -14,10 +16,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace AngularJSAuthentication.API.Controllers
+namespace SM.WEB.API.Controllers
 {
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseController
     {
         private AuthRepository _repo = null;
 
@@ -26,10 +28,18 @@ namespace AngularJSAuthentication.API.Controllers
             get { return Request.GetOwinContext().Authentication; }
         }
 
-        public AccountController()
+        private readonly Func<ApplicationService> _applicationServiceFunc;
+        private readonly Func<UserService> _userServiceFunc;
+
+        public AccountController(
+            ILogger logger,
+            Func<ApplicationService> applicationServiceFunc,
+            Func<UserService> userServiceFunc) : base(logger)
         {
             _repo = new AuthRepository();
-        }
+            _applicationServiceFunc = applicationServiceFunc;
+            _userServiceFunc = userServiceFunc;
+    }
 
         // POST api/Account/Register
         [AllowAnonymous]
@@ -41,16 +51,12 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await _repo.RegisterUser(userModel);
 
-            IHttpActionResult errorResult = GetErrorResult(result);
+            //IdentityResult result = await _repo.RegisterUser(userModel);
 
-            if (errorResult != null)
-            {
-                return errorResult;
-            }
+            var result  = await _userServiceFunc().CreateAync(userModel.Email, userModel.UserName, userModel.Password);
 
-            return Ok();
+            return ActionResult(result);
         }
 
         // GET api/Account/ExternalLogin

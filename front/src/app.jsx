@@ -6,7 +6,7 @@ import Auth from './auth';
 
 
 function App() {
-  const isAuth = true;
+  const isAuth = false;
   let redirectDefault = '/auth';
   if (isAuth) {
     redirectDefault = '/dashboard';
@@ -16,7 +16,7 @@ function App() {
       <div>
         <Redirect from="/" exact to={redirectDefault} />
         <Route exact path="/auth" component={Auth} />
-        <Route path="/" component={Layout} />
+        <Route exact path="/" component={Layout} />
       </div>
     </Router>
   );
@@ -26,5 +26,4 @@ function App() {
 export default connect(
   state => ({ state }), // map state to props
   // dispatch => ({})
-)(App)
-;
+)(App);
