@@ -1,4 +1,8 @@
-﻿using StructureMap;
+﻿using SM.Common.Cache;
+using SM.Common.Log;
+using SM.Domain.Persistent;
+using SM.Domain.Persistent.EF;
+using StructureMap;
 
 namespace SM.WEB.API.Ioc
 {
@@ -10,18 +14,17 @@ namespace SM.WEB.API.Ioc
 
             For<DataContext>().Use<DataContext>().Ctor<string>("connectionString").Is("safetyButton");
             For<IRepositoryProvider>().Use<RepositoryProvider>();
-
-            For< sb.core.log.ILogger>().Use<NLogLogger>();
-
-            For(typeof(Business.Dal.IRepository<>)).Use(typeof(EFRepository<>));
+            */
+            For<ILogger>().Use<NLogLogger>();
+            
+            //For(typeof(Business.Dal.IRepository<>)).Use(typeof(EFRepository<>));
 
             For<IEntityFrameworkDataContext>().Use<EFDataContext>().Ctor<string>("connectionString").Is("safetyButton");
 
             For<ICacheProvider>().Use<MemoryCacheProvider>().Singleton();
 
-            For<ISocialNetworkService>().Use<SocialNetworkService>();
-
-            For<IUnitOfWork>().Use<EfUnitOfWork>();*/
+            
+            For<IUnitOfWork>().Use<EfUnitOfWork>();
         }
     }
 }

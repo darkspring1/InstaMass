@@ -180,6 +180,10 @@
       <Project>{B4FAABEE-5525-4F11-85ED-5CE9F98FD5A9}</Project>
       <Name>SM.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SM.Domain\SM.Domain.csproj">
+      <Project>{814BDFAF-388B-4640-A2DF-845D3596D730}</Project>
+      <Name>SM.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SM.WEB.Application\SM.WEB.Application.csproj">
       <Project>{c5947258-86cc-4a00-8418-fe39e533decf}</Project>
       <Name>SM.WEB.Application</Name>

@@ -14,7 +14,7 @@ namespace SM.WEB.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        Task<SM.Domain.Model.Application> GetByIdAsync(string id)
+        public Task<SM.Domain.Model.Application> GetByIdAsync(string id)
         {
             return _unitOfWork.ApplicationRepository.GetByIdAsync(id);
         }

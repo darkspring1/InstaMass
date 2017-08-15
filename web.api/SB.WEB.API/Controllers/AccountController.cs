@@ -78,12 +78,14 @@ namespace SM.WEB.API.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            var redirectUriValidationResult = ValidateClientAndRedirectUri(this.Request, ref redirectUri);
+            var redirectUriValidationResult = await ValidateClientAndRedirectUri(this.Request);
 
-            if (!string.IsNullOrWhiteSpace(redirectUriValidationResult))
+            if (!string.IsNullOrWhiteSpace(redirectUriValidationResult.Error))
             {
                 return BadRequest(redirectUriValidationResult);
             }
+
+            redirectUri = redirectUriValidationResult.RedirectUri;
 
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
@@ -239,37 +241,42 @@ namespace SM.WEB.API.Controllers
             return null;
         }
 
-        private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)
+        private async Task<dynamic> ValidateClientAndRedirectUri(HttpRequestMessage request)
         {
 
             Uri redirectUri;
 
             var redirectUriString = GetQueryString(Request, "redirect_uri");
 
+            Func<string, string, dynamic> getResult = (err, uri) => new { Error = err, RedirectUri = uri };
+            Func<string, dynamic> getErrorResult = err => getResult(err, null);
+
             if (string.IsNullOrWhiteSpace(redirectUriString))
             {
-                return "redirect_uri is required";
+                return getErrorResult("redirect_uri is required");
             }
 
             bool validUri = Uri.TryCreate(redirectUriString, UriKind.Absolute, out redirectUri);
 
             if (!validUri)
             {
-                return "redirect_uri is invalid";
+                return getErrorResult("redirect_uri is invalid");
             }
 
             var clientId = GetQueryString(Request, "client_id");
 
             if (string.IsNullOrWhiteSpace(clientId))
             {
-                return "client_Id is required";
+                return getErrorResult("client_Id is required");
             }
 
-            var client = _repo.FindClient(clientId);
+            //var client = _repo.FindClient(clientId);
 
-            if (client == null)
+            var app = await _applicationServiceFunc().GetByIdAsync(clientId);
+
+            if (app == null)
             {
-                return string.Format("Client_id '{0}' is not registered in the system.", clientId);
+                return getErrorResult($"App_id '{clientId}' is not registered in the system.");
             }
 
             /*
@@ -279,9 +286,7 @@ namespace SM.WEB.API.Controllers
             }
             */
 
-            redirectUriOutput = redirectUri.AbsoluteUri;
-
-            return string.Empty;
+            return getResult(null, redirectUri.AbsoluteUri);
 
         }
 
