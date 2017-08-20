@@ -19,7 +19,9 @@ namespace SM.WEB.API.Ioc
             
             //For(typeof(Business.Dal.IRepository<>)).Use(typeof(EFRepository<>));
 
-            For<IEntityFrameworkDataContext>().Use<EFDataContext>().Ctor<string>("connectionString").Is("safetyButton");
+            For<IEntityFrameworkDataContext>()
+                .Use<EFDataContext>()
+                .Ctor<string>("connectionString").Is("SM");
 
             For<ICacheProvider>().Use<MemoryCacheProvider>().Singleton();
 

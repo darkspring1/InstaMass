@@ -2,15 +2,16 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import AuthSettings from './authSettings';
+
+import AuthExternalProvider from './actions/authExternalProvider';
 
 
 class Auth extends React.Component {
-
+/*
   constructor(props) {
     super(props);
-    this.authExternalProvider = this.authExternalProvider.bind(this);
   }
+  */
 
   componentWillMount() {
     const head = document.getElementsByTagName('head')[0];
@@ -25,11 +26,6 @@ class Auth extends React.Component {
     debugger;
     this.style.parentNode.removeChild(this.style);
   }
-
-  authExternalProvider(provider) {
-    this.props.onAuthExternalProvider(provider);
-  }
-
 
   render() {
     return (<main className="auth-main">
@@ -65,7 +61,7 @@ class Auth extends React.Component {
         <div className="al-share-auth">
           <ul className="al-share clearfix">
             <li>
-              <a role="button" tabIndex={0} onClick={() => this.authExternalProvider('Facebook')}>
+              <a role="button" tabIndex={0} onClick={() => this.props.onAuthExternalProvider('Facebook')}>
                 <i className="socicon socicon-facebook" title="Share on Facebook" />
               </a>
             </li>
@@ -81,21 +77,10 @@ class Auth extends React.Component {
 
 export default connect(
   state => ({ state }), // map state to props
-  dispatch => ({
-    onAuthExternalProvider(provider) {
-      debugger;
-      const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
-
-      const externalProviderUrl = `${AuthSettings.ApiServiceBaseUri}api/Account/ExternalLogin?provider=${provider
-}&response_type=token&client_id=${AuthSettings.ClientId
-}&redirect_uri=${redirectUri}`;
-    // window.$windowScope = $scope;
-
-
-    /* const oauthWindow = */
-      window.open(externalProviderUrl, 'Authenticate Account', 'location=0,status=0,width=600,height=750');
-
-      dispatch({ type: 'AUTH_EXTERNAL_PROVIDER' });
-    }
-  })
+dispatch => ({
+  onAuthExternalProvider(provider) {
+    debugger;
+    dispatch(AuthExternalProvider(provider));
+  }
+})
 )(Auth);

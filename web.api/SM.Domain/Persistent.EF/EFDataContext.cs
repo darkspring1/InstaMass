@@ -22,7 +22,7 @@ namespace SM.Domain.Persistent.EF
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserState>().ToTable("Users", schema);
-            modelBuilder.Entity<ApplicationState>().ToTable("Aplications", schema);
+            modelBuilder.Entity<ApplicationState>().ToTable("Applications", schema);
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

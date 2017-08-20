@@ -12,7 +12,9 @@ module.exports = {
     main: [
       './src/index.js',
     ],
-
+    authComplete : [
+      './src/authComplete.js',
+    ]
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

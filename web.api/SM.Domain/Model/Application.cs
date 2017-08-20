@@ -16,7 +16,7 @@ namespace SM.Domain.Model
         {
             Id = state.Id;
             Secret = state.Secret;
-            Type = (ApplicationTypes)Enum.Parse(typeof(ApplicationTypes), state.Type, true);
+            //Type = (ApplicationTypes)Enum.Parse(typeof(ApplicationTypes), state.Type, true);
             RefreshTokenLifeTime = state.RefreshTokenLifeTime;
             AllowedOrigin = state.AllowedOrigin;
         }

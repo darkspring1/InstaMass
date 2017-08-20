@@ -21,10 +21,30 @@ app.use(express.static(`${__dirname}/`));
 app.use(express.static(`${__dirname}/dist`));
 app.use(express.static(`${__dirname}/src`));
 
+const fileExtensions = ['woff', 'woff2', 'ttf', 'js', 'css', 'png'];
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/index.html`));
-});
+function isFile(url) {
+  for (const i in fileExtensions) {
+    if (url.indexOf(`.${fileExtensions[i]}`) != -1) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function appGet(url) {
+  app.get(`${url}*`, (req, res) => {
+        // console.log(req.url);
+    if (isFile(req.url)) {
+      console.log(`${404} ${req.url}`);
+      res.status(404).send('Not found');
+      return;
+    }
+    res.sendFile(path.join(`${__dirname + url}/index.html`));
+  });
+}
+
+appGet('/');
 
 app.listen(port);
 

@@ -1,22 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
 import App from './app';
+import * as Reducers from './reducers';
 
-function playlist(state = [], action) {
-  if (action.type === 'ADD_TRACK') {
-    return [
-      ...state,
-      action.payload
-    ];
-  }
-  return state;
-}
-
-const store = createStore(playlist);
+const reducers = combineReducers(Reducers);
+// const store = createStore(playlist);
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>
