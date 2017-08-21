@@ -23,6 +23,9 @@ namespace SM.Domain.Persistent.EF
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserState>().ToTable("Users", schema);
             modelBuilder.Entity<ApplicationState>().ToTable("Applications", schema);
+
+            modelBuilder.Entity<ExternalAuthProviderState>().ToTable("ExternalAuthProviders", schema);
+            modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

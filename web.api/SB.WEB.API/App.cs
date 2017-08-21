@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-
-using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using Owin;
 using Microsoft.Owin;
@@ -110,7 +108,9 @@ namespace SM.WEB.API
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(OAuthBearerOptions);
-            
+
+
+            /*
             //Configure Google External Login
             googleAuthOptions = new GoogleOAuth2AuthenticationOptions()
             {
@@ -119,6 +119,7 @@ namespace SM.WEB.API
                 Provider = new GoogleAuthProvider()
             };
             app.UseGoogleAuthentication(googleAuthOptions);
+            */
             
             //Configure Facebook External Login
             facebookAuthOptions = new FacebookAuthenticationOptions()

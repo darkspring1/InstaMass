@@ -57,8 +57,11 @@
   <ItemGroup>
     <Compile Include="Model\Application.cs" />
     <Compile Include="Model\Entity.cs" />
+    <Compile Include="Model\ExternalAuthProviderType.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Persistent.EF.State\ApplicationState.cs" />
+    <Compile Include="Persistent.EF.State\ExternalAuthProviderTypeState.cs" />
+    <Compile Include="Persistent.EF.State\ExternalAuthProviderState.cs" />
     <Compile Include="Persistent.EF\ApplicationRepository.cs" />
     <Compile Include="Persistent.EF\CacheRepository.cs" />
     <Compile Include="Persistent.EF\UserRepository.cs" />
@@ -73,7 +76,14 @@
     <Compile Include="Persistent.EF.State\UserState.cs" />
     <Compile Include="Persistent\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Services\VKOAuthProvider.cs" />
+    <Compile Include="Services\FBAuthService.cs" />
+    <Compile Include="Settings\OAuthSettings.cs" />
+    <Compile Include="Services\ExternalAuthService.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\OAuthProviderSettings.cs" />
+    <Compile Include="Settings\FBOAuthSettings.cs" />
+    <Compile Include="Settings\VKOAuthSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

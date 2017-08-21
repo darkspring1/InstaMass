@@ -2,6 +2,7 @@
 using SM.Common.Services;
 using SM.Domain.Model;
 using SM.Domain.Persistent;
+using SM.Domain.Services;
 using System.Threading.Tasks;
 
 namespace SM.WEB.Application.Services
@@ -21,8 +22,21 @@ namespace SM.WEB.Application.Services
                 var newUser = User.Create(email, userName, password);
                 _unitOfWork.UserRepository.RegisterNewUser(newUser);
                 return _unitOfWork.CompleteAsync();
+            });  
+        }
+
+        public Task<ServiceResult> CreateExternalAync(ExternalAuthProviderType providerType, string accessToken)
+        {
+            return RunAsync(async () => {
+                var newUser = await User.CreateExternalAsync(providerType, accessToken);
+                _unitOfWork.UserRepository.RegisterNewUser(newUser);
+                await _unitOfWork.CompleteAsync();
             });
-           
+        }
+
+        public Task<ServiceResult<User>> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
+        {
+            return RunAsync(() => _unitOfWork.UserRepository.FindAsync(providerType, externalUserId));
         }
     }
 }

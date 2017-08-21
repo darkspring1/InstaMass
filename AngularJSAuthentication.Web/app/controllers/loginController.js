@@ -36,6 +36,7 @@ app.controller('loginController', ['$scope', '$location', 'authService', 'ngAuth
 
     $scope.authCompletedCB = function (fragment) {
 
+        debugger;
         $scope.$apply(function () {
 
             if (fragment.haslocalaccount == 'False') {

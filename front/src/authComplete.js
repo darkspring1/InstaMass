@@ -54,7 +54,7 @@ const fragment = window.common.getFragment();
 
 window.location.hash = fragment.state || '';
 
-window.opener.$windowScope.authCompletedCB(fragment);
+window.opener.dispatchAuthExternalProvider(fragment);
 
 window.close();
 

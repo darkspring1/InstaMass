@@ -79,7 +79,6 @@ export default connect(
   state => ({ state }), // map state to props
 dispatch => ({
   onAuthExternalProvider(provider) {
-    debugger;
     dispatch(AuthExternalProvider(provider));
   }
 })

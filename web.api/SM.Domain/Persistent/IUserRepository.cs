@@ -9,5 +9,7 @@ namespace SM.Domain.Persistent
         Task<User> GetByIdAsync(object key);
 
         void RegisterNewUser(User newUser);
+
+        Task<User> FindAsync(ExternalAuthProviderType providerType, string externalUserId);
     }
 }

@@ -2,6 +2,7 @@
 using SM.Domain.Model;
 using SM.Domain.Persistent.EF.State;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,20 +26,17 @@ namespace SM.Domain.Persistent.EF
         {
             return users;
         }
-        /*
-        public User GetByToken(string token)
+
+        IEnumerable<ExternalAuthProviderTypeState> GetExternalAuthProviderTypes()
         {
-            var tokens = Context.DbSet<TokenState>().Entities;
-            var userStates = Set.Entities
-                .Join(tokens, u => u.Id, t => t.UserId, (u, t) => new { User = u, Token = t })
-                .Where(ut => ut.Token.Token == token && (ut.Token.TokenExpireAt == null || ut.Token.TokenExpireAt > DateTime.UtcNow))
-                .Select(ut => ut.User);
-            var user = Include(userStates).FirstOrDefault();
+            const string key = "userRepository.GetExternalAuthProviderTypes";
+            return AddOrGetExisting(key, () => Context.DbSet<ExternalAuthProviderTypeState>().Entities.ToArray());
+        }
 
-            if (user == null) { return null; }
-
-            return new User(user);
-        }*/
+        ExternalAuthProviderTypeState GetExternalAuthProviderTypeByType(string type)
+        {
+            return GetExternalAuthProviderTypes().First();
+        }
 
         protected override User Create(UserState state)
         {
@@ -47,7 +45,28 @@ namespace SM.Domain.Persistent.EF
 
         public void RegisterNewUser(User newUser)
         {
+            if (newUser.State.ExternalAuthProviders.Any())
+            {
+                foreach (var p in newUser.State.ExternalAuthProviders)
+                {
+                    p.ExternalAuthProviderTypeId = GetExternalAuthProviderTypeByType(p.ExternalAuthProviderType.Type).Id;
+                }
+            }
+
             Set.Add(newUser.State);
+        }
+
+        public Task<User> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
+        {
+            var externalAuthProviderStates = Context.DbSet<ExternalAuthProviderState>().Entities;
+            var providerTypeStr = providerType.ToString().ToLower();
+            var userState = FirstOrDefaultAsync(externalAuthProviderStates
+                .Where(p => p.ExternalUserId == externalUserId && p.ExternalAuthProviderType.Type == providerTypeStr)
+                .Include(p => p.User)
+                .Include(p => p.User.ExternalAuthProviders)
+                .Select(p => p.User));
+
+            return CreateAsync(userState);
         }
     }
 }

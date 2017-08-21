@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
 namespace SM.Domain
 {
     class Settings
@@ -13,3 +13,4 @@ namespace SM.Domain
         public static string VkApiVersion => ConfigurationManager.AppSettings["vkApiVersion"];
     }
 }
+*/

@@ -1,0 +1,4 @@
+export default {
+  AUTH_EXTERNAL_PROVIDER: 'AUTH_EXTERNAL_PROVIDER'
+}
+;

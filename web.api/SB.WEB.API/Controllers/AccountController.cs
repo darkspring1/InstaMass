@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using SM.Common.Log;
+using SM.Domain.Model;
 using SM.WEB.Application.Services;
 using System;
 using System.Linq;
@@ -100,9 +101,17 @@ namespace SM.WEB.API.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            var findResult = await _userServiceFunc().FindAsync(provider.ToExternalAuthProviderType(), externalLogin.ProviderKey);
 
-            bool hasRegistered = user != null;
+            if (!findResult.IsSuccess) {
+                return BadRequest();
+            }
+            //IdentityUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+
+
+            bool hasRegistered = findResult.Result != null;
+
+            //bool hasRegistered = true;
 
             redirectUri = string.Format("{0}#external_access_token={1}&provider={2}&haslocalaccount={3}&external_user_name={4}",
                                             redirectUri,
@@ -132,33 +141,27 @@ namespace SM.WEB.API.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            var userService = _userServiceFunc();
 
-            bool hasRegistered = user != null;
+            var providerType = model.Provider.ToExternalAuthProviderType();
+            var userFindResult = await userService.FindAsync(providerType, verifiedAccessToken.user_id);
+
+            if (!userFindResult.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            bool hasRegistered = userFindResult.Result != null;
 
             if (hasRegistered)
             {
                 return BadRequest("External user is already registered");
             }
 
-            user = new IdentityUser() { UserName = model.UserName };
+            var createUserResult = await userService.CreateExternalAync(providerType, verifiedAccessToken.user_id);
 
-            IdentityResult result = await _repo.CreateAsync(user);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            var info = new ExternalLoginInfo()
-            {
-                DefaultUserName = model.UserName,
-                Login = new UserLoginInfo(model.Provider, verifiedAccessToken.user_id)
-            };
-
-            result = await _repo.AddLoginAsync(user.Id, info.Login);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
+            if (createUserResult.IsFault) {
+                return BadRequest();
             }
 
             //generate access token response
