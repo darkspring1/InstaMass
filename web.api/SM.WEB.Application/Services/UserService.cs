@@ -25,7 +25,7 @@ namespace SM.WEB.Application.Services
             });  
         }
 
-        public Task<ServiceResult> CreateExternalAync(ExternalAuthProviderType providerType, string accessToken)
+        public Task<ServiceResult> CreateExternalAsync(ExternalAuthProviderType providerType, string accessToken)
         {
             return RunAsync(async () => {
                 var newUser = await User.CreateExternalAsync(providerType, accessToken);
@@ -37,6 +37,11 @@ namespace SM.WEB.Application.Services
         public Task<ServiceResult<User>> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
         {
             return RunAsync(() => _unitOfWork.UserRepository.FindAsync(providerType, externalUserId));
+        }
+
+        public Task<ServiceResult<ExternalUserInfo>> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)
+        {
+            return RunAsync(() => User.GetExternalUserInfoAsync(providerType, accessToken));
         }
     }
 }

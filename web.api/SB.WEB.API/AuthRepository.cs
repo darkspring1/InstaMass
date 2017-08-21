@@ -18,8 +18,8 @@ namespace AngularJSAuthentication.API
 
         public AuthRepository()
         {
-            _ctx = new AuthContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+            //_ctx = new AuthContext();
+            //_userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
         }
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
@@ -115,9 +115,9 @@ namespace AngularJSAuthentication.API
         }
 
         public void Dispose()
-        {
+        {/*
             _ctx.Dispose();
-            _userManager.Dispose();
+            _userManager.Dispose();*/
 
         }
     }

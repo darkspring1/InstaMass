@@ -11,7 +11,7 @@ namespace SM.Common.Services
 
         public bool IsSuccess { get; }
 
-        public bool IsFault => !IsSuccess;
+        public bool IsFaulted => !IsSuccess;
 
         public Exception Exception { get; protected set; }
 

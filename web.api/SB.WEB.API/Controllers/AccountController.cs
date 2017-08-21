@@ -135,18 +135,20 @@ namespace SM.WEB.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            var userService = _userServiceFunc();
+            var providerType = model.Provider.ToExternalAuthProviderType();
+            var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, model.ExternalAccessToken);
+
             var verifiedAccessToken = await VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
-            if (verifiedAccessToken == null)
+            if (externalUserInfoResult.IsFaulted)
             {
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            var userService = _userServiceFunc();
+           
+            var userFindResult = await userService.FindAsync(providerType, externalUserInfoResult.Result.UserId);
 
-            var providerType = model.Provider.ToExternalAuthProviderType();
-            var userFindResult = await userService.FindAsync(providerType, verifiedAccessToken.user_id);
-
-            if (!userFindResult.IsSuccess)
+            if (userFindResult.IsFaulted)
             {
                 return BadRequest();
             }
@@ -158,9 +160,9 @@ namespace SM.WEB.API.Controllers
                 return BadRequest("External user is already registered");
             }
 
-            var createUserResult = await userService.CreateExternalAync(providerType, verifiedAccessToken.user_id);
+            var createUserResult = await userService.CreateExternalAsync(providerType, verifiedAccessToken.user_id);
 
-            if (createUserResult.IsFault) {
+            if (createUserResult.IsFaulted) {
                 return BadRequest();
             }
 

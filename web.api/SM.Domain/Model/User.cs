@@ -55,7 +55,13 @@ namespace SM.Domain.Model
             return new FBAuthService();
         }
 
-       
+        public static Task<ExternalUserInfo> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)
+        {
+            var s = GetExternalAuthService(providerType);
+            return s.GetUserAsync(accessToken);
+        }
+
+
 
         internal static string SHA(string str)
         {
