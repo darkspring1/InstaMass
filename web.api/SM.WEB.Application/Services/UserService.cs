@@ -16,21 +16,23 @@ namespace SM.WEB.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<ServiceResult> CreateAync(string email, string userName, string password)
+        public Task<ServiceResult<User>> CreateAync(string email, string userName, string password)
         {
-            return RunAsync(() => {
+            return RunAsync(async () => {
                 var newUser = User.Create(email, userName, password);
                 _unitOfWork.UserRepository.RegisterNewUser(newUser);
-                return _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
+                return newUser;
             });  
         }
 
-        public Task<ServiceResult> CreateExternalAsync(ExternalUserInfo userInfo)
+        public Task<ServiceResult<User>> CreateExternalAsync(ExternalUserInfo userInfo)
         {
-            return RunAsync(() => {
+            return RunAsync(async () => {
                 var newUser = User.CreateExternal(userInfo);
                 _unitOfWork.UserRepository.RegisterNewUser(newUser);
-                return _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
+                return newUser;
             });
         }
 

@@ -8,12 +8,14 @@ function RegisterExternal(registerExternalData) {
     headers: {
       'Content-Type': 'application/json'
     },
-  });
+  }).then(response => response.json());
 }
 
 
-function test() {
-
+function ObtainLocalAccessToken(externalData) {
+  const url = new URL(`${Settings.ApiServiceBaseUri}api/account/ObtainLocalAccessToken`);
+  Object.keys(externalData).forEach(key => url.searchParams.append(key, externalData[key]));
+  return Fetch(url).then(response => response.json());
 }
 
-export { RegisterExternal, test };
+export { RegisterExternal, ObtainLocalAccessToken };

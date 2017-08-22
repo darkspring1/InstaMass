@@ -3,7 +3,8 @@
 
 import AuthSettings from './../settings';
 // import ActionNames from './../actionNames';
-import { RegisterExternal } from './../api';
+import { RegisterExternal, ObtainLocalAccessToken } from './../api';
+import LocalStorage from '../localStorage';
 
 export default provider => (/* dispatch */) => {
   const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
@@ -14,26 +15,25 @@ export default provider => (/* dispatch */) => {
 
   window.dispatchAuthExternalProvider = (fragment) => {
     // dispatch({ type: ActionNames.AUTH_EXTERNAL_PROVIDER, payload });
-
+    const externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
     if (fragment.haslocalaccount === 'False') {
-      const p = RegisterExternal({
-        provider: fragment.provider,
-        userName: fragment.external_user_name,
-        externalAccessToken: fragment.external_access_token
+      externalData.userName = fragment.external_user_name;
+      RegisterExternal(externalData)
+      .then((response) => {
+        debugger;
+      })
+      .catch((err) => {
+        debugger;
       });
-    }
-    /*
-    else {
+    } else {
+      debugger;
                 // Obtain access token and redirect to orders
-      const externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
-      authService.obtainAccessToken(externalData).then((response) => {
-        $location.path('/orders');
-      },
-             (err) => {
-               $scope.message = err.error_description;
-             });
+      ObtainLocalAccessToken(externalData).then((response) => {
+        debugger;
+        LocalStorage.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: '', useRefreshTokens: false });
+      })
+      .catch((err) => { console.log(err); });
     }
-            */
   };
 
   window.open(externalProviderUrl, 'Authenticate Account', 'location=0,status=0,width=600,height=750');

@@ -138,6 +138,11 @@ namespace SM.WEB.API.Controllers
             var providerType = model.Provider.ToExternalAuthProviderType();
             var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, model.ExternalAccessToken);
 
+            if (externalUserInfoResult.IsFaulted)
+            {
+                return BadRequest();
+            }
+
             var userFindResult = await userService.FindAsync(providerType, externalUserInfoResult.Result.UserId);
 
             if (userFindResult.IsFaulted)
@@ -159,7 +164,7 @@ namespace SM.WEB.API.Controllers
             }
 
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(model.UserName);
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(createUserResult.Result.UserName);
 
             return Ok(accessTokenResponse);
         }
@@ -174,16 +179,27 @@ namespace SM.WEB.API.Controllers
             {
                 return BadRequest("Provider or external access token is not sent");
             }
+            var userService = _userServiceFunc();
+            var providerType = provider.ToExternalAuthProviderType();
+            
 
-            var verifiedAccessToken = await VerifyExternalAccessToken(provider, externalAccessToken);
-            if (verifiedAccessToken == null)
+            var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, externalAccessToken);
+
+            if (externalUserInfoResult.IsFaulted)
             {
-                return BadRequest("Invalid Provider or External Access Token");
+                return BadRequest();
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
-            bool hasRegistered = user != null;
+            var findResult = await userService.FindAsync(providerType, externalUserInfoResult.Result.UserId);
+
+            if (findResult.IsFaulted)
+            {
+                return BadRequest();
+            }
+            
+
+            bool hasRegistered = findResult.Result != null;
 
             if (!hasRegistered)
             {
@@ -191,7 +207,7 @@ namespace SM.WEB.API.Controllers
             }
 
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(user.UserName);
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(findResult.Result.UserName);
 
             return Ok(accessTokenResponse);
 
