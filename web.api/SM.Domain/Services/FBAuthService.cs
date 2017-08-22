@@ -10,7 +10,7 @@ namespace SM.Domain.Services
         {
             var meUrl = string.Format("https://graph.facebook.com/me?fields=id,first_name,last_name,email&access_token={0}", accessToken);
             var me = await SendRequestJsonAsync(meUrl);
-            return new ExternalUserInfo(me["id"].ToString(), me["email"].ToString(), me["first_name"].ToString(), me["last_name"].ToString());
+            return new ExternalUserInfo(me["id"].ToString(), me["email"].ToString(), me["first_name"].ToString(), me["last_name"].ToString(), Model.ExternalAuthProviderType.Facebook);
         }
 
        

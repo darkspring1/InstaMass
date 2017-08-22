@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SM.Domain.Model;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,12 +18,15 @@ namespace SM.Domain.Services
 
         public string LastName { get; }
 
-        public ExternalUserInfo(string userId, string email, string firstName, string lastName)
+        public ExternalAuthProviderType ProviderType { get; }
+
+        public ExternalUserInfo(string userId, string email, string firstName, string lastName, ExternalAuthProviderType providerType)
         {
             UserId = userId;
             Email = email;
             FirstName = firstName;
             LastName = LastName;
+            ProviderType = providerType;
         }
     }
 

@@ -129,7 +129,6 @@ namespace SM.WEB.API.Controllers
         [Route("RegisterExternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -139,13 +138,6 @@ namespace SM.WEB.API.Controllers
             var providerType = model.Provider.ToExternalAuthProviderType();
             var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, model.ExternalAccessToken);
 
-            var verifiedAccessToken = await VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
-            if (externalUserInfoResult.IsFaulted)
-            {
-                return BadRequest("Invalid Provider or External Access Token");
-            }
-
-           
             var userFindResult = await userService.FindAsync(providerType, externalUserInfoResult.Result.UserId);
 
             if (userFindResult.IsFaulted)
@@ -160,7 +152,7 @@ namespace SM.WEB.API.Controllers
                 return BadRequest("External user is already registered");
             }
 
-            var createUserResult = await userService.CreateExternalAsync(providerType, verifiedAccessToken.user_id);
+            var createUserResult = await userService.CreateExternalAsync(externalUserInfoResult.Result);
 
             if (createUserResult.IsFaulted) {
                 return BadRequest();

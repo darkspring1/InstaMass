@@ -29,7 +29,7 @@ namespace SM.Domain.Persistent.EF.State
         public DateTime CreatedAt { get; set; }
 
 
-        public IEnumerable<ExternalAuthProviderState> ExternalAuthProviders { get; set; }
+        public ICollection<ExternalAuthProviderState> ExternalAuthProviders { get; set; }
 
 
     }

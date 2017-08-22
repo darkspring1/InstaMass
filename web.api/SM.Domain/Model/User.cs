@@ -27,12 +27,9 @@ namespace SM.Domain.Model
             return new User(new UserState { CreatedAt = DateTime.UtcNow,  Email = email, UserName = userName, PasswordHash = SHA(password) });
         }
 
-        public static async Task<User> CreateExternalAsync(ExternalAuthProviderType providerType, string accessToken)
+        public static User CreateExternal(ExternalUserInfo externalUserInfo)
         {
-            var s = GetExternalAuthService(providerType);
-            var externalUserInfo = await s.GetUserAsync(accessToken);
-
-            ExternalAuthProviderTypeState externalAuthProviderType = new ExternalAuthProviderTypeState { Type = providerType.ToString() };
+            ExternalAuthProviderTypeState externalAuthProviderType = new ExternalAuthProviderTypeState { Type = externalUserInfo.ProviderType.ToString() };
             ExternalAuthProviderState externalAuthProviderState = new ExternalAuthProviderState
             {
                 ExternalUserId = externalUserInfo.UserId,

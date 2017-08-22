@@ -45,14 +45,18 @@ namespace SM.Domain.Persistent.EF
 
         public void RegisterNewUser(User newUser)
         {
+            newUser.State.Id = Guid.NewGuid();
+
             if (newUser.State.ExternalAuthProviders.Any())
             {
                 foreach (var p in newUser.State.ExternalAuthProviders)
                 {
-                    p.ExternalAuthProviderTypeId = GetExternalAuthProviderTypeByType(p.ExternalAuthProviderType.Type).Id;
+                    p.UserId = newUser.State.Id;
+                    p.ExternalAuthProviderType = GetExternalAuthProviderTypeByType(p.ExternalAuthProviderType.Type);
+                    p.ExternalAuthProviderTypeId = p.ExternalAuthProviderType.Id;
                 }
             }
-
+            newUser.State.Id = Guid.NewGuid();
             Set.Add(newUser.State);
         }
 
