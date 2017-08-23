@@ -50,7 +50,7 @@ module.exports = {
   plugins: [
     new WebpackNotifierPlugin(),
     new webpack.DefinePlugin({ NODE_ENV: JSON.stringify(NODE_ENV) }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
   ],
   devServer: {

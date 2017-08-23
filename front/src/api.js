@@ -3,42 +3,21 @@ import axios from 'axios';
 import Settings from './settings';
 
 function RegisterExternal(registerExternalData) {
-  return axios.post(`${Settings.ApiServiceBaseUri}api/account/registerexternal`, registerExternalData);
+  return axios.post(`${Settings.apiServiceBaseUri}api/account/registerexternal`, registerExternalData);
 }
 
 function ObtainLocalAccessToken(externalData) {
-  const url = `${Settings.ApiServiceBaseUri}api/account/ObtainLocalAccessToken`;
+  const url = `${Settings.apiServiceBaseUri}api/account/ObtainLocalAccessToken`;
   return axios.get(url, { params: externalData });
 }
 
-function Orders(externalData) {
-  const url = `${Settings.ApiServiceBaseUri}api/orders`;
-  return axios.get(url, { params: externalData });
+function Orders() {
+  const url = `${Settings.apiServiceBaseUri}api/orders`;
+  return axios.get(url);
 }
-/*
-const _refreshToken = function () {
-  const deferred = $q.defer();
 
-  const authData = localStorageService.get('authorizationData');
+function RefreshToken(data) {
+  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+}
 
-  if (authData) {
-    if (authData.useRefreshTokens) {
-      const data = `grant_type=refresh_token&refresh_token=${authData.refreshToken}&client_id=${ngAuthSettings.clientId}`;
-
-      localStorageService.remove('authorizationData');
-
-      $http.post(`${serviceBase}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success((response) => {
-        localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
-
-        deferred.resolve(response);
-      }).error((err, status) => {
-        _logOut();
-        deferred.reject(err);
-      });
-    }
-  }
-
-  return deferred.promise;
-}; */
-
-export { RegisterExternal, ObtainLocalAccessToken, Orders };
+export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken };

@@ -1,5 +1,5 @@
 export default {
-  ApiServiceBaseUri: 'http://localhost:90/',
-  ClientId: 'site'
+  apiServiceBaseUri: 'http://localhost:90/',
+  clientId: 'site'
 }
 ;

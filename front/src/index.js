@@ -8,13 +8,12 @@ import { ConnectedRouter, routerReducer, routerMiddleware/* , push */ } from 're
 import { Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import thunk from 'redux-thunk';
-
 import App from './app';
 import * as Reducers from './reducers';
-
 import ActionTypes from './constants/actionTypes';
 import LocalStorageKeys from './constants/localStorageKeys';
 import LocalStorage from './localStorage';
+import AddAuthInterceptor from './interceptors/authInterceptor';
 
 const history = createHistory();
 const routerMW = routerMiddleware(history);
@@ -25,8 +24,7 @@ const reducers = combineReducers({
 });
 
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(routerMW, thunk)));
-
-debugger;
+AddAuthInterceptor(store);
 const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
 if (authData) {
   store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: { user: authData, isAuth: true } });

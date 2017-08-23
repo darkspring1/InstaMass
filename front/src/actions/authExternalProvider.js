@@ -4,15 +4,14 @@ import { push } from 'react-router-redux';
 import AuthSettings from './../settings';
 import ActionTypes from './../constants/actionTypes';
 import LocalStorageKeys from './../constants/localStorageKeys';
-
-import { RegisterExternal, ObtainLocalAccessToken, Orders } from './../api';
+import { RegisterExternal, ObtainLocalAccessToken } from './../api';
 import LocalStorage from '../localStorage';
-import AddAuthInterceptor from '../interceptors/authInterceptor';
+
 
 export default provider => (dispatch) => {
   const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
   /* не переводить строку */
-  const externalProviderUrl = `${AuthSettings.ApiServiceBaseUri}api/Account/ExternalLogin?provider=${provider}&response_type=token&client_id=${AuthSettings.ClientId}&redirect_uri=${redirectUri}`;
+  const externalProviderUrl = `${AuthSettings.ApiServiceBaseUri}api/Account/ExternalLogin?provider=${provider}&response_type=token&client_id=${AuthSettings.clientId}&redirect_uri=${redirectUri}`;
 
   window.dispatchAuthExternalProvider = (fragment) => {
     // dispatch({ type: ActionNames.AUTH_EXTERNAL_PROVIDER, payload });
@@ -29,9 +28,7 @@ export default provider => (dispatch) => {
     } else {
                 // Obtain access token and redirect to orders
       ObtainLocalAccessToken(externalData).then((response) => {
-        LocalStorage.set(LocalStorageKeys.AUTHORIZATION_DATA, { token: response.data.access_token, userName: response.data.userName, refreshToken: '', useRefreshTokens: false });
-        AddAuthInterceptor();
-        dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: { user: response.data, isAuth: true } });
+        dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
         dispatch(push('/dashboard'));
       })
       .catch((err) => { console.log(err); });

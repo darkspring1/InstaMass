@@ -7,7 +7,6 @@ import Auth from './auth';
 
 
 function App(props) {
-  debugger;
   const redirectDefault = props.state.auth.isAuth ? '/dashboard' : '/auth';
 
   return (
