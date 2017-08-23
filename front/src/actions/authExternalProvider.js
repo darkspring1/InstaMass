@@ -3,21 +3,14 @@
 
 import AuthSettings from './../settings';
 // import ActionNames from './../actionNames';
-import { RegisterExternal, ObtainLocalAccessToken } from './../api';
+import { RegisterExternal, ObtainLocalAccessToken, Orders } from './../api';
 import LocalStorage from '../localStorage';
-// import { AddOnRequest } from '../interceptor';
+import AddAuthInterceptor from '../interceptors/authInterceptor';
 
 export default provider => (/* dispatch */) => {
   const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
   /* не переводить строку */
   const externalProviderUrl = `${AuthSettings.ApiServiceBaseUri}api/Account/ExternalLogin?provider=${provider}&response_type=token&client_id=${AuthSettings.ClientId}&redirect_uri=${redirectUri}`;
-
-  // RegisterExternal(JSON.parse('{"provider":"Facebook","userName":"Egor Ol\'t","externalAccessToken":"EAACys2SmZBUwBANA8p8iQZCHLdUPGnSaoYu5ZBZCVcu5GNqugpJduYuV2JRLqlvRfpNDpAqJJu8eFuUNQUI5ZAPmnS9AmwW6n5cylpTSmmfU9rZCaHZBzRXug0SHgZAFRrYIjW0miAIwHOTvbrpoSrVn2ehmrtMCm4Y1OtexZBeiZCcAZDZD"}'));
-
-  // debugger;
-  // AddOnRequest((xhr) => {
-  //   debugger;
-  // });
 
   window.dispatchAuthExternalProvider = (fragment) => {
     // dispatch({ type: ActionNames.AUTH_EXTERNAL_PROVIDER, payload });
@@ -32,11 +25,11 @@ export default provider => (/* dispatch */) => {
         debugger;
       });
     } else {
-      debugger;
                 // Obtain access token and redirect to orders
       ObtainLocalAccessToken(externalData).then((response) => {
-        debugger;
         LocalStorage.set('authorizationData', { token: response.data.access_token, userName: response.data.userName, refreshToken: '', useRefreshTokens: false });
+        AddAuthInterceptor();
+        Orders();
       })
       .catch((err) => { console.log(err); });
     }

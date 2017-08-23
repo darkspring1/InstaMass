@@ -10,4 +10,9 @@ function ObtainLocalAccessToken(externalData) {
   return axios.get(url, { params: externalData });
 }
 
-export { RegisterExternal, ObtainLocalAccessToken };
+function Orders(externalData) {
+  const url = `${Settings.ApiServiceBaseUri}api/orders`;
+  return axios.get(url, { params: externalData });
+}
+
+export { RegisterExternal, ObtainLocalAccessToken, Orders };

@@ -1,12 +1,14 @@
+const cache = {};
+
 export default class LocalStorage {
 
   static set(key, value) {
-    localStorage[key] = value;
+    cache[key] = value;
     localStorage.setItem(key, JSON.stringify(value));
   }
 
   static get(key) {
-    return localStorage[key];
+    return cache[key];
   }
 
 }
