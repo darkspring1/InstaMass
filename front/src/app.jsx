@@ -1,29 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import Layout from './layout';
 import Auth from './auth';
 
 
-function App() {
-  const isAuth = false;
-  let redirectDefault = '/auth';
-  if (isAuth) {
-    redirectDefault = '/dashboard';
-  }
+function App(props) {
+  debugger;
+  const redirectDefault = props.state.auth.isAuth ? '/dashboard' : '/auth';
+
   return (
-    <Router>
-      <div>
-        <Redirect from="/" exact to={redirectDefault} />
+    <div>
+      <Redirect from="/" exact to={redirectDefault} />
+      <Switch>
         <Route exact path="/auth" component={Auth} />
-        <Route exact path="/" component={Layout} />
-      </div>
-    </Router>
+        <Route path="/" component={Layout} />
+      </Switch>
+    </div>
   );
 }
 
 
-export default connect(
+const app = connect(
   state => ({ state }), // map state to props
   // dispatch => ({})
 )(App);
+
+export default withRouter(app);

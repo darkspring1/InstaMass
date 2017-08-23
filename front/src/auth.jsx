@@ -7,11 +7,6 @@ import AuthExternalProvider from './actions/authExternalProvider';
 
 
 class Auth extends React.Component {
-/*
-  constructor(props) {
-    super(props);
-  }
-  */
 
   componentWillMount() {
     const head = document.getElementsByTagName('head')[0];
@@ -23,7 +18,6 @@ class Auth extends React.Component {
   }
 
   componentWillUnmount() {
-    debugger;
     this.style.parentNode.removeChild(this.style);
   }
 

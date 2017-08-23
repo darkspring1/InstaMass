@@ -8,7 +8,12 @@ export default class LocalStorage {
   }
 
   static get(key) {
-    return cache[key];
+    let item = cache[key];
+    if (!item) {
+      item = localStorage.getItem(key);
+      item = JSON.parse(item);
+    }
+    return item;
   }
 
 }

@@ -1,0 +1,4 @@
+export default {
+  AUTHORIZATION_DATA: 'AUTHORIZATION_DATA'
+}
+;
