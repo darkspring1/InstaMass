@@ -40,7 +40,7 @@ namespace SM.WEB.API.Controllers
             _repo = new AuthRepository();
             _applicationServiceFunc = applicationServiceFunc;
             _userServiceFunc = userServiceFunc;
-    }
+        }
 
         // POST api/Account/Register
         [AllowAnonymous]
@@ -55,7 +55,7 @@ namespace SM.WEB.API.Controllers
 
             //IdentityResult result = await _repo.RegisterUser(userModel);
 
-            var result  = await _userServiceFunc().CreateAync(userModel.Email, userModel.UserName, userModel.Password);
+            var result = await _userServiceFunc().CreateAync(userModel.Email, userModel.UserName, userModel.Password);
 
             return ActionResult(result);
         }
@@ -125,6 +125,7 @@ namespace SM.WEB.API.Controllers
         }
 
         // POST api/Account/RegisterExternal
+        [HttpPost]
         [AllowAnonymous]
         [Route("RegisterExternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)

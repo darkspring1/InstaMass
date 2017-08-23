@@ -1,21 +1,13 @@
-import Fetch from 'isomorphic-fetch';
+import axios from 'axios';
 import Settings from './settings';
 
 function RegisterExternal(registerExternalData) {
-  return Fetch(`${Settings.ApiServiceBaseUri}api/account/registerexternal`, {
-    method: 'POST',
-    body: JSON.stringify(registerExternalData),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  }).then(response => response.json());
+  return axios.post(`${Settings.ApiServiceBaseUri}api/account/registerexternal`, registerExternalData);
 }
 
-
 function ObtainLocalAccessToken(externalData) {
-  const url = new URL(`${Settings.ApiServiceBaseUri}api/account/ObtainLocalAccessToken`);
-  Object.keys(externalData).forEach(key => url.searchParams.append(key, externalData[key]));
-  return Fetch(url).then(response => response.json());
+  const url = `${Settings.ApiServiceBaseUri}api/account/ObtainLocalAccessToken`;
+  return axios.get(url, { params: externalData });
 }
 
 export { RegisterExternal, ObtainLocalAccessToken };

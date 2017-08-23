@@ -4,16 +4,13 @@
   "version": "",
   "homepage": "",
   "scripts": {
-    "start": "npm run build:prod && npm run serve:prod",
-    "dev": "npm run build:dev&&npm run serve:dev",
-    "serve:dev": "webpack-dev-server --config webpack.dev.config.js",
-    "serve:prod": "node server",
+    "serve": "node server",
     "build:dev": "cross-env NODE_ENV=development webpack -d --config webpack.dev.config.js --progress",
     "build:prod": "cross-env NODE_ENV=production webpack -p --config webpack.prod.config.js --progress"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "classnames": "^2.2.5",
-    "isomorphic-fetch": "^2.2.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -24,7 +21,8 @@
     "react-router-redux": "^4.0.8",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "xhr-intercept": "^0.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
