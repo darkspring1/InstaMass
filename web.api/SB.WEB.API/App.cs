@@ -101,8 +101,8 @@ namespace SM.WEB.API
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
-                Provider = new SimpleAuthorizationServerProvider(),
-                RefreshTokenProvider = new SimpleRefreshTokenProvider()
+                Provider = new SimpleAuthorizationServerProvider(Container),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider(Container)
             };
 
             // Token Generation

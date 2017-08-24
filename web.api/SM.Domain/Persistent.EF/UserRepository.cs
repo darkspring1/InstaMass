@@ -72,5 +72,12 @@ namespace SM.Domain.Persistent.EF
 
             return CreateAsync(userState);
         }
+
+        public Task<User> FindAsync(string email, string password)
+        {
+            var passwordHash = User.SHA(password);
+            var userState = FirstOrDefaultAsync(Set.Entities.Where(u => u.Email == email && u.PasswordHash == passwordHash));
+            return CreateAsync(userState);
+        }
     }
 }

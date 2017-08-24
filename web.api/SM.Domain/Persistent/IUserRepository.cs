@@ -11,5 +11,7 @@ namespace SM.Domain.Persistent
         void RegisterNewUser(User newUser);
 
         Task<User> FindAsync(ExternalAuthProviderType providerType, string externalUserId);
+
+        Task<User> FindAsync(string email, string externalUserId);
     }
 }

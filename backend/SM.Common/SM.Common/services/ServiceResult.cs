@@ -37,6 +37,10 @@ namespace SM.Common.Services
 
         public T Result { get; }
 
+        public bool IsFaultedOrNullResult => IsFaulted || Result == null;
+
+        public bool IsSuccessAndNotNullResult => IsSuccess || Result != null;
+
         public static ServiceResult<T> Success(T result)
         {
             return new ServiceResult<T>(result);

@@ -1,25 +1,30 @@
 ﻿using AngularJSAuthentication.API;
-using AngularJSAuthentication.API.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using System;
+using SM.Common.Services;
+using SM.WEB.Application.Services;
+using StructureMap;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace SM.WEB.API.Providers
 {
     public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        private readonly IContainer _container;
+        public SimpleAuthorizationServerProvider(IContainer container)
+        {
+            _container = container;
+        }
+
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
 
             string clientId = string.Empty;
             string clientSecret = string.Empty;
-            Client client = null;
+            ServiceResult<Domain.Model.Application> aplicationServiceresult = null;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
             {
@@ -32,48 +37,51 @@ namespace SM.WEB.API.Providers
                 //if you want to force sending clientId/secrects once obtain access tokens. 
                 context.Validated();
                 //context.SetError("invalid_clientId", "ClientId should be sent.");
-                return Task.FromResult<object>(null);
+                return;
             }
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var nested = _container.GetNestedContainer())
             {
-                client = _repo.FindClient(context.ClientId);
+                var appService = nested.GetInstance<ApplicationService>();
+                aplicationServiceresult = await appService.GetByIdAsync(context.ClientId);
             }
 
-            if (client == null)
+           
+
+            if (aplicationServiceresult.IsFaultedOrNullResult)
             {
                 context.SetError("invalid_clientId", string.Format("Client '{0}' is not registered in the system.", context.ClientId));
-                return Task.FromResult<object>(null);
+                return;
             }
 
-            if (client.ApplicationType == AngularJSAuthentication.API.Models.ApplicationTypes.NativeConfidential)
+            if (aplicationServiceresult.Result.Type == SM.Domain.Model.ApplicationTypes.NativeConfidential)
             {
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
                     context.SetError("invalid_clientId", "Client secret should be sent.");
-                    return Task.FromResult<object>(null);
+                    return;
                 }
                 else
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
+                    if (aplicationServiceresult.Result.Secret != Helper.GetHash(clientSecret))
                     {
                         context.SetError("invalid_clientId", "Client secret is invalid.");
-                        return Task.FromResult<object>(null);
+                        return;
                     }
                 }
             }
 
-            if (!client.Active)
+            if (!aplicationServiceresult.Result.Active)
             {
                 context.SetError("invalid_clientId", "Client is inactive.");
-                return Task.FromResult<object>(null);
+                return;
             }
 
-            context.OwinContext.Set<string>("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set<string>("as:clientAllowedOrigin", aplicationServiceresult.Result.AllowedOrigin);
+            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", aplicationServiceresult.Result.RefreshTokenLifeTime.ToString());
 
             context.Validated();
-            return Task.FromResult<object>(null);
+            return;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -85,11 +93,12 @@ namespace SM.WEB.API.Providers
 
             //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var nested = _container.GetNestedContainer())
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                var appService = nested.GetInstance<UserService>();
+                var userResult = await appService.FindAsync(context.UserName, context.Password);
 
-                if (user == null)
+                if (userResult.IsFaultedOrNullResult)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;

@@ -41,6 +41,11 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => _unitOfWork.UserRepository.FindAsync(providerType, externalUserId));
         }
 
+        public Task<ServiceResult<User>> FindAsync(string email, string password)
+        {
+            return RunAsync(() => _unitOfWork.UserRepository.FindAsync(email, password));
+        }
+
         public Task<ServiceResult<ExternalUserInfo>> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)
         {
             return RunAsync(() => User.GetExternalUserInfoAsync(providerType, accessToken));

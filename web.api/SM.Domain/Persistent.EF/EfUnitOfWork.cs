@@ -12,11 +12,14 @@ namespace SM.Domain.Persistent.EF
             _context = context;
             UserRepository = new UserRepository(cacheProvider, context);
             ApplicationRepository = new ApplicationRepository(cacheProvider, context);
+            RefreshTokenRepository = new RefreshTokenRepository(cacheProvider, context);
         }
 
         public IUserRepository UserRepository { get; }
 
         public IApplicationRepository ApplicationRepository { get; }
+
+        public IRefreshTokenRepository RefreshTokenRepository { get; }
 
         public void Complete()
         {

@@ -22,8 +22,6 @@ namespace SM.WEB.API.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : BaseController
     {
-        private AuthRepository _repo = null;
-
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
@@ -37,7 +35,6 @@ namespace SM.WEB.API.Controllers
             Func<ApplicationService> applicationServiceFunc,
             Func<UserService> userServiceFunc) : base(logger)
         {
-            _repo = new AuthRepository();
             _applicationServiceFunc = applicationServiceFunc;
             _userServiceFunc = userServiceFunc;
         }
@@ -47,15 +44,13 @@ namespace SM.WEB.API.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(UserModel userModel)
         {
+            /*
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
+            }*/
 
-
-            //IdentityResult result = await _repo.RegisterUser(userModel);
-
-            var result = await _userServiceFunc().CreateAync(userModel.Email, userModel.UserName, userModel.Password);
+            var result = await _userServiceFunc().CreateAync(userModel.UserName, userModel.UserName, userModel.Password);
 
             return ActionResult(result);
         }
@@ -212,16 +207,6 @@ namespace SM.WEB.API.Controllers
 
             return Ok(accessTokenResponse);
 
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _repo.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
 
         #region Helpers
@@ -381,7 +366,7 @@ namespace SM.WEB.API.Controllers
         private JObject GenerateLocalAccessTokenResponse(string userName)
         {
 
-            var tokenExpiration = TimeSpan.FromDays(1);
+            var tokenExpiration = TimeSpan.FromSeconds(10);
 
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
 

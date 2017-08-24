@@ -1,6 +1,6 @@
-﻿using AngularJSAuthentication.API;
-using AngularJSAuthentication.API.Entities;
-using Microsoft.Owin.Security.Infrastructure;
+﻿using Microsoft.Owin.Security.Infrastructure;
+using SM.WEB.Application.Services;
+using StructureMap;
 using System;
 using System.Threading.Tasks;
 
@@ -8,6 +8,12 @@ namespace SM.WEB.API.Providers
 {
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
+        private readonly Container _container;
+
+        public SimpleRefreshTokenProvider(Container container)
+        {
+            _container = container;
+        }
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
@@ -20,31 +26,23 @@ namespace SM.WEB.API.Providers
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            using (AuthRepository _repo = new AuthRepository())
+
+            var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime");
+
+            var token = SM.Domain.Model.RefreshToken.Create(refreshTokenId, context.Ticket.Identity.Name, clientid, Convert.ToDouble(refreshTokenLifeTime));
+
+
+            context.Ticket.Properties.IssuedUtc = token.IssuedAt;
+            context.Ticket.Properties.ExpiresUtc = token.ExpiresAt;
+
+            token.SetProtectedTicket(context.SerializeTicket());
+            using (var nested = _container.GetNestedContainer())
             {
-                var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
-               
-                var token = new RefreshToken() 
-                { 
-                    Id = Helper.GetHash(refreshTokenId),
-                    ClientId = clientid, 
-                    Subject = context.Ticket.Identity.Name,
-                    IssuedUtc = DateTime.UtcNow,
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
-                };
-
-                context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
-                context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
-                
-                token.ProtectedTicket = context.SerializeTicket();
-
-                var result = await _repo.AddRefreshToken(token);
-
-                if (result)
+                var result = await nested.GetInstance<AuthService>().AddRefreshTokenAsync(token);
+                if (result.IsSuccess)
                 {
                     context.SetToken(refreshTokenId);
                 }
-             
             }
         }
 
@@ -54,17 +52,18 @@ namespace SM.WEB.API.Providers
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            string hashedTokenId = Helper.GetHash(context.Token);
+            string hashedTokenId = Domain.Model.RefreshToken.GetHash(context.Token);
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var nested = _container.GetNestedContainer())
             {
-                var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
+                var _repo = nested.GetInstance<AuthService>();
+                var refreshToken = await _repo.FindRefreshTokenAsync(hashedTokenId);
 
-                if (refreshToken != null )
+                if (refreshToken.IsSuccessAndNotNullResult)
                 {
                     //Get protectedTicket from refreshToken class
-                    context.DeserializeTicket(refreshToken.ProtectedTicket);
-                    var result = await _repo.RemoveRefreshToken(hashedTokenId);
+                    context.DeserializeTicket(refreshToken.Result.ProtectedTicket);
+                    var result = await _repo.RemoveRefreshTokenAsync(hashedTokenId);
                 }
             }
         }

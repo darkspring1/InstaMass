@@ -8,6 +8,9 @@ namespace SM.Domain.Persistent
         IUserRepository UserRepository { get; }
 
         IApplicationRepository ApplicationRepository { get; }
+
+        IRefreshTokenRepository RefreshTokenRepository { get; }
+
         void Complete();
 
         Task CompleteAsync();
