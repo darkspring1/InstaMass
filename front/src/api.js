@@ -20,4 +20,23 @@ function RefreshToken(data) {
   return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 
-export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken };
+function Login(email, password, appId) {
+  debugger;
+  let data = `grant_type=password&username=${email}&password=${password}`;
+  data = `${data}&client_id=${appId}`;
+
+  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+}
+/*
+function LoginExternal(externalData) {
+  return axios.post(`${Settings.apiServiceBaseUri}token`, externalData, { headers: { 'grant-type': 'external-token' } });
+} */
+
+function LoginExternal(externalData) {
+  let data = `grant_type=password&external_token=${externalData.externalAccessToken}&provider=${externalData.provider}`;
+  data = `${data}&client_id=${externalData.appId}`;
+
+  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+}
+
+export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal };

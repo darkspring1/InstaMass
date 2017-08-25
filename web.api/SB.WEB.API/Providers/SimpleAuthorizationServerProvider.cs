@@ -5,8 +5,10 @@ using SM.Common.Services;
 using SM.WEB.Application.Services;
 using StructureMap;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SM.WEB.API.Providers
@@ -17,11 +19,32 @@ namespace SM.WEB.API.Providers
         public SimpleAuthorizationServerProvider(IContainer container)
         {
             _container = container;
+
+       
+        }
+
+        public Task<bool> ValidateExternal(OAuthValidateClientAuthenticationContext context)
+        {
+            string provider = context.Parameters["providers"];
+            string externalAccessToken = context.Parameters["external_token"];
+
+            if (string.IsNullOrWhiteSpace(provider) )
+            {
+                context.SetError("invalid_provider", "Provider should be sent.");
+                return Task.FromResult(false);
+            }
+
+            if (string.IsNullOrWhiteSpace(externalAccessToken))
+            {
+                context.SetError("invalid_external_access_token", "external_token should be sent.");
+                return Task.FromResult(false);
+            }
+
+
         }
 
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-
             string clientId = string.Empty;
             string clientSecret = string.Empty;
             ServiceResult<Domain.Model.Application> aplicationServiceresult = null;
@@ -38,6 +61,11 @@ namespace SM.WEB.API.Providers
                 context.Validated();
                 //context.SetError("invalid_clientId", "ClientId should be sent.");
                 return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(context.Parameters["providers"]))
+            {
+
             }
 
             using (var nested = _container.GetNestedContainer())
@@ -80,9 +108,12 @@ namespace SM.WEB.API.Providers
             context.OwinContext.Set<string>("as:clientAllowedOrigin", aplicationServiceresult.Result.AllowedOrigin);
             context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", aplicationServiceresult.Result.RefreshTokenLifeTime.ToString());
 
+            
+            await base.ValidateClientAuthentication(context);
             context.Validated();
-            return;
         }
+
+   
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
@@ -161,6 +192,9 @@ namespace SM.WEB.API.Providers
 
             return Task.FromResult<object>(null);
         }
+
+       
+
 
     }
 }

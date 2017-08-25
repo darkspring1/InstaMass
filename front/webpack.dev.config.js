@@ -53,8 +53,8 @@ module.exports = {
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
   ],
-  devServer: {
-    hot: true
-  },
+  // devServer: {
+  //   hot: true
+  // },
   watch: true
 };

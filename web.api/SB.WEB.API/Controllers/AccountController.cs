@@ -181,7 +181,7 @@ namespace SM.WEB.API.Controllers
 
             var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, externalAccessToken);
 
-            if (externalUserInfoResult.IsFaulted)
+            if (externalUserInfoResult.IsFaultedOrNullResult)
             {
                 return BadRequest();
             }

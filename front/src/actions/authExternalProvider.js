@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import AuthSettings from './../settings';
 import ActionTypes from './../constants/actionTypes';
 import LocalStorageKeys from './../constants/localStorageKeys';
-import { RegisterExternal, ObtainLocalAccessToken } from './../api';
+import { RegisterExternal, ObtainLocalAccessToken, LoginExternal } from './../api';
 import LocalStorage from '../localStorage';
 
 
@@ -27,11 +27,16 @@ export default provider => (dispatch) => {
       });
     } else {
                 // Obtain access token and redirect to orders
+                /*
       ObtainLocalAccessToken(externalData).then((response) => {
         dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
         dispatch(push('/dashboard'));
       })
       .catch((err) => { console.log(err); });
+      */
+
+      debugger;
+      LoginExternal({ ...externalData, appId: AuthSettings.clientId });
     }
   };
 
