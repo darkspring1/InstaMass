@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using SM.Common.Services;
+using SM.Domain.Model;
 using SM.WEB.Application.Services;
 using StructureMap;
 using System.Collections.Generic;
@@ -19,27 +20,51 @@ namespace SM.WEB.API.Providers
         public SimpleAuthorizationServerProvider(IContainer container)
         {
             _container = container;
-
-       
         }
 
-        public Task<bool> ValidateExternal(OAuthValidateClientAuthenticationContext context)
+        public async Task<bool> ValidateExternal(OAuthValidateClientAuthenticationContext context)
         {
-            string provider = context.Parameters["providers"];
+            string provider = context.Parameters["provider"];
             string externalAccessToken = context.Parameters["external_token"];
 
             if (string.IsNullOrWhiteSpace(provider) )
             {
                 context.SetError("invalid_provider", "Provider should be sent.");
-                return Task.FromResult(false);
+                return false;
             }
 
             if (string.IsNullOrWhiteSpace(externalAccessToken))
             {
                 context.SetError("invalid_external_access_token", "external_token should be sent.");
-                return Task.FromResult(false);
+                return false;
             }
 
+            using (var nested  = _container.GetNestedContainer())
+            {
+                var userService = nested.GetInstance<UserService>();
+                var providerType = provider.ToExternalAuthProviderType();
+
+
+                var externalUserInfoResult = await userService.GetExternalUserInfoAsync(providerType, externalAccessToken);
+
+                if (externalUserInfoResult.IsFaultedOrNullResult)
+                {
+                    return false;
+                }
+
+                var findResult = await userService.FindAsync(providerType, externalUserInfoResult.Result.UserId);
+
+                if (findResult.IsFaultedOrNullResult)
+                {
+                    return false;
+                }
+
+                context.OwinContext.SetProvider(providerType);
+                context.OwinContext.SetExternalToken(externalAccessToken);
+                context.OwinContext.SetExternalUserId(externalUserInfoResult.Result.UserId);
+            }
+
+            return true;
 
         }
 
@@ -63,10 +88,6 @@ namespace SM.WEB.API.Providers
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(context.Parameters["providers"]))
-            {
-
-            }
 
             using (var nested = _container.GetNestedContainer())
             {
@@ -105,11 +126,16 @@ namespace SM.WEB.API.Providers
                 return;
             }
 
-            context.OwinContext.Set<string>("as:clientAllowedOrigin", aplicationServiceresult.Result.AllowedOrigin);
-            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", aplicationServiceresult.Result.RefreshTokenLifeTime.ToString());
-
-            
-            await base.ValidateClientAuthentication(context);
+            if (!string.IsNullOrWhiteSpace(context.Parameters["provider"]))
+            {
+                var externalValidate = await ValidateExternal(context);
+                if (!externalValidate)
+                {
+                    return;
+                }
+            }
+            context.OwinContext.Set("as:clientAllowedOrigin", aplicationServiceresult.Result.AllowedOrigin);
+            context.OwinContext.Set("as:clientRefreshTokenLifeTime", aplicationServiceresult.Result.RefreshTokenLifeTime.ToString());
             context.Validated();
         }
 
@@ -124,11 +150,20 @@ namespace SM.WEB.API.Providers
 
             //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
+            ServiceResult<User> userResult;
             using (var nested = _container.GetNestedContainer())
             {
                 var appService = nested.GetInstance<UserService>();
-                var userResult = await appService.FindAsync(context.UserName, context.Password);
-
+                userResult = await appService.FindAsync(context.UserName, context.Password);
+                if (context.OwinContext.IsExternalToken())
+                {
+                    userResult = await appService.FindAsync(context.OwinContext.GetProvider(), context.OwinContext.GetExternalUserId());
+                }
+                else
+                {
+                    userResult = await appService.FindAsync(context.UserName, context.Password);
+                }
+                
                 if (userResult.IsFaultedOrNullResult)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
@@ -136,10 +171,11 @@ namespace SM.WEB.API.Providers
                 }
             }
 
+            var email = userResult.Result.Email.ToString();
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Email, email));
             identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-            identity.AddClaim(new Claim("sub", context.UserName));
+            identity.AddClaim(new Claim("sub", email));
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
@@ -147,7 +183,7 @@ namespace SM.WEB.API.Providers
                         "as:client_id", (context.ClientId == null) ? string.Empty : context.ClientId
                     },
                     { 
-                        "userName", context.UserName
+                        "userName", email
                     }
                 });
 
