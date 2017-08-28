@@ -7,7 +7,7 @@ namespace SM.WEB.API.Controllers
     {
         [Authorize]
         [Route("")]
-        public IHttpActionResult Get()
+        public string Get()
         {
             //ClaimsPrincipal principal = Request.GetRequestContext().Principal as ClaimsPrincipal;
 
@@ -16,7 +16,7 @@ namespace SM.WEB.API.Controllers
 
             //var userName = principal.Claims.Where(c => c.Type == "sub").Single().Value;
 
-            return Ok();
+            return "hello";
         }
 
     }

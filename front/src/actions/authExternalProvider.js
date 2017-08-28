@@ -26,17 +26,11 @@ export default provider => (dispatch) => {
         debugger;
       });
     } else {
-                // Obtain access token and redirect to orders
-                /*
-      ObtainLocalAccessToken(externalData).then((response) => {
+      LoginExternal({ ...externalData, appId: AuthSettings.clientId }).then((response) => {
         dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
         dispatch(push('/dashboard'));
       })
       .catch((err) => { console.log(err); });
-      */
-
-      debugger;
-      LoginExternal({ ...externalData, appId: AuthSettings.clientId });
     }
   };
 

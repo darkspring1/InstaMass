@@ -12,6 +12,7 @@
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
+    "js-logging": "^0.1.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -44,7 +45,7 @@
     "http-proxy": "^1.16.2",
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
-    "webpack": "^2.3.3",
+    "webpack": "^3.5.5",
     "webpack-dev-server": "^2.4.4",
     "webpack-notifier": "^1.5.0"
   }

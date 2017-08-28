@@ -1,5 +1,4 @@
 ﻿using SM.Domain.Persistent.EF.State;
-using System;
 
 namespace SM.Domain.Model
 {
@@ -10,16 +9,14 @@ namespace SM.Domain.Model
         {
         }
 
-        public static RefreshToken Create(string refreshTokenId, string subject, string applicationId, double refreshTokenLifeTime)
+        public static RefreshToken Create(string refreshTokenId, string applicationId, string protectedTicket)
         {
             RefreshTokenState state = new RefreshTokenState
             {
                 //store hash for security
                 Id = GetHash(refreshTokenId),
-                Subject = subject,
                 ApplicationId = applicationId,
-                IssuedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(refreshTokenLifeTime)
+                ProtectedTicket = protectedTicket
             };
 
             return new RefreshToken(state);
@@ -30,16 +27,6 @@ namespace SM.Domain.Model
             return User.SHA(refreshTokenId);
         }
 
-        public string Id => State.Id;
-        public string Subject => State.Subject;
-        public string ApplicationId => State.ApplicationId;
-        public DateTime IssuedAt => State.IssuedAt;
-        public DateTime ExpiresAt => State.ExpiresAt;
         public string ProtectedTicket => State.ProtectedTicket;
-
-        public void SetProtectedTicket(string value)
-        {
-            State.ProtectedTicket = value;
-        }
     }
 }

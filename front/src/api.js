@@ -13,10 +13,21 @@ function ObtainLocalAccessToken(externalData) {
 
 function Orders() {
   const url = `${Settings.apiServiceBaseUri}api/orders`;
-  return axios.get(url);
+  const p = axios.get(url);
+  debugger;
+  const t = p.catch((err) => {
+    debugger;
+    console.log(err);
+  });
+  t.then((response) => {
+    debugger;
+    console.log(response);
+  });
+  return t;
 }
 
-function RefreshToken(data) {
+function RefreshToken(externalData) {
+  const data = `grant_type=refresh_token&refresh_token=${externalData.refresh_token}&client_id=${externalData.appId}`;
   return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 

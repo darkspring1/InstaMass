@@ -27,7 +27,7 @@ const store = createStore(reducers, composeWithDevTools(applyMiddleware(routerMW
 AddAuthInterceptor(store);
 const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
 if (authData) {
-  store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: { user: authData, isAuth: true } });
+  store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: authData });
 }
 
 ReactDOM.render(

@@ -1,43 +1,69 @@
 /* eslint no-param-reassign: 0 */
 import axios from 'axios';
+import { push } from 'react-router-redux';
 import LocalStorage from '../localStorage';
 import LocalStorageKeys from '../constants/localStorageKeys';
 import ActionTypes from '../constants/actionTypes';
 import Settings from '../settings';
 import { RefreshToken } from '../api';
+import logger from '../logger';
 
-const regex = /^.*\/api\/.*$/g;
+
+const regex = /^.*\/api\/.*$/;
 
 const authTokenInterceptor = (config) => {
-  if ((regex.exec(config.url)) !== null) {
+  const r = regex.exec(config.url);
+  if (r !== null) {
     // This is necessary to avoid infinite loops with zero-width matches
-    const authData = LocalStorage.get('authorizationData');
+    const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
     if (authData) {
-      config.headers.Authorization = `Bearer ${authData.token}`;
+      logger.debug(`add authorization header. url:${config.url}`);
+      config.headers.Authorization = `Bearer ${authData.access_token}`;
     }
+  } else {
+    logger.debug(`no auth request. url:${config.url}`);
   }
   return config;
 }
 ;
 
-const refreshTokenInterceptor = (store, config) => {
-  if (config.response.status === 401) {
-    debugger;
+let refreshTokenPromise = null;
 
-    const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
-
-    if (authData) {
-      if (authData.useRefreshTokens) {
-        const data = `grant_type=refresh_token&refresh_token=${authData.refreshToken}&client_id=${Settings.clientId}`;
-        LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
-        RefreshToken(data).then((response) => {
-          debugger;
-          store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
+const refreshTokenInterceptor = (store, error) => {
+  if (error.response.status === 401) {
+    if (refreshTokenPromise) {
+      logger.debug(`wait token refresh. url: ${error.config.url}`);
+      refreshTokenPromise.then(() => {
+        logger.debug(`repeat ${error.config.url}`);
+        axios({
+          method: error.config.method,
+          url: error.config.url,
+          data: error.config.data
         });
+      });
+    } else {
+      const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
+      if (authData) {
+        if (authData.refresh_token) {
+          LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
+          authData.appId = Settings.clientId;
+          logger.debug('start token refresh');
+          refreshTokenPromise = RefreshToken(authData).then((response) => {
+            store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
+            refreshTokenPromise = null;
+            logger.debug('token was refreshed');
+          })
+          .catch((err) => {
+            debugger;
+            console.log(err);
+            logger.error(err);
+            store.dispatch(push('/auth'));
+          });
+        }
       }
     }
   }
-  return config;
+  return error;
 }
 ;
 

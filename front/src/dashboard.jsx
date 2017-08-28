@@ -3,6 +3,9 @@ import { Orders } from './api';
 
 export default () => {
   Orders();
+  Orders();
+  Orders();
+
   return (
     <div className="content-top clearfix">
       <h1 className="al-title ng-binding">Dashboard</h1>

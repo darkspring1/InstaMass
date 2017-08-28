@@ -5,6 +5,7 @@ using SM.Common.Services;
 using SM.Domain.Model;
 using SM.WEB.Application.Services;
 using StructureMap;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -173,7 +174,7 @@ namespace SM.WEB.API.Providers
 
             var email = userResult.Result.Email.ToString();
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim(ClaimTypes.Email, email));
+            identity.AddClaim(new Claim(ClaimTypes.Name, email));
             identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
             identity.AddClaim(new Claim("sub", email));
 
@@ -183,7 +184,7 @@ namespace SM.WEB.API.Providers
                         "as:client_id", (context.ClientId == null) ? string.Empty : context.ClientId
                     },
                     { 
-                        "userName", email
+                        "email", email
                     }
                 });
 

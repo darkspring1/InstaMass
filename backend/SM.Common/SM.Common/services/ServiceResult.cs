@@ -39,7 +39,7 @@ namespace SM.Common.Services
 
         public bool IsFaultedOrNullResult => IsFaulted || Result == null;
 
-        public bool IsSuccessAndNotNullResult => IsSuccess || Result != null;
+        public bool IsSuccessAndNotNullResult => IsSuccess && Result != null;
 
         public static ServiceResult<T> Success(T result)
         {

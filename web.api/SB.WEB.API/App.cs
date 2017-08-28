@@ -97,10 +97,9 @@ namespace SM.WEB.API
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
-
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(10),
                 Provider = new SimpleAuthorizationServerProvider(Container),
                 RefreshTokenProvider = new SimpleRefreshTokenProvider(Container)
             };

@@ -56,5 +56,9 @@ module.exports = {
   // devServer: {
   //   hot: true
   // },
-  watch: true
+  watch: true,
+
+  node: {
+    fs: "empty"
+ }
 };
