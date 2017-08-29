@@ -1,4 +1,5 @@
 /* eslint no-param-reassign: 0 */
+/* eslint no-unused-vars: 0 */
 import axios from 'axios';
 import { push } from 'react-router-redux';
 import LocalStorage from '../localStorage';
@@ -31,39 +32,41 @@ let refreshTokenPromise = null;
 
 const refreshTokenInterceptor = (store, error) => {
   if (error.response.status === 401) {
-    if (refreshTokenPromise) {
-      logger.debug(`wait token refresh. url: ${error.config.url}`);
-      refreshTokenPromise.then(() => {
-        logger.debug(`repeat ${error.config.url}`);
-        axios({
-          method: error.config.method,
-          url: error.config.url,
-          data: error.config.data
+    const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
+    if (!refreshTokenPromise && authData && authData.refresh_token) {
+      LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
+      authData.appId = Settings.clientId;
+      logger.debug('start token refresh');
+      refreshTokenPromise = RefreshToken(authData)
+        .then((response) => {
+          store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
+          refreshTokenPromise = null;
+          logger.debug('token was refreshed');
+        })
+        .catch((err) => {
+          debugger;
+          logger.error(err);
+          store.dispatch(push('/auth'));
         });
+    }
+
+
+    if (refreshTokenPromise) {
+      // wait refreshTokenPromise and repeat request
+      logger.debug(`wait token refresh. url: ${error.config.url}`);
+      return new Promise((resolve, reject) => {
+        refreshTokenPromise.then(() => {
+          logger.debug(`repeat ${error.config.url}`);
+          axios({
+            method: error.config.method,
+            url: error.config.url,
+            data: error.config.data
+          }).then(resolve, reject);
+        }, reject);
       });
-    } else {
-      const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
-      if (authData) {
-        if (authData.refresh_token) {
-          LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
-          authData.appId = Settings.clientId;
-          logger.debug('start token refresh');
-          refreshTokenPromise = RefreshToken(authData).then((response) => {
-            store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
-            refreshTokenPromise = null;
-            logger.debug('token was refreshed');
-          })
-          .catch((err) => {
-            debugger;
-            console.log(err);
-            logger.error(err);
-            store.dispatch(push('/auth'));
-          });
-        }
-      }
     }
   }
-  return error;
+  return Promise.reject(error);
 }
 ;
 
@@ -78,8 +81,8 @@ function addInterceptor(interceptor, isResponse, isErrorInterceptor) {
   }
 }
 
-
 export default function add(store) {
   addInterceptor(authTokenInterceptor, false);
-  addInterceptor((config) => { refreshTokenInterceptor(store, config); }, true, true);
+  addInterceptor(config => refreshTokenInterceptor(store, config), true, true);
 }
+

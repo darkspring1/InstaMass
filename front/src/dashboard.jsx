@@ -3,8 +3,6 @@ import { Orders } from './api';
 
 export default () => {
   Orders();
-  Orders();
-  Orders();
 
   return (
     <div className="content-top clearfix">
