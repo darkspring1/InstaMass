@@ -1,0 +1,32 @@
+﻿using System;
+using System.Threading.Tasks;
+using SM.Common.Cache;
+using SM.Domain.Model;
+using SM.Domain.Persistent.EF.State;
+using System.Linq;
+using System.Data.Entity;
+
+namespace SM.Domain.Persistent.EF
+{
+    class AccountRepository : BaseRepository<Account, AccountState>, IAccountRepository
+    {
+        public AccountRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        {
+        }
+
+        public void CreateNewAccount(Account account)
+        {
+            Set.Add(account.State);
+        }
+
+        public Task<Account[]> FindByUserAsync(Guid userId)
+        {
+            return Set.Entities.Where(a => a.UserId == userId).Select(s => Create(s)).ToArrayAsync();
+        }
+
+        protected override Account Create(AccountState state)
+        {
+            return new Account(state);
+        }
+    }
+}

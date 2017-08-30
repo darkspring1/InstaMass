@@ -141,9 +141,9 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="AuthContext.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CallController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\RefreshToken.cs" />
@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ExternalLoginModels.cs" />
+    <Compile Include="Models\NewAccountModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="NLogExceptionLogger.cs" />
     <Compile Include="Program.cs" />
