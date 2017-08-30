@@ -2,6 +2,19 @@
 import axios from 'axios';
 import Settings from './settings';
 
+/*
+function AddOrGetExisting(key, promiseFunc) {
+  let result = AddOrGetExisting[key];
+  if (result) {
+    result = promiseFunc().finally(() => {
+      delete AddOrGetExisting[key];
+    });
+    AddOrGetExisting[key] = result;
+  }
+  return result;
+}
+*/
+
 function RegisterExternal(registerExternalData) {
   return axios.post(`${Settings.apiServiceBaseUri}api/account/registerexternal`, registerExternalData);
 }
@@ -13,17 +26,7 @@ function ObtainLocalAccessToken(externalData) {
 
 function Orders() {
   const url = `${Settings.apiServiceBaseUri}api/orders`;
-  const p = axios.get(url);
-  debugger;
-  const t = p.catch((err) => {
-    debugger;
-    console.log(err);
-  });
-  t.then((response) => {
-    debugger;
-    console.log(response);
-  });
-  return t;
+  return axios.get(url);
 }
 
 function RefreshToken(externalData) {
