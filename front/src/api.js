@@ -16,11 +16,11 @@ function AddOrGetExisting(key, promiseFunc) {
 */
 
 function RegisterExternal(registerExternalData) {
-  return axios.post(`${Settings.apiServiceBaseUri}api/account/registerexternal`, registerExternalData);
+  return axios.post(`${Settings.apiServiceBaseUri}api/user/registerexternal`, registerExternalData);
 }
 
 function ObtainLocalAccessToken(externalData) {
-  const url = `${Settings.apiServiceBaseUri}api/account/ObtainLocalAccessToken`;
+  const url = `${Settings.apiServiceBaseUri}api/user/ObtainLocalAccessToken`;
   return axios.get(url, { params: externalData });
 }
 
