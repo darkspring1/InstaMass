@@ -3,8 +3,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AuthExternalProvider from './actions/authExternalProvider';
-import Login from './actions/login';
+import AuthExternalProvider from '../actions/authExternalProvider';
+import Login from '../actions/login';
 
 class Auth extends React.Component {
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Layout from './layout';
-import Auth from './auth';
+import Layout from './components/layout';
+import Auth from './components/auth';
 
 
 function App(props) {
@@ -15,6 +15,7 @@ function App(props) {
       <Switch>
         <Route exact path="/auth" component={Auth} />
         <Route path="/" component={Layout} />
+
       </Switch>
     </div>
   );
@@ -23,7 +24,12 @@ function App(props) {
 
 const app = connect(
   state => ({ state }), // map state to props
-  // dispatch => ({})
+  // dispatch => ({
+  //   goToNewAccount() {
+  //     dispatch(push('account'));
+  //   }
+
+  // })
 )(App);
 
 export default withRouter(app);

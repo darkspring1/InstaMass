@@ -1,9 +1,12 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Dashboard from './dashboard';
+import AccountEditor from './accountEditor';
 
-export default function () {
+function Layout(props) {
   return (
     <main>
       <div className="body-bg" />
@@ -48,10 +51,24 @@ export default function () {
 
       <div className="al-main">
         <div className="al-content">
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/dashboard" component={() => <Dashboard goToNewAccount={props.goToNewAccount} />} />
+          <Route path="/account" component={AccountEditor} />
         </div>
       </div>
 
     </main>
   );
 }
+
+
+const layout = connect(
+  state => ({ state }), // map state to props
+  dispatch => ({
+    goToNewAccount() {
+      dispatch(push('account'));
+    }
+
+  })
+)(Layout);
+
+export default layout;

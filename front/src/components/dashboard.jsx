@@ -2,7 +2,8 @@
 
 import React from 'react';
 // import { Orders } from './api';
-import AccountPanel from './components/accountPanel';
+import AccountPanel from './accountPanel';
+import ContentTop from './contentTop';
 
 export default class Dashboard extends React.Component {
 
@@ -15,6 +16,7 @@ export default class Dashboard extends React.Component {
 
   onAddAccount(e) {
     debugger;
+    this.props.goToNewAccount();
     console.log(e + this);
   }
 
@@ -23,15 +25,8 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <div className="content-top clearfix">
-          <h1 className="al-title">Dashboard</h1>
 
-          <ul className="breadcrumb al-breadcrumb">
-            <li>
-              <a href="#/dashboard">Home</a></li>
-            <li>Dashboard</li>
-          </ul>
-        </div>
+        <ContentTop title="Dashboard" />
 
         <div className="row">
 
