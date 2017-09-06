@@ -7,7 +7,15 @@ import Auth from './components/auth';
 
 
 function App(props) {
-  const redirectDefault = props.state.auth.isAuth ? '/dashboard' : '/auth';
+  let redirectDefault;
+
+  if (props.state.auth.isAuth) {
+    if (location.pathname === '/') {
+      redirectDefault = '/dashboard';
+    }
+  } else {
+    redirectDefault = '/auth';
+  }
 
   return (
     <div>

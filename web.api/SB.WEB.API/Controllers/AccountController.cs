@@ -28,7 +28,7 @@ namespace SM.WEB.API.Controllers
 
         [HttpPost]
         [Route(Routes.ApiAccount)]
-        public Account[] CreateAccount(NewAccountModel model)
+        public Account CreateAccount(NewAccountModel model)
         {
             //_accountServiceServiceFunc().FindByUser();
             return null;

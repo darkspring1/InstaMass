@@ -53,4 +53,9 @@ function LoginExternal(externalData) {
   return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 
-export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal };
+
+function AddNewAccount(newAccount) {
+  return axios.post(`${Settings.apiServiceBaseUri}api/account`, newAccount);
+}
+
+export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };

@@ -48,7 +48,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json']
   },
   plugins: [
-    new WebpackNotifierPlugin(),
+    // new WebpackNotifierPlugin(),
     new webpack.DefinePlugin({ NODE_ENV: JSON.stringify(NODE_ENV) }),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
