@@ -3,6 +3,7 @@ using SM.Domain.Model;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -26,7 +27,6 @@ namespace SM.WEB.API.Controllers
             return null;
         }
 
-
         [HttpPost]
         [Route(Routes.ApiAccount)]
         public async Task<IHttpActionResult> CreateAccount(NewAccountModel model)
@@ -35,6 +35,16 @@ namespace SM.WEB.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            //todo: проверять, что логин и пароль верные
+            //todo: проверять что пользователя с таким instaloginom нет в нашей базе
+            //var existResult = await _accountServiceServiceFunc().IsExist(model.Login);
+
+            //if (existResult.Result)
+            //{
+            //    return BadRequest("AccountAlreadyExists");
+            //}
+
 
             var svResult = await _accountServiceServiceFunc().CreateAync(UserId, model.Login, model.Password);
 

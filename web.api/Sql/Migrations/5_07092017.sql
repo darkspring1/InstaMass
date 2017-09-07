@@ -8,7 +8,7 @@ CREATE TABLE public."Accounts"
     "Login" character varying(100) COLLATE pg_catalog."default" NOT NULL,
     "CreatedAt" timestamp without time zone NOT NULL,
 	"UserId" UUID NOT NULL,
-    CONSTRAINT "Accounts_pkey" PRIMARY KEY ("Login", "UserId"),
+    CONSTRAINT "Accounts_pkey" PRIMARY KEY ("Login"),
 	 CONSTRAINT "FK_Accounts_Users.Id" FOREIGN KEY ("UserId")
 	      REFERENCES public."Users" ("Id") MATCH SIMPLE
 	      ON UPDATE NO ACTION ON DELETE CASCADE

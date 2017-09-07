@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SM.WEB.Application.Services
 {
+
     public class AccountService : BaseService
     {
         private IUnitOfWork _unitOfWork;
@@ -24,6 +25,11 @@ namespace SM.WEB.Application.Services
                 await _unitOfWork.CompleteAsync();
                 return newAccount;
             });  
+        }
+
+        public Task<ServiceResult<bool>> IsExist(string instagramLogin)
+        {
+            return RunAsync(() => _unitOfWork.AccountRepository.IsExistAsync(instagramLogin));
         }
 
         public Task<ServiceResult<Account[]>> FindByUser(Guid userId)

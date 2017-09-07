@@ -9,5 +9,7 @@ namespace SM.Domain.Persistent
         void CreateNewAccount(Account account);
 
         Task<Account[]> FindByUserAsync(Guid userId);
+
+        Task<bool> IsExistAsync(string login);
     }
 }

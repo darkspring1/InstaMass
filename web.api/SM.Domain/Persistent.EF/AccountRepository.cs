@@ -24,6 +24,17 @@ namespace SM.Domain.Persistent.EF
             return Set.Entities.Where(a => a.UserId == userId).Select(s => Create(s)).ToArrayAsync();
         }
 
+        Task<AccountState> FindByLogin(string login)
+        {
+            return FirstOrDefaultAsync(Set.Entities.Where(a => a.Login == login));
+        }
+
+        public async Task<bool> IsExistAsync(string login)
+        {
+            var state = await FindByLogin(login);
+            return state != null;
+        }
+
         protected override Account Create(AccountState state)
         {
             return new Account(state);
