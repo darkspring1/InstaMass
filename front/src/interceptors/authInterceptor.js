@@ -60,7 +60,7 @@ const refreshTokenInterceptor = (store, error) => {
           axios({
             method: error.config.method,
             url: error.config.url,
-            data: error.config.data
+            data: JSON.parse(error.config.data)
           }).then(resolve, reject);
         }, reject);
       });

@@ -115,7 +115,7 @@ namespace SM.WEB.API.Controllers
             return Redirect(redirectUri);
 
         }
-
+        /*
         // POST api/Account/RegisterExternal
         [HttpPost]
         [AllowAnonymous]
@@ -161,6 +161,7 @@ namespace SM.WEB.API.Controllers
 
             return Ok(accessTokenResponse);
         }
+        */
         /*
         [AllowAnonymous]
         [HttpGet]
@@ -362,6 +363,8 @@ namespace SM.WEB.API.Controllers
             return parsedToken;
         }
         */
+
+            /*
         private JObject GenerateLocalAccessTokenResponse(string userName)
         {
             var tokenExpiration = TimeSpan.FromSeconds(10);
@@ -392,6 +395,7 @@ namespace SM.WEB.API.Controllers
 
             return tokenResponse;
         }
+        */
 
         private class ExternalLoginData
         {

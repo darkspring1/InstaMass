@@ -9,8 +9,9 @@ import { connect } from 'react-redux';
 
 import ContentTop from './contentTop';
 import Button from '../controls/button';
+import ActionTypes from '../constants/actionTypes';
 
-import AddNewAccount from '../actions/addNewAccount';
+// import AddNewAccount from '../actions/addNewAccount';
 
 class AccountEditor extends React.Component {
 
@@ -31,7 +32,6 @@ class AccountEditor extends React.Component {
   }
 
   passwordHandleChange(event) {
-    debugger;
     this.setState({ password: event.target.value });
   }
 
@@ -57,9 +57,9 @@ class AccountEditor extends React.Component {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputFirstName"
                         placeholder=""
-                        value="Anastasiya"
+                        onChange={this.loginHandleChange}
+                        value={this.state.login}
                       />
                     </div>
                   </div>
@@ -69,7 +69,6 @@ class AccountEditor extends React.Component {
                       <input
                         type="password"
                         className="form-control"
-                        id="inputLastName"
                         placeholder=""
                         onChange={this.passwordHandleChange}
                         value={this.state.password}
@@ -96,7 +95,7 @@ const accountEditor = connect(
   state => ({ state }), // map state to props
   dispatch => ({
     onAddNewAccount(newAccount) {
-      dispatch(AddNewAccount(newAccount));
+      dispatch({ type: ActionTypes.ADD_NEW_ACCOUNT_REQUESTED, payload: newAccount });
     }
 
   })

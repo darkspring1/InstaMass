@@ -1,7 +1,6 @@
 /* eslint jsx-a11y/label-has-for: 0 */
 
 import React from 'react';
-// import { Orders } from './api';
 import AccountPanel from './accountPanel';
 import ContentTop from './contentTop';
 
@@ -9,18 +8,14 @@ export default class Dashboard extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.onAddAccount = this.onAddAccount.bind(this);
   }
 
 
   onAddAccount(e) {
-    debugger;
     this.props.goToNewAccount();
     console.log(e + this);
   }
-
-  // Orders();
 
   render() {
     return (

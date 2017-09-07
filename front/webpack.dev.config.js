@@ -10,6 +10,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     main: [
+      'babel-polyfill',
       './src/index.js',
     ],
     authComplete : [

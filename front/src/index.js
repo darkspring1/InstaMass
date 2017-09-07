@@ -8,6 +8,9 @@ import { ConnectedRouter, routerReducer, routerMiddleware/* , push */ } from 're
 import { Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
+
 import App from './app';
 import * as Reducers from './reducers';
 import ActionTypes from './constants/actionTypes';
@@ -15,15 +18,20 @@ import LocalStorageKeys from './constants/localStorageKeys';
 import LocalStorage from './localStorage';
 import AddAuthInterceptor from './interceptors/authInterceptor';
 
+
 const history = createHistory();
 const routerMW = routerMiddleware(history);
+const sagaMiddleware = createSagaMiddleware();
 
 const reducers = combineReducers({
   ...Reducers,
   router: routerReducer
 });
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(routerMW, thunk)));
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(routerMW, thunk, sagaMiddleware)));
+
+sagaMiddleware.run(rootSaga);
+
 AddAuthInterceptor(store);
 const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
 if (authData) {

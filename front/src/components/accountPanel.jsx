@@ -2,7 +2,7 @@ import React from 'react';
 
 export default () => (<div
   className="panel popular-app"
-  style={{ 'background-size': '1913px 1076px', 'background-position': '0px -197px' }}
+  style={{ backgroundSize: '1913px 1076px', backgroundPosition: '0px -197px' }}
 >
   <div className="panel-body">
     <div className="popular-app-img-container">

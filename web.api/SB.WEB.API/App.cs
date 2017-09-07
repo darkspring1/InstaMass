@@ -18,6 +18,7 @@ using SM.WEB.API.Providers;
 using Microsoft.Owin.Security.Facebook;
 using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin.Security.Google;
+using FluentValidation.WebApi;
 
 namespace SM.WEB.API
 {
@@ -35,6 +36,8 @@ namespace SM.WEB.API
             //_logger.Debug("Start configuration");
 
             var config = new HttpConfiguration();
+
+            FluentValidationModelValidatorProvider.Configure(config);
 
             EnableCrossSiteRequests(app, config);
             

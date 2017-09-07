@@ -28,6 +28,7 @@ namespace SM.Domain.Persistent.EF
             modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
 
             modelBuilder.Entity<RefreshTokenState>().ToTable("RefreshTokens", schema);
+            modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

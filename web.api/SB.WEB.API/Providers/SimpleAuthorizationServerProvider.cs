@@ -174,9 +174,10 @@ namespace SM.WEB.API.Providers
 
             var email = userResult.Result.Email.ToString();
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim(ClaimTypes.Name, email));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-            identity.AddClaim(new Claim("sub", email));
+            identity.AddClaim(new Claim(SMClaimTypes.UserId, userResult.Result.Id.ToString()));
+            //identity.AddClaim(new Claim(ClaimTypes.Name, email));
+            //identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            //identity.AddClaim(new Claim("sub", email));
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {

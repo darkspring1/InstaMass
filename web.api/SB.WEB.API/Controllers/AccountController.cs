@@ -3,6 +3,7 @@ using SM.Domain.Model;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace SM.WEB.API.Controllers
@@ -28,10 +29,16 @@ namespace SM.WEB.API.Controllers
 
         [HttpPost]
         [Route(Routes.ApiAccount)]
-        public Account CreateAccount(NewAccountModel model)
+        public async Task<IHttpActionResult> CreateAccount(NewAccountModel model)
         {
-            //_accountServiceServiceFunc().FindByUser();
-            return null;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var svResult = await _accountServiceServiceFunc().CreateAync(UserId, model.Login, model.Password);
+
+            return ActionResult(svResult);
         }
     }
     

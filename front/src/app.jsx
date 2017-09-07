@@ -8,20 +8,23 @@ import Auth from './components/auth';
 
 function App(props) {
   let redirectDefault;
-
+  const authPath = '/auth';
   if (props.state.auth.isAuth) {
     if (location.pathname === '/') {
       redirectDefault = '/dashboard';
     }
-  } else {
-    redirectDefault = '/auth';
+  } else if (location.pathname !== authPath) { redirectDefault = authPath; }
+
+  let redirect = null;
+  if (redirectDefault) {
+    redirect = <Redirect from="/" exact to={redirectDefault} />;
   }
 
   return (
     <div>
-      <Redirect from="/" exact to={redirectDefault} />
+      {redirect}
       <Switch>
-        <Route exact path="/auth" component={Auth} />
+        <Route exact path={authPath} component={Auth} />
         <Route path="/" component={Layout} />
 
       </Switch>
