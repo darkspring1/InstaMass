@@ -2990,7 +2990,7 @@ a {
             transform: rotate(360deg);
     /* Firefox 16+, IE 10+, Opera */ } }
 
-#preloader {
+.preloader {
   position: fixed;
   top: 0;
   left: 0;
@@ -3000,7 +3000,7 @@ a {
   background: #000000;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden; }
-  #preloader > div {
+  .preloader > div {
     display: block;
     position: relative;
     left: 50%;
@@ -3019,7 +3019,7 @@ a {
     -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
     /* Chrome, Firefox 16+, IE 10+, Opera */ }
-    #preloader > div:before {
+    .preloader > div:before {
       content: "";
       position: absolute;
       top: 5px;
@@ -3033,7 +3033,7 @@ a {
       /* Chrome, Opera 15+, Safari 5+ */
       animation: spin 3s linear infinite;
       /* Chrome, Firefox 16+, IE 10+, Opera */ }
-    #preloader > div:after {
+    .preloader > div:after {
       content: "";
       position: absolute;
       top: 15px;
