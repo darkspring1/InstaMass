@@ -1,0 +1,23 @@
+.top-preloader {
+    /* border-style: dashed; */
+    /* border-color: red; */
+    position: fixed;
+    width: calc(100% - 180px);
+    height: 100%;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    text-align: center;
+}
+.top-preloader .bg-info {
+    background: rgba(45, 172, 209, 1)
+}
+
+.top-preloader .alert {
+    border-radius: 0;
+}
+
+.top-preloader .alert h4 {
+    margin: 0;
+}

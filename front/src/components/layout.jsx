@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Dashboard from './dashboard';
 import AccountEditor from './accountEditor';
-import Preloader from './preloader';
+import TopPreloader from './topPreloaderContainer';
 
 function Layout(props) {
   return (
@@ -51,7 +51,7 @@ function Layout(props) {
       </div>
 
       <div className="al-main">
-        <Preloader />
+        <TopPreloader />
         <div className="al-content">
           <Route path="/dashboard" component={() => <Dashboard goToNewAccount={props.goToNewAccount} />} />
           <Route path="/account" component={AccountEditor} />

@@ -1,15 +1,19 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 
 import ActionTypes from '../constants/actionTypes';
+
+import * as Actions from '../actions';
 import { AddNewAccount } from './../api';
 
 function* fetch(action) {
   try {
-    const user = yield AddNewAccount(action.payload);
-    yield put({ type: ActionTypes.ADD_NEW_ACCOUNT_SUCCEEDED, payload: user });
+    yield put(Actions.RequestStarted('top'));
+    const newAccount = yield AddNewAccount(action.payload);
+    yield put(Actions.AddNewAccountSucceeded(newAccount));
   } catch (e) {
-    yield put({ type: ActionTypes.ADD_NEW_ACCOUNT_FAILED, payload: e });
+    yield put(Actions.AddNewAccountFailed(e));
   }
+  yield put(Actions.RequestFinished('top'));
 }
 
 export default function* AddNewAccountSaga() {
