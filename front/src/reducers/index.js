@@ -1,5 +1,5 @@
 import auth from './auth';
-import test from './test';
+import account from './account';
 
 export { auth };
-export { test };
+export { account };

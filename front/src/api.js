@@ -2,18 +2,17 @@
 import axios from 'axios';
 import Settings from './settings';
 
-/*
-function AddOrGetExisting(key, promiseFunc) {
-  let result = AddOrGetExisting[key];
-  if (result) {
-    result = promiseFunc().finally(() => {
-      delete AddOrGetExisting[key];
-    });
-    AddOrGetExisting[key] = result;
-  }
-  return result;
+function responseWrap(apiPromise) {
+  return apiPromise.catch((e) => {
+    const r = e.response;
+    const err = {
+      status: r.status,
+      statusText: r.statusText
+    };
+    Object.assign(err, r.data);
+    throw err;
+  });
 }
-*/
 
 function RegisterExternal(registerExternalData) {
   return axios.post(`${Settings.apiServiceBaseUri}api/user/registerexternal`, registerExternalData);
@@ -55,7 +54,7 @@ function LoginExternal(externalData) {
 
 
 function AddNewAccount(newAccount) {
-  return axios.post(`${Settings.apiServiceBaseUri}api/account`, newAccount);
+  return responseWrap(axios.post(`${Settings.apiServiceBaseUri}api/account`, newAccount));
 }
 
 export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };

@@ -4,6 +4,7 @@ using System;
 using System.Web.Http;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace SM.WEB.API.Controllers
 {
@@ -54,6 +55,12 @@ namespace SM.WEB.API.Controllers
             }
 
             return Ok();
+        }
+
+
+        protected IHttpActionResult ApiErrorCode(ApiErrorCode code, string description)
+        {
+            return Content<object>(HttpStatusCode.BadRequest, new { ErrorCode = (int)code, ErrorDescription = description });
         }
     }
 }

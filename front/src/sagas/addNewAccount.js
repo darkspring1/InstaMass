@@ -6,10 +6,9 @@ import { AddNewAccount } from './../api';
 function* fetch(action) {
   try {
     const user = yield AddNewAccount(action.payload);
-    // debugger;
     yield put({ type: ActionTypes.ADD_NEW_ACCOUNT_SUCCEEDED, payload: user });
   } catch (e) {
-    yield put({ type: ActionTypes.ADD_NEW_ACCOUNT_FAILED, payload: e.message });
+    yield put({ type: ActionTypes.ADD_NEW_ACCOUNT_FAILED, payload: e });
   }
 }
 

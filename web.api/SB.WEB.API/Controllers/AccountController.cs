@@ -21,10 +21,9 @@ namespace SM.WEB.API.Controllers
 
         [HttpGet]
         [Route(Routes.ApiAccounts)]
-        public Account[] GetAccounts()
+        public Task<IHttpActionResult> GetAccounts()
         {
-            //_accountServiceServiceFunc().FindByUser();
-            return null;
+            return ActionResultAsync(_accountServiceServiceFunc().FindByUser(UserId));
         }
 
         [HttpPost]
@@ -36,19 +35,19 @@ namespace SM.WEB.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            //todo: проверять, что логин и пароль верные
-            //todo: проверять что пользователя с таким instaloginom нет в нашей базе
-            //var existResult = await _accountServiceServiceFunc().IsExist(model.Login);
-
-            //if (existResult.Result)
-            //{
-            //    return BadRequest("AccountAlreadyExists");
-            //}
-
-
             var svResult = await _accountServiceServiceFunc().CreateAync(UserId, model.Login, model.Password);
 
-            return ActionResult(svResult);
+            if (svResult.IsSuccessAndNotNullResult)
+            {
+                return Ok(svResult.Result);
+            }
+
+            if (svResult.ErrorCode == AccountService.AccountAlreadyRegistred)
+            {
+                return ApiErrorCode(API.ApiErrorCode.AccountAlreadyRegistred, "Account was already registred");
+            }
+
+            return BadRequest();
         }
     }
     

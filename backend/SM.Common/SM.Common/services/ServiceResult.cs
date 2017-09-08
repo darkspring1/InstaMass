@@ -15,6 +15,10 @@ namespace SM.Common.Services
 
         public Exception Exception { get; protected set; }
 
+        public int ErrorCode { get; protected set; }
+
+        public string ErrorDescription { get; protected set; }
+
         public static ServiceResult Success()
         {
             return new ServiceResult(true);
@@ -23,6 +27,11 @@ namespace SM.Common.Services
         public static ServiceResult Error(Exception e)
         {
             return new ServiceResult(false) { Exception = e };
+        }
+
+        public static ServiceResult Error(int errorCode, string errorDescription)
+        {
+            return new ServiceResult(false) { ErrorCode = errorCode, ErrorDescription = errorDescription };
         }
     }
 
@@ -49,6 +58,11 @@ namespace SM.Common.Services
         public static new ServiceResult<T> Error(Exception e)
         {
             return new ServiceResult<T>() { Exception = e };
+        }
+
+        public static new ServiceResult<T> Error(int errorCode, string errorDescription)
+        {
+            return new ServiceResult<T>() { ErrorCode = errorCode, ErrorDescription = errorDescription };
         }
     }
 }
