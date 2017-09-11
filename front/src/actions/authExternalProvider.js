@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import AuthSettings from './../settings';
 import ActionTypes from './../constants/actionTypes';
 import LocalStorageKeys from './../constants/localStorageKeys';
-import { RegisterExternal, ObtainLocalAccessToken, LoginExternal } from './../api';
+import { RegisterExternal, ObtainLocalAccessToken, LoginExternal } from '../api/';
 import LocalStorage from '../localStorage';
 
 

@@ -11,7 +11,7 @@ function App(props) {
   const authPath = '/auth';
   if (props.state.auth.isAuth) {
     if (location.pathname === '/') {
-      redirectDefault = '/dashboard';
+      redirectDefault = '/accounts';
     }
   } else if (location.pathname !== authPath) { redirectDefault = authPath; }
 

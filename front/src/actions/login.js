@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import Settings from './../settings';
 import ActionTypes from './../constants/actionTypes';
 import LocalStorageKeys from './../constants/localStorageKeys';
-import { Login } from './../api';
+import { Login } from '../api/';
 import LocalStorage from '../localStorage';
 
 function action(loginData, dispatch) {

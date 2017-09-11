@@ -1,9 +1,10 @@
 /* eslint max-len: 0 */
 import axios from 'axios';
-import Settings from './settings';
+import Settings from '../settings';
 
 function responseWrap(apiPromise) {
-  return apiPromise.catch((e) => {
+  return apiPromise.then(response => response.data)
+  .catch((e) => {
     const r = e.response;
     const err = {
       status: r.status,
@@ -57,4 +58,8 @@ function AddNewAccount(newAccount) {
   return responseWrap(axios.post(`${Settings.apiServiceBaseUri}api/account`, newAccount));
 }
 
-export { RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };
+function GetAccounts() {
+  return responseWrap(axios.get(`${Settings.apiServiceBaseUri}api/accounts`));
+}
+
+export { GetAccounts, RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };
