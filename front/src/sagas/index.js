@@ -1,7 +1,9 @@
-import addNewAccount from './addNewAccount';
+import AddNewAccount from './addNewAccount';
+import GetAccounts from './getAccounts';
 
 export default function* rootSaga() {
   yield [
-    addNewAccount()
+    AddNewAccount(),
+    GetAccounts()
   ];
 }

@@ -1,10 +1,15 @@
 /* eslint jsx-a11y/label-has-for: 0 */
 
+
 import React from 'react';
+import { connect } from 'react-redux';
+
 import AccountPanel from './accountPanel';
 import ContentTop from './contentTop';
+import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
 
-export default class Dashboard extends React.Component {
+
+class AccountList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,16 +17,27 @@ export default class Dashboard extends React.Component {
   }
 
 
-  onAddAccount(e) {
+  onAddAccount(/* e */) {
     this.props.goToNewAccount();
-    console.log(e + this);
+    // console.log(e + this);
   }
 
   render() {
+    const props = this.props;
+
+    if (!props.state) {
+      props.onAccountsRequested();
+      return null;
+    }
+
+    if (props.state === 'loading') {
+      return null;
+    }
+
     return (
       <div>
 
-        <ContentTop title="Dashboard" />
+        <ContentTop title="Аккаунты" />
 
         <div className="row">
 
@@ -64,3 +80,23 @@ export default class Dashboard extends React.Component {
   }
 
 }
+
+function stateToProps(state) {
+  return state.account.accounts || {};
+}
+
+
+const accountList = connect(
+  stateToProps,
+  dispatch => ({
+    // onAddNewAccount(newAccount) {
+    //   dispatch(AddNewAccountRequested(newAccount));
+    // },
+    onAccountsRequested() {
+      dispatch(AccountsRequested());
+    }
+  })
+)(AccountList);
+
+export default accountList;
+

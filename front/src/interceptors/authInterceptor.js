@@ -6,7 +6,7 @@ import LocalStorage from '../localStorage';
 import LocalStorageKeys from '../constants/localStorageKeys';
 import ActionTypes from '../constants/actionTypes';
 import Settings from '../settings';
-import { RefreshToken } from '../api';
+import { RefreshToken } from '../api/';
 import logger from '../logger';
 
 
@@ -57,11 +57,14 @@ const refreshTokenInterceptor = (store, error) => {
       return new Promise((resolve, reject) => {
         refreshTokenPromise.then(() => {
           logger.debug(`repeat ${error.config.url}`);
-          axios({
+          const options = {
             method: error.config.method,
-            url: error.config.url,
-            data: JSON.parse(error.config.data)
-          }).then(resolve, reject);
+            url: error.config.url
+          };
+          if (error.config.data) {
+            options.data = JSON.parse(error.config.data);
+          }
+          axios(options).then(resolve, reject);
         }, reject);
       });
     }

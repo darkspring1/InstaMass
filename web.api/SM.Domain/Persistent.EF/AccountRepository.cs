@@ -19,9 +19,10 @@ namespace SM.Domain.Persistent.EF
             Set.Add(account.State);
         }
 
-        public Task<Account[]> FindByUserAsync(Guid userId)
+        public async Task<Account[]> FindByUserAsync(Guid userId)
         {
-            return Set.Entities.Where(a => a.UserId == userId).Select(s => Create(s)).ToArrayAsync();
+            var accountStates = await Set.Entities.Where(a => a.UserId == userId).ToArrayAsync();
+            return accountStates.Select(s => Create(s)).ToArray();
         }
 
         Task<AccountState> FindByLogin(string login)
