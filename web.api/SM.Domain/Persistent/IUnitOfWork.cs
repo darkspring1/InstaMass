@@ -12,6 +12,8 @@ namespace SM.Domain.Persistent
         IRefreshTokenRepository RefreshTokenRepository { get; }
 
         IAccountRepository AccountRepository { get; }
+        ITaskRepository TaskRepository { get; }
+        ILikeTaskRepository LikeTaskRepository { get; }
 
         void Complete();
 

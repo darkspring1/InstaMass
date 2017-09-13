@@ -19,6 +19,12 @@ namespace SM.Domain.Persistent.EF
             return Create(await stateTask);
         }
 
+        protected async Task<TEntity[]> CreateArrayAsync(Task<TState[]> stateTask)
+        {
+            var states = await stateTask;
+            return states.Select(Create).ToArray();
+        }
+
         protected virtual Task<T> FirstOrDefaultAsync<T>(IQueryable<T> states)
         {
             return states.FirstOrDefaultAsync();

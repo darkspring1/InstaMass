@@ -29,6 +29,8 @@ namespace SM.Domain.Persistent.EF
 
             modelBuilder.Entity<RefreshTokenState>().ToTable("RefreshTokens", schema);
             modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
+            modelBuilder.Entity<TaskState>().ToTable("Tasks", schema);
+            modelBuilder.Entity<LikeTaskState>().ToTable("LikeTasks", schema);
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

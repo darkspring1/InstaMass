@@ -6,11 +6,14 @@ namespace SM.Domain.Persistent.EF.State
 
     public class AccountState
     {
+
+        public Guid Id { get; set; }
+
         [Required]
         [MaxLength(1024)]
         public string Password { get; set; }
 
-        [Key]
+        
         [Required]
         [MaxLength(100)]
         public string Login { get; set; }
