@@ -2,11 +2,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import AccountList from './accountList';
+import TaskList from './taskList';
 import AccountEditor from './accountEditor';
-import TopPreloader from './topPreloaderContainer';
-import Toastr from './toastrContainer';
+import TopPreloader from './topPreloader';
+import Toastr from './toastr';
 
 function Layout(props) {
   return (
@@ -21,6 +21,13 @@ function Layout(props) {
               <Link className="al-sidebar-list-link" to="/accounts">
                 <i className="ion-android-home" />
                 <span>Мои аккаунты</span>
+              </Link>
+            </li>
+
+            <li className="al-sidebar-list-item selected" >
+              <Link className="al-sidebar-list-link" to="/tasks">
+                <i className="ion-android-home" />
+                <span>Задачи</span>
               </Link>
             </li>
 
@@ -56,6 +63,7 @@ function Layout(props) {
         <TopPreloader />
         <div className="al-content">
           <Route path="/accounts" component={() => <AccountList goToNewAccount={props.goToNewAccount} />} />
+          <Route path="/tasks" component={TaskList} />
           <Route path="/account" component={AccountEditor} />
         </div>
       </div>
@@ -67,12 +75,12 @@ function Layout(props) {
 
 const layout = connect(
   state => ({ state }), // map state to props
-  dispatch => ({
-    goToNewAccount() {
-      dispatch(push('account'));
-    }
+  // dispatch => ({
+  //   goToNewAccount() {
+  //     dispatch(push('account'));
+  //   }
 
-  })
+  // })
 )(Layout);
 
 export default layout;

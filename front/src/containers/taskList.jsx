@@ -4,12 +4,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AccountPanel from './accountPanel';
-import ContentTop from './contentTop';
+import AccountPanel from '../components/accountPanel';
+import ContentTop from '../components/contentTop';
 import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
 
 
-class AccountList extends React.Component {
+class TaskList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -86,7 +86,7 @@ function stateToProps(state) {
 }
 
 
-const accountList = connect(
+const taskList = connect(
   stateToProps,
   dispatch => ({
     // onAddNewAccount(newAccount) {
@@ -96,7 +96,7 @@ const accountList = connect(
       dispatch(AccountsRequested());
     }
   })
-)(AccountList);
+)(TaskList);
 
-export default accountList;
+export default taskList;
 

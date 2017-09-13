@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ContentTop from './contentTop';
+import ContentTop from '../components/contentTop';
 import Button from '../controls/button';
 import ActionTypes from '../constants/actionTypes';
 

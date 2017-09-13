@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Layout from './components/layout';
-import Auth from './components/auth';
+import Layout from './containers/layout';
+import Auth from './containers/auth';
 
 
 function App(props) {
