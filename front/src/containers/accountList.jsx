@@ -1,4 +1,5 @@
 /* eslint jsx-a11y/label-has-for: 0 */
+/* eslint react/prefer-stateless-function: 0 */
 
 
 import React from 'react';
@@ -10,17 +11,6 @@ import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
 
 
 class AccountList extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.onAddAccount = this.onAddAccount.bind(this);
-  }
-
-
-  onAddAccount(/* e */) {
-    this.props.goToNewAccount();
-    // console.log(e + this);
-  }
 
   render() {
     const props = this.props;
@@ -64,7 +54,7 @@ class AccountList extends React.Component {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      onClick={this.onAddAccount}
+                      onClick={this.props.goToNewAccount}
                     >Добавить Аккаунт</button>
                   </form>
                 </div>

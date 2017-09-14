@@ -1,14 +1,15 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AccountList from './accountList';
 import TaskList from './taskList';
 import AccountEditor from './accountEditor';
 import TopPreloader from './topPreloader';
 import Toastr from './toastr';
+import LikeTaskEditor from './likeTaskEditor';
 
-function Layout(props) {
+function Layout(/* props */) {
   return (
     <main>
       <Toastr />
@@ -62,8 +63,15 @@ function Layout(props) {
       <div className="al-main">
         <TopPreloader />
         <div className="al-content">
-          <Route path="/accounts" component={() => <AccountList goToNewAccount={props.goToNewAccount} />} />
-          <Route path="/tasks" component={TaskList} />
+          <Route path="/accounts" component={AccountList} />
+
+
+          <Switch>
+            <Route path="/tasks/like" component={LikeTaskEditor} />
+            <Route path="/tasks" component={TaskList} />
+          </Switch>
+
+
           <Route path="/account" component={AccountEditor} />
         </div>
       </div>
@@ -75,12 +83,6 @@ function Layout(props) {
 
 const layout = connect(
   state => ({ state }), // map state to props
-  // dispatch => ({
-  //   goToNewAccount() {
-  //     dispatch(push('account'));
-  //   }
-
-  // })
 )(Layout);
 
 export default layout;

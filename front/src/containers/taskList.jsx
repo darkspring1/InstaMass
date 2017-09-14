@@ -1,38 +1,17 @@
 /* eslint jsx-a11y/label-has-for: 0 */
+/* eslint react/prefer-stateless-function: 0 */
 
 
 import React from 'react';
 import { connect } from 'react-redux';
-
-import AccountPanel from '../components/accountPanel';
+import { push } from 'react-router-redux';
 import ContentTop from '../components/contentTop';
-import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
-
 
 class TaskList extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.onAddAccount = this.onAddAccount.bind(this);
-  }
-
-
-  onAddAccount(/* e */) {
-    this.props.goToNewAccount();
-    // console.log(e + this);
-  }
 
   render() {
-    const props = this.props;
-
-    if (!props.state) {
-      props.onAccountsRequested();
-      return null;
-    }
-
-    if (props.state === 'loading') {
-      return null;
-    }
+    // const props = this.props;
 
     return (
       <div>
@@ -64,15 +43,17 @@ class TaskList extends React.Component {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      onClick={this.onAddAccount}
-                    >Добавить Аккаунт</button>
+                      onClick={this.props.goToNewTask}
+                    >Создать задачу</button>
                   </form>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="col-md-12"><AccountPanel /></div>
+          <div className="col-md-12">
+            todo: task list
+          </div>
 
         </div>
 
@@ -89,12 +70,11 @@ function stateToProps(state) {
 const taskList = connect(
   stateToProps,
   dispatch => ({
-    // onAddNewAccount(newAccount) {
-    //   dispatch(AddNewAccountRequested(newAccount));
-    // },
-    onAccountsRequested() {
-      dispatch(AccountsRequested());
-    }
+    goToNewTask() {
+      dispatch(push('tasks/like'));
+    },
+
+
   })
 )(TaskList);
 
