@@ -41,10 +41,7 @@ class AccountEditor extends React.Component {
       <div>
         <ContentTop title="Account" />
 
-        <div
-          className="panel profile-page animated zoomIn"
-          style={{ backgroundSize: '1359px 764px', backgroundPosition: '0px -224px' }}
-        >
+        <div className="panel profile-page animated zoomIn">
           <div className="panel-body" >
             <div className="panel-content">
               <h3 className="with-line">General Information</h3>
