@@ -8,6 +8,8 @@ import AccountEditor from './accountEditor';
 import TopPreloader from './topPreloader';
 import Toastr from './toastr';
 import LikeTaskEditor from './likeTaskEditor';
+import * as Routes from '../constants/routes';
+import TaskTypes from './taskTypes';
 
 function Layout(/* props */) {
   return (
@@ -67,7 +69,8 @@ function Layout(/* props */) {
 
 
           <Switch>
-            <Route path="/tasks/like" component={LikeTaskEditor} />
+            <Route path={Routes.LIKE_TASK_EDITOR} component={LikeTaskEditor} />
+            <Route path={Routes.TASK_TYPES} component={TaskTypes} />
             <Route path="/tasks" component={TaskList} />
           </Switch>
 

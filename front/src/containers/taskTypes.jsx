@@ -17,7 +17,7 @@ class TaskList extends React.Component {
     return (
       <div>
 
-        <ContentTop title="Аккаунты" />
+        <ContentTop title="Выберите задачу" />
 
         <div className="row">
 
