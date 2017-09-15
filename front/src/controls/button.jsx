@@ -23,7 +23,7 @@ export default (props) => {
   }
 
   return (
-    <button type="button" onClick={props.onClick} className={btnClassName}>
+    <button type="button" onClick={props.onClick} className={btnClassName} disabled={props.disabled}>
       {icon}{props.text}
     </button>);
 };

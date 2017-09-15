@@ -10,9 +10,8 @@ import { connect } from 'react-redux';
 import ContentTop from '../components/contentTop';
 import TagInfo from '../components/tagInfo';
 import Button from '../controls/button';
-import ActionTypes from '../constants/actionTypes';
-
-// import AddNewAccount from '../actions/addNewAccount';
+import * as Actions from '../actions';
+import AddNewTag from '../components/addNewTag';
 
 class LikeTaskEditor extends React.Component {
 
@@ -38,6 +37,7 @@ class LikeTaskEditor extends React.Component {
 
 
   render() {
+    const props = this.props;
     return (
       <div>
         <ContentTop title="Новая задача" />
@@ -50,22 +50,7 @@ class LikeTaskEditor extends React.Component {
             <div className="panel-content">
               <h3 className="with-line">General Information</h3>
 
-              <div className="row">
-                <div className="form-group col-sm-3 col-xs-6">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Добавить новый хэштег"
-                    onChange={this.passwordHandleChange}
-                    value={this.state.password}
-                  />
-                </div>
-
-                <div className="form-group col-sm-3 col-xs-6">
-                  <Button text="Добавить" primary />
-                </div>
-
-              </div>
+              <AddNewTag onAddBtnClick={props.onAddNewTag} />
 
               <div className="row">
                 <div className="col-md-3">
@@ -86,11 +71,19 @@ class LikeTaskEditor extends React.Component {
 }
 
 
+function mapStateToProps(state) {
+  debugger;
+  return {
+    tags: state.likeTask.tags || []
+  };
+}
+
+
 const likeTaskEditor = connect(
-  state => ({ state }), // map state to props
+  mapStateToProps, // map state to props
   dispatch => ({
-    onAddNewAccount(newAccount) {
-      dispatch({ type: ActionTypes.ADD_NEW_ACCOUNT_REQUESTED, payload: newAccount });
+    onAddNewTag(tag) {
+      dispatch(Actions.AddNewTagRequested(tag));
     }
 
   })

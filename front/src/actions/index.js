@@ -48,3 +48,11 @@ export function AccountsLoading() {
 export function AccountsLoaded(payload) {
   return { type: ActionTypes.ACCOUNTS_LOADED, payload };
 }
+
+export function AddNewTagRequested(payload) {
+  return { type: ActionTypes.ADD_NEW_TAG_REQUESTED, payload };
+}
+
+export function AddNewTagSucceeded(payload) {
+  return { type: ActionTypes.ADD_NEW_TAG_SUCCEEDED, payload };
+}
