@@ -1,12 +1,13 @@
 /* eslint jsx-a11y/label-has-for: 0 */
 /* eslint react/prefer-stateless-function: 0 */
 
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import ContentTop from '../components/contentTop';
 import * as Routes from '../constants/routes';
+
 
 class TaskList extends React.Component {
 
@@ -21,13 +22,14 @@ class TaskList extends React.Component {
 
         <div className="row pie-charts">
 
-          <div className="pie-chart-item-container">
+
+          <Link to={Routes.LIKE_TASK_EDITOR} className="pie-chart-item-container">
 
             <div className="panel animated zoomIn">
               <div className="panel-body" >
                 <div className="pie-chart-item">
                   <div className="description">
-                    <div>New Visits</div>
+                    <div>Likes</div>
                     <div className="description-stats">57,820</div>
                   </div>
                   <i className="chart-icon i-person" />
@@ -35,7 +37,7 @@ class TaskList extends React.Component {
               </div>
             </div>
 
-          </div>
+          </Link>
 
 
         </div>

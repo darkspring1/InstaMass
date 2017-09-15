@@ -4,8 +4,16 @@ export default (props) => {
   let btnClassName = `btn ${props.cssClass}`;
   if (props.primary) {
     btnClassName += ' btn-primary';
+  } else if (props.danger) {
+    btnClassName += ' btn-danger';
+  } else if (props.success) {
+    btnClassName += ' btn-success';
   } else {
     btnClassName += ' btn-default';
+  }
+
+  if (props.large) {
+    btnClassName += ' btn-lg';
   }
 
   let icon = null;

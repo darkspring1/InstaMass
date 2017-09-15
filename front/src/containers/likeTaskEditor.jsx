@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ContentTop from '../components/contentTop';
+import TagInfo from '../components/tagInfo';
 import Button from '../controls/button';
 import ActionTypes from '../constants/actionTypes';
 
@@ -39,7 +40,7 @@ class LikeTaskEditor extends React.Component {
   render() {
     return (
       <div>
-        <ContentTop title="Account" />
+        <ContentTop title="Новая задача" />
 
         <div
           className="panel profile-page animated zoomIn"
@@ -50,36 +51,30 @@ class LikeTaskEditor extends React.Component {
               <h3 className="with-line">General Information</h3>
 
               <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group row clearfix">
-                    <label htmlFor="inputFirstName" className="col-sm-3 control-label">Instagram Login</label>
-                    <div className="col-sm-9">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder=""
-                        onChange={this.loginHandleChange}
-                        value={this.state.login}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row clearfix">
-                    <label htmlFor="inputLastName" className="col-sm-3 control-label">Instagram password</label>
-                    <div className="col-sm-9">
-                      <input
-                        type="password"
-                        className="form-control"
-                        placeholder=""
-                        onChange={this.passwordHandleChange}
-                        value={this.state.password}
-                      />
-                    </div>
-                  </div>
+                <div className="form-group col-sm-3 col-xs-6">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Добавить новый хэштег"
+                    onChange={this.passwordHandleChange}
+                    value={this.state.password}
+                  />
+                </div>
+
+                <div className="form-group col-sm-3 col-xs-6">
+                  <Button text="Добавить" primary />
                 </div>
 
               </div>
 
-              <Button text="Сохранить" onClick={this.addNewAccount} primary />
+              <div className="row">
+                <div className="col-md-3">
+                  <TagInfo tag="tits" total="100500" />
+                </div>
+              </div>
+
+              <Button text="Сохранить" onClick={this.addNewAccount} success large />
+
             </div>
           </div>
         </div>
