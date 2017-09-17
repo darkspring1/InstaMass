@@ -38,6 +38,9 @@ class LikeTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
+
+    const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
+
     return (
       <div>
         <ContentTop title="Новая задача" />
@@ -53,8 +56,8 @@ class LikeTaskEditor extends React.Component {
               <AddNewTag onAddBtnClick={props.onAddNewTag} />
 
               <div className="row">
-                <div className="col-md-3">
-                  <TagInfo tag="tits" total="100500" />
+                <div className="col-md-3" >
+                  {tags}
                 </div>
               </div>
 
@@ -72,7 +75,6 @@ class LikeTaskEditor extends React.Component {
 
 
 function mapStateToProps(state) {
-  debugger;
   return {
     tags: state.likeTask.tags || []
   };

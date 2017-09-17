@@ -15,7 +15,6 @@ function* fetch(action) {
     debugger;
     yield put(Actions.AddNewTagFailed(e));
   }
-  debugger;
   yield put(Actions.RequestFinished());
 }
 
