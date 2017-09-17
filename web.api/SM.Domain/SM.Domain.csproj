@@ -63,6 +63,7 @@
     <Compile Include="Model\RefreshToken.cs" />
     <Compile Include="Model\LikeTask.cs" />
     <Compile Include="Model\SMTask.cs" />
+    <Compile Include="Model\TaskTypeEnum.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Persistent.EF.State\ApplicationState.cs" />
     <Compile Include="Persistent.EF.State\ExternalAuthProviderTypeState.cs" />

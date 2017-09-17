@@ -24,6 +24,16 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => _unitOfWork.TaskRepository.GetByUserAsync(userId));
         }
 
-        
+        public Task<ServiceResult<LikeTask>> CreateLikeTask(Guid accountId, string[] tags)
+        {
+            return RunAsync(async () => {
+                LikeTask task = LikeTask.Create(accountId, tags);
+                _unitOfWork.LikeTaskRepository.AddLikeTask(task);
+                await _unitOfWork.CompleteAsync();
+                return task;
+            });
+        }
+
+
     }
 }

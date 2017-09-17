@@ -26,6 +26,14 @@ namespace SM.WEB.API.Controllers
             return ActionResultAsync(_taskServiceServiceFunc().GetTasks(UserId));
         }
 
+
+        [HttpPost]
+        [Route(Routes.ApiTaskLike)]
+        public Task<IHttpActionResult> CreateLikeTask(NewLikeTaskModel model)
+        {
+            return ActionResultAsync(_taskServiceServiceFunc().CreateLikeTask(model.AccountId, model.Tags));
+        }
+
     }
     
 }

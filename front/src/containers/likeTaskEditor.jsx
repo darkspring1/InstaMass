@@ -17,14 +17,15 @@ class LikeTaskEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    this.addNewAccount = this.addNewAccount.bind(this);
+    this.onAddNewTask = this.onAddNewTask.bind(this);
     this.loginHandleChange = this.loginHandleChange.bind(this);
     this.passwordHandleChange = this.passwordHandleChange.bind(this);
     this.state = { login: '', password: '' };
   }
 
-  addNewAccount() {
-    this.props.onAddNewAccount(this.state);
+  onAddNewTask() {
+    const tags = this.props.tags.map(tag => tag.tag);
+    this.props.onAddNewTask({ tags });
   }
 
   loginHandleChange(event) {
@@ -61,7 +62,7 @@ class LikeTaskEditor extends React.Component {
                 </div>
               </div>
 
-              <Button text="Сохранить" onClick={this.addNewAccount} success large />
+              <Button text="Сохранить" onClick={this.onAddNewTask} success large />
 
             </div>
           </div>
@@ -86,6 +87,10 @@ const likeTaskEditor = connect(
   dispatch => ({
     onAddNewTag(tag) {
       dispatch(Actions.AddNewTagRequested(tag));
+    },
+
+    onAddNewTask(task) {
+      dispatch(Actions.AddNewLikeTaskRequested(task));
     }
 
   })

@@ -9,6 +9,8 @@
         public const string ApiAccount = "api/account";
 
         public const string ApiTasks = "api/tasks";
+
+        public const string ApiTaskLike = "api/task/like";
     }
 }
 

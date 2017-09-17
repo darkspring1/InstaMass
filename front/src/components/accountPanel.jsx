@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () => (<div
+export default props => (<div
   className="panel popular-app"
   style={{ backgroundSize: '1913px 1076px', backgroundPosition: '0px -197px' }}
 >
@@ -11,7 +11,7 @@ export default () => (<div
         <span className="logo-text">darkspringdarkspring</span> */}
 
         <img alt="logo" src="assets/img/app/my-app-logo.png" />
-        <span className="logo-text">Super&nbsp;App</span>
+        <span className="logo-text">{props.account.login}</span>
       </div>
     </div>
     <div className="popular-app-cost row">

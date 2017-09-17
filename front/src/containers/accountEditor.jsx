@@ -1,6 +1,4 @@
 /* eslint jsx-a11y/label-has-for: 0 */
-/* eslint react/prefer-stateless-function: 0 */
-/* eslint no-useless-constructor: 0 */
 /* eslint jsx-a11y/role-has-required-aria-props: 0 */
 
 

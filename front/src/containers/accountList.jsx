@@ -12,18 +12,12 @@ import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
 
 class AccountList extends React.Component {
 
+  componentWillMount() {
+    this.props.onAccountsRequested();
+  }
   render() {
     const props = this.props;
-
-    if (!props.state) {
-      props.onAccountsRequested();
-      return null;
-    }
-
-    if (props.state === 'loading') {
-      return null;
-    }
-
+    const accounts = props.accounts.map(a => <AccountPanel account={a} />);
     return (
       <div>
 
@@ -62,7 +56,7 @@ class AccountList extends React.Component {
             </div>
           </div>
 
-          <div className="col-md-12"><AccountPanel /></div>
+          <div className="col-md-12">{accounts}</div>
 
         </div>
 
@@ -72,7 +66,9 @@ class AccountList extends React.Component {
 }
 
 function stateToProps(state) {
-  return state.account.accounts || {};
+  return {
+    accounts: state.account || []
+  };
 }
 
 

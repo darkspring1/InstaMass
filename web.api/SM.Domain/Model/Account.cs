@@ -16,6 +16,8 @@ namespace SM.Domain.Model
             return new Account(new AccountState { CreatedAt = DateTime.UtcNow, UserId = userId, Login = instagramLogin, Password = instagramLogin });
         }
 
+        public Guid Id => State.Id;
+         
         public string Login => State.Login;
     }
 }

@@ -7,7 +7,6 @@ import { GetAccounts } from './../api';
 
 function* fetch(/* action */) {
   try {
-    yield put(Actions.AccountsLoading());
     yield put(Actions.RequestStarted());
     const accounts = yield GetAccounts();
     yield put(Actions.AccountsLoaded(accounts));

@@ -41,10 +41,6 @@ export function AccountsRequested(payload) {
   return { type: ActionTypes.ACCOUNTS_REQUESTED, payload };
 }
 
-export function AccountsLoading() {
-  return { type: ActionTypes.ACCOUNTS_LOADING };
-}
-
 export function AccountsLoaded(payload) {
   return { type: ActionTypes.ACCOUNTS_LOADED, payload };
 }
@@ -55,4 +51,8 @@ export function AddNewTagRequested(payload) {
 
 export function AddNewTagSucceeded(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_SUCCEEDED, payload };
+}
+
+export function AddNewLikeTaskRequested(payload) {
+  return { type: ActionTypes.ADD_NEW_LIKE_TASK_REQUESTED, payload };
 }
