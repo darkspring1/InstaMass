@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import AccountPanel from '../components/accountPanel';
 import ContentTop from '../components/contentTop';
-import { /* AddNewAccountRequested, */AccountsRequested } from '../actions';
+import { AccountsRequested } from '../actions';
 
 
 class AccountList extends React.Component {
@@ -17,7 +17,7 @@ class AccountList extends React.Component {
   }
   render() {
     const props = this.props;
-    const accounts = props.accounts.map(a => <AccountPanel account={a} />);
+    const accounts = props.accounts.map(a => <AccountPanel key={a.id} account={a} />);
     return (
       <div>
 

@@ -13,7 +13,7 @@ namespace SM.Domain.Model
 
         public static Account Create(Guid userId, string instagramLogin, string instagramPassword)
         {
-            return new Account(new AccountState { CreatedAt = DateTime.UtcNow, UserId = userId, Login = instagramLogin, Password = instagramLogin });
+            return new Account(new AccountState { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, UserId = userId, Login = instagramLogin, Password = instagramLogin });
         }
 
         public Guid Id => State.Id;
