@@ -1,9 +1,7 @@
 ﻿using SM.Common.Log;
-using SM.Domain.Model;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 

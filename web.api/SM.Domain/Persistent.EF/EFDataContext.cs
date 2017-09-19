@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using SM.Domain.Persistent.EF.State;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.Domain.Persistent.EF
 {
@@ -30,7 +31,11 @@ namespace SM.Domain.Persistent.EF
             modelBuilder.Entity<RefreshTokenState>().ToTable("RefreshTokens", schema);
             modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
             modelBuilder.Entity<TaskState>().ToTable("Tasks", schema);
-            modelBuilder.Entity<LikeTaskState>().ToTable("LikeTasks", schema);
+            modelBuilder
+                .Entity<LikeTaskState>()
+                .ToTable("LikeTasks", schema)
+                .HasRequired(t => t.Task)
+                .WithRequiredDependent();
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

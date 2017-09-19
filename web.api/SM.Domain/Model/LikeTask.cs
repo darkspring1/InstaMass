@@ -13,10 +13,9 @@ namespace SM.Domain.Model
         public static LikeTask Create(Guid accountId, string[] tags)
         {
             var tagsStr = string.Join(",", tags);
-            var newTaskId = Guid.NewGuid();
             TaskState baseTaskState = new TaskState
             {
-                Id = newTaskId,
+                Id = Guid.NewGuid(),
                 AccountId = accountId,
                 TypeId = (int)TaskTypeEnum.Like,
                 CreatedAt = DateTime.UtcNow
