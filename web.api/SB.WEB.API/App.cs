@@ -27,11 +27,24 @@ namespace SM.WEB.API
         //private static sb.core.log.ILogger _logger = new NLogLogger();
 
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
-        public static Container Container = new Container(new ApiRegistry());
+
+
+
+        public static Container Container;
+
+
         public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
         public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
 
-        public void Configuration(IAppBuilder app)
+
+        static App()
+        {
+            var registry = new ApiRegistry();
+            registry.IncludeRegistry<DomainEventHandlersRegistry>();
+            Container = new Container(registry);
+        }
+
+    public void Configuration(IAppBuilder app)
         {
             //_logger.Debug("Start configuration");
 

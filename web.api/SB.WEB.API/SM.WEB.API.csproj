@@ -152,6 +152,7 @@
     <Compile Include="Entities\RefreshToken.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Ioc\ApiRegister.cs" />
+    <Compile Include="Ioc\DomainEventHandlersRegistry.cs" />
     <Compile Include="Ioc\MappingEngineRegistry.cs" />
     <Compile Include="Ioc\StructureMapWebApiControllerActivator.cs" />
     <Compile Include="Middlewares\MiddlewareExtensions.cs" />
