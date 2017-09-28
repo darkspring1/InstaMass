@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SM.Domain.Model;
 
 namespace SM.Domain.Events
 {
     public class LikeTaskWasCreated : IDomainEvent
     {
+        public LikeTask Task { get; set; }
     }
 }

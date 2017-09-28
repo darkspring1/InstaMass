@@ -154,6 +154,7 @@
     <Compile Include="Ioc\ApiRegister.cs" />
     <Compile Include="Ioc\DomainEventHandlersRegistry.cs" />
     <Compile Include="Ioc\MappingEngineRegistry.cs" />
+    <Compile Include="Ioc\StructureMapEventHandlerContainer.cs" />
     <Compile Include="Ioc\StructureMapWebApiControllerActivator.cs" />
     <Compile Include="Middlewares\MiddlewareExtensions.cs" />
     <Compile Include="Middlewares\NLogMiddleware.cs" />

@@ -4,26 +4,24 @@ using SM.Domain.Model;
 using SM.Domain.Persistent;
 using System;
 using System.Threading.Tasks;
+using SM.Domain.Events;
 
 namespace SM.WEB.Application.Services
 {
 
-    public class AccountService : BaseService
+    public class AccountService : SMBaseService
     {
         public const int AccountAlreadyRegistred = 1;
 
-        private IUnitOfWork _unitOfWork;
-
-        public AccountService(IUnitOfWork unitOfWork, ILogger logger) : base(logger)
+        public AccountService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<ServiceResult<Account>> CreateAync(Guid userId, string instagramLogin, string instagramPassword)
         {
             //todo: проверять, что логин и пароль верные
 
-            var existResult = await RunAsync(() => _unitOfWork.AccountRepository.IsExistAsync(instagramLogin));
+            var existResult = await RunAsync(() => UnitOfWork.AccountRepository.IsExistAsync(instagramLogin));
             if (existResult.IsFaulted)
             {
                 return ServiceResult<Account>.Error(existResult.Exception);
@@ -36,8 +34,8 @@ namespace SM.WEB.Application.Services
 
             return await RunAsync(async () => {
                 var newAccount = Account.Create(userId, instagramLogin, instagramPassword);
-                _unitOfWork.AccountRepository.CreateNewAccount(newAccount);
-                await _unitOfWork.CompleteAsync();
+                UnitOfWork.AccountRepository.CreateNewAccount(newAccount);
+                await UnitOfWork.CompleteAsync();
                 return newAccount;
             });  
         }
@@ -49,7 +47,7 @@ namespace SM.WEB.Application.Services
 
         public Task<ServiceResult<Account[]>> FindByUser(Guid userId)
         {
-            return RunAsync(() => _unitOfWork.AccountRepository.FindByUserAsync(userId));
+            return RunAsync(() => UnitOfWork.AccountRepository.FindByUserAsync(userId));
         }
     }
 }

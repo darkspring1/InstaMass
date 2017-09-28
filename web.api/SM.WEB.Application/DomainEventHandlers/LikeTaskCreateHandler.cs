@@ -1,6 +1,6 @@
 ﻿using SM.Domain.Events;
 using System;
-
+using System.Threading.Tasks;
 
 namespace SM.WEB.Application.DomainEventHandlers
 {
@@ -14,7 +14,12 @@ namespace SM.WEB.Application.DomainEventHandlers
 
         public void Handle(LikeTaskWasCreated args)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public Task HandleAsync(LikeTaskWasCreated args)
+        {
+            return Task.FromResult(0);
         }
     }
 }

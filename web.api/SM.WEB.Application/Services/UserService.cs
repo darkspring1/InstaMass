@@ -4,24 +4,22 @@ using SM.Domain.Model;
 using SM.Domain.Persistent;
 using SM.Domain.Services;
 using System.Threading.Tasks;
+using SM.Domain.Events;
 
 namespace SM.WEB.Application.Services
 {
-    public class UserService : BaseService
+    public class UserService : SMBaseService
     {
-        private IUnitOfWork _unitOfWork;
-
-        public UserService(IUnitOfWork unitOfWork, ILogger logger) : base(logger)
+        public UserService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {
-            _unitOfWork = unitOfWork;
         }
 
         public Task<ServiceResult<User>> CreateAync(string email, string userName, string password)
         {
             return RunAsync(async () => {
                 var newUser = User.Create(email, userName, password);
-                _unitOfWork.UserRepository.RegisterNewUser(newUser);
-                await _unitOfWork.CompleteAsync();
+                UnitOfWork.UserRepository.RegisterNewUser(newUser);
+                await UnitOfWork.CompleteAsync();
                 return newUser;
             });  
         }
@@ -30,20 +28,20 @@ namespace SM.WEB.Application.Services
         {
             return RunAsync(async () => {
                 var newUser = User.CreateExternal(userInfo);
-                _unitOfWork.UserRepository.RegisterNewUser(newUser);
-                await _unitOfWork.CompleteAsync();
+                UnitOfWork.UserRepository.RegisterNewUser(newUser);
+                await UnitOfWork.CompleteAsync();
                 return newUser;
             });
         }
 
         public Task<ServiceResult<User>> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
         {
-            return RunAsync(() => _unitOfWork.UserRepository.FindAsync(providerType, externalUserId));
+            return RunAsync(() => UnitOfWork.UserRepository.FindAsync(providerType, externalUserId));
         }
 
         public Task<ServiceResult<User>> FindAsync(string email, string password)
         {
-            return RunAsync(() => _unitOfWork.UserRepository.FindAsync(email, password));
+            return RunAsync(() => UnitOfWork.UserRepository.FindAsync(email, password));
         }
 
         public Task<ServiceResult<ExternalUserInfo>> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)

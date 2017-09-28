@@ -3,38 +3,36 @@ using SM.Common.Services;
 using SM.Domain.Model;
 using SM.Domain.Persistent;
 using System.Threading.Tasks;
+using SM.Domain.Events;
 
 namespace SM.WEB.Application.Services
 {
-    public class AuthService : BaseService
+    public class AuthService : SMBaseService
     {
-        private IUnitOfWork _unitOfWork;
-
-        public AuthService(IUnitOfWork unitOfWork, ILogger logger) : base(logger)
+        public AuthService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {
-            _unitOfWork = unitOfWork;
         }
 
         public Task<ServiceResult> AddRefreshTokenAsync(RefreshToken token)
         {
             return RunAsync(() =>
             {
-                _unitOfWork.RefreshTokenRepository.AddNewTokenAsync(token);
-                return _unitOfWork.CompleteAsync();
+                UnitOfWork.RefreshTokenRepository.AddNewTokenAsync(token);
+                return UnitOfWork.CompleteAsync();
             });
         }
 
         public Task<ServiceResult<RefreshToken>> FindRefreshTokenAsync(string tokenId)
         {
-            return RunAsync(() => _unitOfWork.RefreshTokenRepository.GetByIdAsync(tokenId));
+            return RunAsync(() => UnitOfWork.RefreshTokenRepository.GetByIdAsync(tokenId));
         }
 
 
         public Task<ServiceResult> RemoveRefreshTokenAsync(string tokenId)
         {
             return RunAsync(async () => {
-                await _unitOfWork.RefreshTokenRepository.RemoveAsync(tokenId);
-                await _unitOfWork.CompleteAsync();
+                await UnitOfWork.RefreshTokenRepository.RemoveAsync(tokenId);
+                await UnitOfWork.CompleteAsync();
                 }
             );
         }
