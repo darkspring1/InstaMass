@@ -6,6 +6,7 @@ using Api.ActorModel.Actors;
 using Akka.Cluster.Sharding;
 using InstaMass.Api.Sharding;
 using InstaMass.ActorModel.Actors;
+using InstaMass.Api.ActorModel.Actors;
 
 namespace InstaMass.Api
 {
@@ -34,6 +35,9 @@ namespace InstaMass.Api
             var coordinatorActor = System.ActorOf(Props.Create(() => new CoordinatorActor(userStoreActor, shardRegion)), "coordinator");
 
             coordinatorActor.Tell(StartExecuting.Instance);
+
+
+            System.ActorOf(Props.Create(() => new APIActor()), "api");
 
             System.WhenTerminated.Wait();
         }

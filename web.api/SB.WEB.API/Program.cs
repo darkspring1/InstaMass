@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Akka.Actor;
+using Akka.Routing;
+using System;
+using System.Linq;
 using Topshelf;
 
 namespace SM.WEB.API
@@ -7,9 +10,9 @@ namespace SM.WEB.API
     class Program
     {
         //private static sb.core.log.ILogger _logger;
-        
+        static ActorSystem System { get; set; }
         static void Main(string[] args)
-        {
+        {/*
             try
             {
                 //_logger = new NLogLogger();
@@ -43,6 +46,45 @@ namespace SM.WEB.API
                 Console.WriteLine(e);
                 //_logger.Error(e);
             }
+            */
+
+
+            System = ActorSystem.Create("instamass");
+
+
+            // register actor type as a sharded entity
+
+            var api = System.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "api");
+            var printer = System.ActorOf<Printer>();
+
+            //System.Scheduler.Advanced.ScheduleRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), () =>
+            //{
+            //    if (api.Ask<Routees>(new GetRoutees()).Result.Members.Any())
+            //    {
+            //        api.Tell("ping", printer);
+            //    }
+            //});
+
+            //api.Tell("ping", printer);
+
+            System.WhenTerminated.Wait();
+        }
+    }
+
+
+    /// <summary>
+    /// Prints recommendations out to the console
+    /// </summary>
+    public class Printer : ReceiveActor
+    {
+        public Printer()
+        {
+            Receive<String>(res =>
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{Environment.NewLine}{res}");
+                Console.ResetColor();
+            });
         }
     }
 }
