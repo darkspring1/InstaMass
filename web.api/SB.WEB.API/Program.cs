@@ -12,7 +12,7 @@ namespace SM.WEB.API
         //private static sb.core.log.ILogger _logger;
         static ActorSystem System { get; set; }
         static void Main(string[] args)
-        {/*
+        {
             try
             {
                 //_logger = new NLogLogger();
@@ -46,7 +46,7 @@ namespace SM.WEB.API
                 Console.WriteLine(e);
                 //_logger.Error(e);
             }
-            */
+            
 
 
             System = ActorSystem.Create("instamass");
@@ -57,15 +57,16 @@ namespace SM.WEB.API
             var api = System.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "api");
             var printer = System.ActorOf<Printer>();
 
-            //System.Scheduler.Advanced.ScheduleRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), () =>
-            //{
-            //    if (api.Ask<Routees>(new GetRoutees()).Result.Members.Any())
-            //    {
-            //        api.Tell("ping", printer);
-            //    }
-            //});
-
-            //api.Tell("ping", printer);
+            System.Scheduler.Advanced.ScheduleRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), () =>
+            {
+                //api.Tell("ping", printer);
+                
+                if (api.Ask<Routees>(new GetRoutees()).Result.Members.Any())
+                {
+                    api.Tell("ping", printer);
+                }
+                
+            });
 
             System.WhenTerminated.Wait();
         }
