@@ -119,7 +119,7 @@
   <ItemGroup>
     <Compile Include="ActionStrategy.cs" />
     <Compile Include="ActorModel\Actors\CoordinatorActor.cs" />
-    <Compile Include="ActorModel\Actors\InstaUserActionActor.cs" />
+    <Compile Include="Persistance\InstaUserActionActor.cs" />
     <Compile Include="ActorModel\Actors\APIActor.cs" />
     <Compile Include="ActorModel\Actors\UserActor\UserActorState.cs" />
     <Compile Include="ActorModel\Actors\UserStoreActor.cs" />
