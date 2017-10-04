@@ -20,7 +20,7 @@ namespace SM.TaskEngine.Common
         
         static AkkaConfig()
         {
-            var section = (ConfigurationSection)ConfigurationManager.GetSection("akka");
+           // var section = (ConfigurationSection)ConfigurationManager.GetSection("akka");
             //((Akka.Configuration.Hocon.AkkaConfigurationSection)section).AkkaConfig
             //var clusterConfig = section.AkkaConfig;
             //Config = clusterConfig.GetConfig("sm");

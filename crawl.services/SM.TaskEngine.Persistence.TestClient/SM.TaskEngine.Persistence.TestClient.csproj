@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C9647204-9B3E-46EA-86E8-5AF78CB70D93}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SM.TaskEngine.Persistence</RootNamespace>
-    <AssemblyName>SM.TaskEngine.Persistence</AssemblyName>
+    <RootNamespace>SM.TaskEngine.Persistence.TestClient</RootNamespace>
+    <AssemblyName>SM.TaskEngine.Persistence.TestClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
