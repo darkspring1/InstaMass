@@ -1,34 +1,16 @@
 ﻿using Akka.Actor;
 using Akka.Configuration;
-using Akka.Configuration.Hocon;
-using System.Configuration;
 
 namespace SM.TaskEngine.Common
 {
     public static class AkkaConfig
-    {
-        static Config Config;
-        /*
-        static AkkaConfig()
+    {   
+        public static ActorSystem CreateActorSystem(string hoconFile = "akka.hocon")
         {
-            var section = (AkkaConfigurationSection)ConfigurationManager.GetSection("akka");
-            var clusterConfig = section.AkkaConfig;
-            Config = clusterConfig.GetConfig("sm");
+            Config config = System.IO.File.ReadAllText(hoconFile);
+            var app = config.GetConfig("app");
+            var actorsystem = app.GetString("actorsystem");
+            return ActorSystem.Create(actorsystem, config);
         }
-        */
-        
-        
-        static AkkaConfig()
-        {
-           // var section = (ConfigurationSection)ConfigurationManager.GetSection("akka");
-            //((Akka.Configuration.Hocon.AkkaConfigurationSection)section).AkkaConfig
-            //var clusterConfig = section.AkkaConfig;
-            //Config = clusterConfig.GetConfig("sm");
-        }
-
-        //public static string ActorSystemName => Config.GetString("actorsystem");
-        public static string ActorSystemName => "instamass";
-
-        public static ActorSystem CreateActorSystem() => ActorSystem.Create(ActorSystemName);
     }
 }
