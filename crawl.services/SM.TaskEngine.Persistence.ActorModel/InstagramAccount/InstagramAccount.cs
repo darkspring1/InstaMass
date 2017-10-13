@@ -45,7 +45,10 @@ namespace SM.TaskEngine.Persistence.ActorModel.InstagramAccount
 
         private void Executing()
         {
-            Command<UpdateAccount>(c => Save(c));
+            Command<UpdateAccount>(c => {
+                _state.Login = c.Login;
+                _state.Password = c.Password;
+                Save(c); } );
 
             Command<SaveSnapshotSuccess>(c => Finish());
             Command<SaveSnapshotFailure>(c =>

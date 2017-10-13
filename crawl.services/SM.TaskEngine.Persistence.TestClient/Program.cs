@@ -16,7 +16,9 @@ namespace SM.TaskEngine.Persistence
 
         static void Main(string[] args)
         {
-            System = AkkaConfig.CreateActorSystem();
+            //System = AkkaConfig.CreateActorSystem();
+
+            System = ActorSystem.Create("instamass");
 
             // register actor type as a sharded entity
             var proxy = ClusterSharding.Get(System).StartProxy(
@@ -30,6 +32,7 @@ namespace SM.TaskEngine.Persistence
                 //var cmd = "hello";
                 Console.WriteLine(cmd);
                 proxy.Tell(new ShardEnvelope(login, cmd));
+                //proxy.Tell(new ShardEnvelope(login, "hello"));
             });
 
             System.WhenTerminated.Wait();
