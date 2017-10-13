@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SM.TaskEngine.Api\SM.TaskEngine.Api.csproj" />
     <ProjectReference Include="..\SM.TaskEngine.Common\SM.TaskEngine.Common.csproj" />
   </ItemGroup>
 

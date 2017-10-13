@@ -1,11 +1,7 @@
 ﻿using Akka.Actor;
 using Akka.Cluster.Sharding;
-using Akka.Cluster.Tools.Singleton;
-using SM.TaskEngine.Common;
 using SM.TaskEngine.Common.Sharding;
 using SM.TaskEngine.Persistence.ActorModel.InstagramAccount;
-using SM.TaskEngine.Persistence.ActorModel.InstagramAccount.Commands;
-using System;
 
 namespace SM.TaskEngine.Persistence
 {
