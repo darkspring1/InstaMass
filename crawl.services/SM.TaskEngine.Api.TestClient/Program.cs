@@ -1,6 +1,7 @@
 ﻿using Akka.Actor;
 using Akka.Routing;
 using SM.TaskEngine.Api.ActorModel;
+using SM.TaskEngine.Api.ActorModel.Commands;
 using SM.TaskEngine.Common;
 using System;
 
@@ -18,7 +19,7 @@ namespace SM.TaskEngine.Api.TestClient
                         Props.Create(() => new ApiMaster())
                             .WithRouter(FromConfig.Instance), "tasker");
 
-            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, "hello", null);
+            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new UpdateAccount { Login = "test", Password = "Test"  }, null);
 
             System.WhenTerminated.Wait();
         }

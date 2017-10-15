@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SM.TaskEngine.Common\SM.TaskEngine.Common.csproj" />
+    <ProjectReference Include="..\SM.TaskEngine.Persistence.ActorModel\SM.TaskEngine.Persistence.ActorModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,7 +28,7 @@ namespace SM.TaskEngine.Persistence
 
             System.Scheduler.Schedule(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), () => {
                 const string login = "someLogin";
-                var cmd = new UpdateAccount() { Login = login, Password = "1234" };
+                var cmd = new UpdateAccount() { Password = "1234" };
                 //var cmd = "hello";
                 Console.WriteLine(cmd);
                 proxy.Tell(new ShardEnvelope(login, cmd));

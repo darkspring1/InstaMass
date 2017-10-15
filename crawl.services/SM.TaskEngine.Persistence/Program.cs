@@ -2,6 +2,7 @@
 using Akka.Cluster.Sharding;
 using SM.TaskEngine.Common.Sharding;
 using SM.TaskEngine.Persistence.ActorModel.InstagramAccount;
+using SM.TaskEngine.Persistence.ActorModel.TagTask;
 
 namespace SM.TaskEngine.Persistence
 {
@@ -12,24 +13,25 @@ namespace SM.TaskEngine.Persistence
 
         static void Main(string[] args)
         {
-            //System = AkkaConfig.CreateActorSystem();
 
             System = ActorSystem.Create("instamass");
 
 
             var sharding = ClusterSharding.Get(System);
-
-            //ClusterShardingSettings settings = ClusterShardingSettings.Create(System).WithCoordinatorSingletonSettings(ClusterSingletonManagerSettings.Create(System).WithRole("master"));
-
             
-            // register actor type as a sharded entity
-            
-            var shardRegion = sharding.Start(
+            var instagramAccountShardRegion = sharding.Start(
                 typeName: typeof(InstagramAccount).Name,
                 entityProps: Props.Create<InstagramAccount>(),
                 settings: ClusterShardingSettings.Create(System),
                 messageExtractor: new MessageExtractor());
-               
+
+
+            var tagTaskShardRegion = sharding.Start(
+                typeName: typeof(TagTask).Name,
+                entityProps: Props.Create<TagTask>(),
+                settings: ClusterShardingSettings.Create(System),
+                messageExtractor: new MessageExtractor());
+
 
             /*
             System.Scheduler.Schedule(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), () => {
@@ -41,8 +43,6 @@ namespace SM.TaskEngine.Persistence
                 shardRegion.Tell(new ShardEnvelope(login, "hello"));
             });
             */
-            
-
 
             //shardRegion.Tell(new ShardEnvelope("someLogin", "hello"));
 

@@ -5,7 +5,7 @@ namespace SM.TaskEngine.Api
 {
     class Program
     {
-        static ActorSystem System;
+        internal static ActorSystem System;
 
         static void Main(string[] args)
         {

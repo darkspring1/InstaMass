@@ -2,12 +2,10 @@
 {
     class AccountUpdated
     {
-        public string Login { get; }
         public string Password { get; }
 
-        public AccountUpdated(string login, string password)
+        public AccountUpdated(string password)
         {
-            Login = login;
             Password = password;
         }
     }
