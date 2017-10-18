@@ -10,6 +10,7 @@ namespace SM.TaskEngine.Api.TestClient
     class Program
     {
         static ActorSystem System { get; set; }
+        static IActorRef Printer { get; set; }
         static void Main(string[] args)
         {
             System = AkkaConfig.CreateActorSystem();
@@ -19,7 +20,9 @@ namespace SM.TaskEngine.Api.TestClient
                         Props.Create(() => new ApiMaster())
                             .WithRouter(FromConfig.Instance), "tasker");
 
-            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new UpdateAccount { Login = "test", Password = "Test"  }, null);
+            Printer = System.ActorOf(Props.Create(() => new Printer()));
+
+            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new UpdateAccount("test", "Test" + DateTime.Now.ToBinary(), 1), Printer);
 
             System.WhenTerminated.Wait();
         }

@@ -27,8 +27,9 @@ namespace SM.TaskEngine.Persistence.ActorModel.InstagramAccount
             {
                 if (c.Password != _state.Password)
                 {
+                    var @event = new AccountUpdated(c.Password);
                     _state.Password = c.Password;
-                    Save(c);
+                    Save(@event, new SyncAccountVersion(PersistenceId, c.Version));
                 }
             });
 

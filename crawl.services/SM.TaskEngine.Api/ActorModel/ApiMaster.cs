@@ -36,7 +36,8 @@ namespace SM.TaskEngine.Api.ActorModel
             });
 
             Receive<UpdateAccount>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Login, new Persistence.ActorModel.InstagramAccount.Commands.UpdateAccount { Password = c.Password }));
+                _instagramAccount.Tell(new ShardEnvelope(c.Login, new Persistence.ActorModel.InstagramAccount.Commands.UpdateAccount(c.Version, c.Password)), 
+                    Sender);
             });
 
 

@@ -42,7 +42,13 @@ namespace SM.TaskEngine.Persistence.ActorModel
             });
         }
 
+
         protected void Save<TEvent>(TEvent @event)
+        {
+            Save<TEvent, object>(@event, null);
+        }
+
+        protected void Save<TEvent, TSyncCmd>(TEvent @event, TSyncCmd syncCmd)
         {
             Persist(@event, e =>
             {
@@ -51,6 +57,11 @@ namespace SM.TaskEngine.Persistence.ActorModel
                 {
                     SaveSnapshot(State);
                     _eventCount = 0;
+                }
+
+                if (syncCmd != null)
+                {
+                    Sender.Tell(syncCmd);
                 }
             });
         }

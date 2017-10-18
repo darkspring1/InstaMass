@@ -2,7 +2,19 @@
 {
     public class UpdateAccount
     {
-        public string Password { get; set; }
+
+        public UpdateAccount(int version, string password)
+        {
+            Password = password;
+            Version = version;
+        }
+
+
+        /// <summary>
+        /// номер версии для синхронизации со внешними системами
+        /// </summary>
+        public int Version { get; }
+        public string Password { get; }
 
     }
 }
