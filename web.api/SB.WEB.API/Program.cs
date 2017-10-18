@@ -1,5 +1,6 @@
 ﻿using Akka.Actor;
 using Akka.Routing;
+using SM.WEB.API.Akka;
 using System;
 using System.Linq;
 using Topshelf;
@@ -10,7 +11,7 @@ namespace SM.WEB.API
     class Program
     {
         //private static sb.core.log.ILogger _logger;
-        static ActorSystem System { get; set; }
+        static Actors Actors { get; set; }
         static void Main(string[] args)
         {
             try
@@ -49,26 +50,7 @@ namespace SM.WEB.API
             
 
 
-            System = ActorSystem.Create("instamass");
-
-
-            // register actor type as a sharded entity
-
-            var api = System.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "api");
-            var printer = System.ActorOf<Printer>();
-
-            System.Scheduler.Advanced.ScheduleRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), () =>
-            {
-                //api.Tell("ping", printer);
-                
-                if (api.Ask<Routees>(new GetRoutees()).Result.Members.Any())
-                {
-                    api.Tell("ping", printer);
-                }
-                
-            });
-
-            System.WhenTerminated.Wait();
+            
         }
     }
 
