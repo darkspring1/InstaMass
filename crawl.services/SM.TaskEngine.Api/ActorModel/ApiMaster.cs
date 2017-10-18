@@ -36,17 +36,16 @@ namespace SM.TaskEngine.Api.ActorModel
             });
 
             Receive<UpdateAccount>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Login, new Persistence.ActorModel.InstagramAccount.Commands.UpdateAccount(c.Version, c.Password)), 
-                    Sender);
+                _instagramAccount.Tell(new ShardEnvelope(c.Login, new Persistence.ActorModel.InstagramAccount.Commands.UpdateAccount(c.Version, c.Password)), Sender);
             });
 
 
             Receive<CreateTagTask>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.CreateTagTask { Login = c.Login, Tags = c.Tags }));
+                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.CreateTagTask(c.Version, c.Login, c.Tags )), Sender);
             });
 
             Receive<UpdateTagTask>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.UpdateTagTask { Tags = c.Tags }));
+                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.UpdateTagTask(c.Version, c.Tags )), Sender);
             });
         }
 

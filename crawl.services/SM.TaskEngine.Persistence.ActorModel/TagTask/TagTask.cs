@@ -1,5 +1,6 @@
 ﻿using SM.TaskEngine.Persistence.ActorModel.TagTask.Events;
 using SM.TaskEngine.Persistence.ActorModel.TagTask.Commands;
+using SM.TaskEngine.Persistence.ActorModel.InstagramAccount.Commands;
 
 namespace SM.TaskEngine.Persistence.ActorModel.TagTask
 {
@@ -28,16 +29,18 @@ namespace SM.TaskEngine.Persistence.ActorModel.TagTask
 
             Executing();
         }
-
+        
         protected override void Executing()
         {
             Command<CreateTagTask>(c => {
                 var @event = new TagTaskCreated { Login = c.Login, Tags = c.Tags };
-                Save(@event);
+                var syncCmd = new SyncTagTaskVersion(c.Version, PersistenceId);
+                Save(@event, syncCmd);
             });
 
             Command<UpdateTagTask>(c => {
                 var @event = new TagTaskUpdated { Tags = c.Tags };
+                var syncCmd = new SyncTagTaskVersion(c.Version, PersistenceId);
                 Save(@event);
             });
 

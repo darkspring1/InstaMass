@@ -2,8 +2,16 @@
 {
     public class UpdateTagTask
     {
-        public string Id { get; set; }
 
-        public string[] Tags { get; set; }
+        public UpdateTagTask(int version, string id, string[] tags)
+        {
+            Version = version;
+            Id = id;
+            Tags = tags;
+        }
+
+        public int Version { get; }
+        public string Id { get; }
+        public string[] Tags { get; }
     }
 }
