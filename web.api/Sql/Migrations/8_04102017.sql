@@ -1,5 +1,6 @@
 ﻿START TRANSACTION;
 -- DROP SCHEMA akka ;
+SELECT migrations.set_migration(8);
 CREATE SCHEMA akka
     AUTHORIZATION postgres;
 --ROLLBACK TRANSACTION;
