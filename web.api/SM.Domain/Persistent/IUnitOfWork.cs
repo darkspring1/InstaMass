@@ -13,7 +13,7 @@ namespace SM.Domain.Persistent
 
         IAccountRepository AccountRepository { get; }
         ITaskRepository TaskRepository { get; }
-        ILikeTaskRepository LikeTaskRepository { get; }
+        ITagTaskRepository LikeTaskRepository { get; }
 
         void Complete();
 

@@ -16,7 +16,6 @@ using System.Data.Entity;
 using AngularJSAuthentication.API;
 using SM.WEB.API.Providers;
 using Microsoft.Owin.Security.Facebook;
-using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin.Security.Google;
 using FluentValidation.WebApi;
 using SM.Domain.Events;
@@ -29,14 +28,17 @@ namespace SM.WEB.API
 
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
 
-        public static Container Container;
+        public static Container Container { get; }
         public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
         public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
 
         static App()
         {
-            var domainEventHandlersContainer = new Container(new DomainEventHandlersRegistry());
-            Container = new Container(new ApiRegistry());
+            var apiRegistry = new ApiRegistry();
+            var domainEventHandlersRegistry = new DomainEventHandlersRegistry();
+            domainEventHandlersRegistry.IncludeRegistry(apiRegistry);
+            var domainEventHandlersContainer = new Container(domainEventHandlersRegistry);
+            Container = new Container(apiRegistry);
             Container.Configure(x =>
                 x.For<IHandlerContainer>()
                 .Use<StructureMapEventHandlerContainer>()

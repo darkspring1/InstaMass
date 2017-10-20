@@ -1,0 +1,6 @@
+﻿START TRANSACTION;
+SELECT migrations.set_migration(10);
+
+ALTER TABLE "LikeTasks" RENAME TO "TagTasks";
+
+COMMIT TRANSACTION;

@@ -4,8 +4,8 @@ namespace SM.Domain.Events
 {
     public interface ICanHandle<T> where T : IDomainEvent
     {
-        void Handle(T args);
+        void Handle(T domainEvent);
 
-        Task HandleAsync(T args);
+        Task HandleAsync(T domainEvent);
     }
 }

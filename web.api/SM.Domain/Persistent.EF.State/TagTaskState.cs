@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SM.Domain.Persistent.EF.State
 {
-    public class LikeTaskState
+    public class TagTaskState
     {
         [Key]
         public Guid TaskId { get; set; }

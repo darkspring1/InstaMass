@@ -1,8 +1,5 @@
-﻿using Akka.Actor;
-using Akka.Routing;
-using SM.WEB.API.Akka;
+﻿using SM.WEB.API.Akka;
 using System;
-using System.Linq;
 using Topshelf;
 
 namespace SM.WEB.API
@@ -47,27 +44,7 @@ namespace SM.WEB.API
                 Console.WriteLine(e);
                 //_logger.Error(e);
             }
-            
-
-
-            
-        }
-    }
-
-
-    /// <summary>
-    /// Prints recommendations out to the console
-    /// </summary>
-    public class Printer : ReceiveActor
-    {
-        public Printer()
-        {
-            Receive<String>(res =>
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{Environment.NewLine}{res}");
-                Console.ResetColor();
-            });
+                       
         }
     }
 }

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Akka.Cluster" Version="1.3.1" />
+    <PackageReference Include="Akka.Serialization.Hyperion" Version="1.3.1-beta52" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SM.TaskEngine.Api\SM.TaskEngine.Api.csproj" />
+    <ProjectReference Include="..\SM.TaskEngine.Common\SM.TaskEngine.Common.csproj" />
+    <ProjectReference Include="..\SM.TaskEngine.Persistence.ActorModel\SM.TaskEngine.Persistence.ActorModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="akka.hocon">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

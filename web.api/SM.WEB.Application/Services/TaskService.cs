@@ -19,13 +19,13 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => UnitOfWork.TaskRepository.GetByUserAsync(userId));
         }
 
-        public Task<ServiceResult<LikeTask>> CreateLikeTask(Guid accountId, string[] tags)
+        public Task<ServiceResult<TagTask>> CreateLikeTask(Guid accountId, string[] tags)
         {
             return RunAsync(async () => {
-                LikeTask task = LikeTask.Create(accountId, tags);
+                TagTask task = TagTask.Create(accountId, tags);
                 UnitOfWork.LikeTaskRepository.AddLikeTask(task);
                 await UnitOfWork.CompleteAsync();
-                await RaiseAsync(new LikeTaskWasCreated { Task = task });
+                await RaiseAsync(new TagTaskWasCreated { Task = task });
                 return task;
             });
         }

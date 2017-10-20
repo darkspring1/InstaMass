@@ -1,4 +1,5 @@
 ﻿using SM.Domain.Events;
+using SM.Domain.Events.Sync;
 using SM.WEB.Application.DomainEventHandlers;
 using StructureMap;
 namespace SM.WEB.API.Ioc
@@ -8,7 +9,8 @@ namespace SM.WEB.API.Ioc
         public DomainEventHandlersRegistry()
         {
             For<IDomainEventDispatcher>().Use<EventDispatcher>();
-            For<ICanHandle<LikeTaskWasCreated>>().Use<LikeTaskCreateHandler>();
+            For<ICanHandle<TagTaskWasCreated>>().Use<TagTaskCreatedHandler>();
+            For<ICanHandle<TagTaskWasSyncWithExternalSystem>>().Use<TagTaskSyncHandler>();
         }
     }
 }
