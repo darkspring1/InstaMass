@@ -297,21 +297,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\backend\SM.Common\SM.Common\SM.Common.csproj">
-      <Project>{B4FAABEE-5525-4F11-85ED-5CE9F98FD5A9}</Project>
-      <Name>SM.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SM.Domain\SM.Domain.csproj">
-      <Project>{814BDFAF-388B-4640-A2DF-845D3596D730}</Project>
-      <Name>SM.Domain</Name>
+    <ProjectReference Include="..\SM.Domain_\SM.Domain_.csproj">
+      <Project>{8B1C4566-FF40-4962-971A-33B6C92BA0B8}</Project>
+      <Name>SM.Domain_</Name>
     </ProjectReference>
     <ProjectReference Include="..\SM.TaskEngine.Persistence.ActorModel\SM.TaskEngine.Persistence.ActorModel.csproj">
       <Project>{eea483c0-7b1a-49aa-bb7f-a9992a0d4ac9}</Project>
       <Name>SM.TaskEngine.Persistence.ActorModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SM.WEB.Application\SM.WEB.Application.csproj">
-      <Project>{c5947258-86cc-4a00-8418-fe39e533decf}</Project>
-      <Name>SM.WEB.Application</Name>
+    <ProjectReference Include="..\SM.WEB.Application_\SM.WEB.Application_.csproj">
+      <Project>{f3530be5-74bb-496b-bfdb-95a58b6580d2}</Project>
+      <Name>SM.WEB.Application_</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
