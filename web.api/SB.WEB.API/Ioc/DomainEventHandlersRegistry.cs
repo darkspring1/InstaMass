@@ -8,7 +8,6 @@ namespace SM.WEB.API.Ioc
     {
         public DomainEventHandlersRegistry()
         {
-            For<IDomainEventDispatcher>().Use<EventDispatcher>();
             For<ICanHandle<TagTaskWasCreated>>().Use<TagTaskCreatedHandler>();
             For<ICanHandle<TagTaskWasSyncWithExternalSystem>>().Use<TagTaskSyncHandler>();
         }

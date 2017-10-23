@@ -1,5 +1,6 @@
 ﻿using SM.Common.Cache;
 using SM.Common.Log;
+using SM.Domain.Events;
 using SM.Domain.Persistent;
 using SM.Domain.Persistent.EF;
 using StructureMap;
@@ -9,7 +10,9 @@ namespace SM.WEB.API.Ioc
     public class ApiRegistry : Registry
     {
         public ApiRegistry()
-        {/*
+        {
+            For<IDomainEventDispatcher>().Use<EventDispatcher>();
+            /*
             IncludeRegistry<MappingEngineRegistry>();
 
             For<DataContext>().Use<DataContext>().Ctor<string>("connectionString").Is("safetyButton");

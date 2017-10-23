@@ -36,8 +36,11 @@ namespace SM.Domain.Persistent.EF
             modelBuilder.Entity<UserState>().ToTable("Users", schema);
             modelBuilder.Entity<ApplicationState>().ToTable("Applications", schema);
 
-            modelBuilder.Entity<ExternalAuthProviderState>().ToTable("ExternalAuthProviders", schema);
-            modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
+            modelBuilder.Entity<ExternalAuthProviderState>()
+                .ToTable("ExternalAuthProviders", schema)
+                .HasKey(c => new { c.ExternalUserId, c.ExternalAuthProviderTypeId });
+
+        modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
 
             modelBuilder.Entity<RefreshTokenState>().ToTable("RefreshTokens", schema);
             modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
@@ -75,9 +78,9 @@ namespace SM.Domain.Persistent.EF
             return source;
         }
 
-        public Task<int> SaveChangesAsync()
+        Task<int> IEntityFrameworkDataContext.SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return base.SaveChangesAsync();
         }
     }
 }
