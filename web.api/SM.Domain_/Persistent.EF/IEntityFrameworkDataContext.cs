@@ -9,7 +9,7 @@ namespace SM.Domain.Persistent.EF
     {
         IEntityFrameworkDbSet<T> DbSet<T>() where T : class;
 
-        IQueryable<T> Include<T>(IQueryable<T> source, params Expression<Func<T, object>>[] path);
+        IQueryable<T> Include<T>(IQueryable<T> source, params Expression<Func<T, object>>[] path) where T : class;
 
         int SaveChanges();
 

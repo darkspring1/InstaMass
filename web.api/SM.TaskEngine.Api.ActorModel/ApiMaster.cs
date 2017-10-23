@@ -23,7 +23,7 @@ namespace SM.TaskEngine.Api.ActorModel
 
         private IActorRef CreateShardProxy<TActor>()
         {
-            return ClusterSharding.Get(Program.System).StartProxy(
+            return ClusterSharding.Get(ApiMaster.Context.System).StartProxy(
                 typeName: typeof(TActor).Name,
                 role: "persistence",
                 messageExtractor: new MessageExtractor());

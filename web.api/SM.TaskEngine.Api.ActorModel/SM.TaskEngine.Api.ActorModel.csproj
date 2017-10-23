@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SM.Domain_\SM.Domain_.csproj" />
-    <ProjectReference Include="..\SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj" />
+    <ProjectReference Include="..\SM.TaskEngine.Common\SM.TaskEngine.Common.csproj" />
+    <ProjectReference Include="..\SM.TaskEngine.Persistence.ActorModel\SM.TaskEngine.Persistence.ActorModel.csproj" />
   </ItemGroup>
 
 </Project>

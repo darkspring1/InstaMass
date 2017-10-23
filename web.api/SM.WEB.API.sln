@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.API", "SB.WEB.API\SM.WEB.API.csproj", "{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}"
 EndProject
@@ -23,9 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.TaskEngine.Persistence.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Common", "SM.Common\SM.Common.csproj", "{16D86671-9E0B-4519-A1F8-6E8527277FC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Domain_", "SM.Domain_\SM.Domain_.csproj", "{8B1C4566-FF40-4962-971A-33B6C92BA0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Domain_", "SM.Domain_\SM.Domain_.csproj", "{8B1C4566-FF40-4962-971A-33B6C92BA0B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.Application_", "SM.WEB.Application_\SM.WEB.Application_.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.WEB.Application_", "SM.WEB.Application_\SM.WEB.Application_.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.TaskEngine.Api.ActorModel", "SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj", "{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,14 @@ Global
 		{F3530BE5-74BB-496B-BFDB-95A58B6580D2}.Stage|Any CPU.Build.0 = Debug|Any CPU
 		{F3530BE5-74BB-496B-BFDB-95A58B6580D2}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3530BE5-74BB-496B-BFDB-95A58B6580D2}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Stage|Any CPU.ActiveCfg = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Stage|Any CPU.Build.0 = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using SM.Domain.Persistent.EF.State;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -70,12 +69,15 @@ namespace SM.Domain.Persistent.EF
             return this.SaveChanges();
         }
 
-        public IQueryable<T> Include<T>(IQueryable<T> source, params Expression<Func<T, object>>[] path)
+        public IQueryable<T> Include<T>(IQueryable<T> source, params Expression<Func<T, object>>[] path) where T : class
         {
             foreach (var p in path) { source = source.Include(p); }
             return source;
         }
 
-        
+        public Task<int> SaveChangesAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

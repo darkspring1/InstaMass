@@ -1,4 +1,5 @@
-﻿using SM.Common.Cache;
+﻿using Microsoft.EntityFrameworkCore;
+using SM.Common.Cache;
 using SM.Domain.Model;
 using SM.Domain.Persistent.EF.State;
 using System;

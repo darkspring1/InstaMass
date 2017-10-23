@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SM.Common.Cache;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
