@@ -1,8 +1,6 @@
 ﻿using Akka.Actor;
 using Akka.Routing;
 using StructureMap;
-using System;
-using System.Linq;
 
 namespace SM.WEB.API.Akka
 {
@@ -34,7 +32,7 @@ namespace SM.WEB.API.Akka
 
             });
             */
-            _system.WhenTerminated.Wait();
+            //_system.WhenTerminated.Wait();
         }
     }
 }

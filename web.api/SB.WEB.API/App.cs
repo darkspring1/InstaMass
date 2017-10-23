@@ -19,6 +19,7 @@ using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using FluentValidation.WebApi;
 using SM.Domain.Events;
+using SM.WEB.API.Akka;
 
 namespace SM.WEB.API
 {
@@ -35,14 +36,17 @@ namespace SM.WEB.API
         static App()
         {
             var apiRegistry = new ApiRegistry();
-            var domainEventHandlersRegistry = new DomainEventHandlersRegistry();
+            Container = new Container(apiRegistry);
+
+            Actors actors = new Actors(Container);
+            var domainEventHandlersRegistry = new DomainEventHandlersRegistry(actors.TaskApi);
             domainEventHandlersRegistry.IncludeRegistry(apiRegistry);
             var domainEventHandlersContainer = new Container(domainEventHandlersRegistry);
-            Container = new Container(apiRegistry);
+
             Container.Configure(x =>
                 x.For<IHandlerContainer>()
                 .Use<StructureMapEventHandlerContainer>()
-                .Ctor<IContainer>().Is(domainEventHandlersContainer));
+               .Ctor<IContainer>().Is(domainEventHandlersContainer));
         }
 
     public void Configuration(IAppBuilder app)

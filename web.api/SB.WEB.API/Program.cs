@@ -8,7 +8,6 @@ namespace SM.WEB.API
     class Program
     {
         //private static sb.core.log.ILogger _logger;
-        static Actors Actors { get; set; }
         static void Main(string[] args)
         {
             try

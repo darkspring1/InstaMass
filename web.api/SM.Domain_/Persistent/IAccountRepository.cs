@@ -10,6 +10,8 @@ namespace SM.Domain.Persistent
 
         Task<Account[]> FindByUserAsync(Guid userId);
 
+        Task<Account> GetByIdAsync(Guid accountId);
+
         Task<bool> IsExistAsync(string login);
     }
 }

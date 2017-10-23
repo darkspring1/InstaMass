@@ -14,5 +14,12 @@ namespace SM.Domain.Persistent.EF
         int SaveChanges();
 
         Task<int> SaveChangesAsync();
+
+
+        /// <summary>
+        /// для парелельных запросов в ef core
+        /// </summary>
+        /// <returns></returns>
+        IEntityFrameworkDataContext CreateNewInstance();
     }
 }

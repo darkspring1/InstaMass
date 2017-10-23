@@ -24,6 +24,7 @@ namespace SM.WEB.Application.DomainEventHandlers
         {
             TagTask task = await _unitOfWork.LikeTaskRepository.GetTagTaskByIdAsync(Guid.Parse(domainEvent.TaskId));
             task.InceraseExternalSystemVersion(domainEvent.ExternalSystemVersion);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

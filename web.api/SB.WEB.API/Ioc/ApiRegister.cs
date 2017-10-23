@@ -4,6 +4,7 @@ using SM.Domain.Events;
 using SM.Domain.Persistent;
 using SM.Domain.Persistent.EF;
 using StructureMap;
+using System.Configuration;
 
 namespace SM.WEB.API.Ioc
 {
@@ -19,12 +20,12 @@ namespace SM.WEB.API.Ioc
             For<IRepositoryProvider>().Use<RepositoryProvider>();
             */
             For<ILogger>().Use<NLogLogger>();
-            
+
             //For(typeof(Business.Dal.IRepository<>)).Use(typeof(EFRepository<>));
 
             For<IEntityFrameworkDataContext>()
                 .Use<EFDataContext>()
-                .Ctor<string>("connectionString").Is("SM");
+                .Ctor<string>("connectionString").Is(ConfigurationManager.ConnectionStrings["SM"].ConnectionString);
 
             For<ICacheProvider>().Use<MemoryCacheProvider>().Singleton();
 

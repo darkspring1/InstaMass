@@ -21,11 +21,21 @@ namespace SM.WEB.Application.Services
 
         public Task<ServiceResult<TagTask>> CreateLikeTask(Guid accountId, string[] tags)
         {
-            return RunAsync(async () => {
+            return RunAsync(async () =>
+            {
                 TagTask task = TagTask.Create(accountId, tags);
                 UnitOfWork.LikeTaskRepository.AddLikeTask(task);
-                await UnitOfWork.CompleteAsync();
-                await RaiseAsync(new TagTaskWasCreated { Task = task });
+                var completeTask = UnitOfWork.CompleteAsync();
+
+                Task<Account> accountTask;
+                //2 паралельных запроса
+                using (var unitOfWork2 = UnitOfWork.CreateNewInstance())
+                {
+                    accountTask = unitOfWork2.AccountRepository.GetByIdAsync(accountId);
+                    await Task.WhenAll(accountTask, completeTask);
+                }
+                
+                await RaiseAsync(new TagTaskWasCreated(accountTask.Result.Login, task));
                 return task;
             });
         }

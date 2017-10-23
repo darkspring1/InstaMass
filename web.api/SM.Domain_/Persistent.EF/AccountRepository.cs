@@ -40,5 +40,10 @@ namespace SM.Domain.Persistent.EF
         {
             return new Account(state);
         }
+
+        public Task<Account> GetByIdAsync(Guid accountId)
+        {
+            return CreateAsync(FirstAsync(Set.Entities.Where(a => a.Id == accountId)));
+        }
     }
 }

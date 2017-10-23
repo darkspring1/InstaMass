@@ -29,8 +29,6 @@ namespace SM.Domain.Model
             }
         }
 
-        public string Login => State.Task.Account.Login;
-
         public string[] Tags => _tagsLazy.Value;
 
         

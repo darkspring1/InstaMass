@@ -1,6 +1,6 @@
-﻿using Akka.Actor;
+﻿using System.Threading.Tasks;
+using Akka.Actor;
 using SM.Domain.Events;
-using System.Threading.Tasks;
 
 namespace SM.WEB.Application.DomainEventHandlers
 {
@@ -15,11 +15,12 @@ namespace SM.WEB.Application.DomainEventHandlers
         public void Handle(TagTaskWasCreated @event)
         {
             var t = @event.Task;
-            _taskApi.Tell(new SM.TaskEngine.Api.ActorModel.Commands.CreateTagTask(t.Version, t.Id.ToString(), t.Login, t.Tags));
+            _taskApi.Tell(new SM.TaskEngine.Api.ActorModel.Commands.CreateTagTask(t.Version, t.Id.ToString(), @event.InstagramAccountLogin, t.Tags));
         }
 
-        public Task HandleAsync(TagTaskWasCreated args)
+        public Task HandleAsync(TagTaskWasCreated domainEvent)
         {
+            Handle(domainEvent);
             return Task.FromResult(0);
         }
     }

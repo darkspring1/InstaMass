@@ -11,8 +11,12 @@ namespace SM.Domain.Persistent.EF
     {
         const string schema = "public";
 
+
+        readonly string _connectionString;
+
         public EFDataContext(string connectionString)
         {
+            _connectionString = connectionString;
             /*
             Database.SetInitializer<EFDataContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
@@ -20,13 +24,15 @@ namespace SM.Domain.Persistent.EF
             */
         }
 
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //"server=localhost;port=5432;database=SocialMass; user=postgres;password=postgres"
             //optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=usersdb;Username=postgres;Password=password");
 
             //optionsBuilder.UseNpgsql("server=localhost;port=5432;database=SocialMass; user=postgres;password=postgres");
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=SocialMass;Username=postgres;Password=postgres");
+            optionsBuilder.UseNpgsql(_connectionString);
         }
 
 
@@ -48,7 +54,8 @@ namespace SM.Domain.Persistent.EF
             modelBuilder
                 .Entity<TagTaskState>()
                 .ToTable("TagTasks", schema)
-                .HasOne(t => t.Task);
+                .HasOne(t => t.Task)
+                .WithOne();
                 
                 //.HasRequired(t => t.Task)
                 //.WithRequiredDependent();
@@ -81,6 +88,11 @@ namespace SM.Domain.Persistent.EF
         Task<int> IEntityFrameworkDataContext.SaveChangesAsync()
         {
             return base.SaveChangesAsync();
+        }
+
+        public IEntityFrameworkDataContext CreateNewInstance()
+        {
+            return new EFDataContext(_connectionString);
         }
     }
 }

@@ -18,5 +18,11 @@ namespace SM.Domain.Persistent
         void Complete();
 
         Task CompleteAsync();
+
+        /// <summary>
+        /// для парелельных запросов в ef core
+        /// </summary>
+        /// <returns></returns>
+        IUnitOfWork CreateNewInstance();
     }
 }
