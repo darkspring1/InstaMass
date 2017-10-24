@@ -41,11 +41,11 @@ namespace SM.TaskEngine.Api.ActorModel
 
 
             Receive<CreateTagTask>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.CreateTagTask(c.Version, c.Login, c.Tags )), Sender);
+                _tagTask.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.CreateTagTask(c.Version, c.Login, c.Tags )), Sender);
             });
 
             Receive<UpdateTagTask>(c => {
-                _instagramAccount.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.UpdateTagTask(c.Version, c.Tags )), Sender);
+                _tagTask.Tell(new ShardEnvelope(c.Id, new Persistence.ActorModel.TagTask.Commands.UpdateTagTask(c.Version, c.Tags )), Sender);
             });
         }
 

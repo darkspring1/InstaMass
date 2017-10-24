@@ -22,7 +22,9 @@ namespace SM.TaskEngine.Api.TestClient
 
             Printer = System.ActorOf(Props.Create(() => new Printer()));
 
-            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new UpdateAccount("test", "Test" + DateTime.Now.ToBinary(), 1), Printer);
+            //System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new UpdateAccount("test", "Test" + DateTime.Now.ToBinary(), 1), Printer);
+
+            System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CoordinatorRouter, new CreateTagTask(1, Guid.NewGuid().ToString(), "someLogin", new[] { "tits" }), Printer);
 
             System.WhenTerminated.Wait();
         }
