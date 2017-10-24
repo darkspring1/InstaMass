@@ -20,6 +20,7 @@ using Microsoft.Owin.Security.Google;
 using FluentValidation.WebApi;
 using SM.Domain.Events;
 using SM.WEB.API.Akka;
+using Akka.Actor;
 
 namespace SM.WEB.API
 {
@@ -27,19 +28,33 @@ namespace SM.WEB.API
     {
         //private static sb.core.log.ILogger _logger = new NLogLogger();
 
-        public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
+        static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; }
 
         public static Container Container { get; }
-        public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
-        public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
+        public static ActorSystem ActorSystem { get; }
+
+        //public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
+        static FacebookAuthenticationOptions FacebookAuthOptions { get; }
 
         static App()
         {
+            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
+
+            //Configure Facebook External Login
+            FacebookAuthOptions = new FacebookAuthenticationOptions()
+            {
+                AppId = "196483557554508",
+                AppSecret = "601ca0e2d0898e7105785db885bca4c9",
+                Provider = new FacebookAuthProvider()
+            };
+
+            ActorSystem = ActorSystem.Create("instamass");
+            SystemActors systemActors = new SystemActors(ActorSystem, Container);
+
             var apiRegistry = new ApiRegistry();
             Container = new Container(apiRegistry);
 
-            Actors actors = new Actors(Container);
-            var domainEventHandlersRegistry = new DomainEventHandlersRegistry(actors.TaskApi);
+            var domainEventHandlersRegistry = new DomainEventHandlersRegistry(systemActors.TaskApi);
             domainEventHandlersRegistry.IncludeRegistry(apiRegistry);
             var domainEventHandlersContainer = new Container(domainEventHandlersRegistry);
 
@@ -114,7 +129,6 @@ namespace SM.WEB.API
         {
             //use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
-            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
@@ -141,15 +155,9 @@ namespace SM.WEB.API
             app.UseGoogleAuthentication(googleAuthOptions);
             */
             
-            //Configure Facebook External Login
-            facebookAuthOptions = new FacebookAuthenticationOptions()
-            {
-                AppId = "196483557554508",
-                AppSecret = "601ca0e2d0898e7105785db885bca4c9",
-                Provider = new FacebookAuthProvider()
-            };
-            facebookAuthOptions.Scope.Add("email");
-            app.UseFacebookAuthentication(facebookAuthOptions);
+          
+            FacebookAuthOptions.Scope.Add("email");
+            app.UseFacebookAuthentication(FacebookAuthOptions);
             
 
         }

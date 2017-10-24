@@ -1,10 +1,11 @@
 ﻿using Akka.Actor;
 using Akka.Routing;
+using SM.TaskEngine.Api.ActorModel;
 using StructureMap;
 
 namespace SM.WEB.API.Akka
 {
-    class Actors
+    class SystemActors
     {
         ActorSystem _system;
 
@@ -12,11 +13,11 @@ namespace SM.WEB.API.Akka
 
         public IActorRef TaskApi { get; }
 
-        public Actors(IContainer container)
+        public SystemActors(ActorSystem system, IContainer container)
         {
-            _system = ActorSystem.Create("instamass");
+            _system = system;
 
-            TaskApi = _system.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "taskApi");
+            TaskApi = _system.ActorOf(Props.Create(() => new ApiMaster()).WithRouter(FromConfig.Instance), "taskApi");
 
             /*
             var printer = _system.ActorOf<Printer>();
