@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.API", "SB.WEB.API\SM.WEB.API.csproj", "{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Domain", "SM.Domain\SM.Domain.csproj", "{814BDFAF-388B-4640-A2DF-845D3596D730}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.Application", "SM.WEB.Application\SM.WEB.Application.csproj", "{C5947258-86CC-4A00-8418-FE39E533DECF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.TaskEngine.Api", "SM.TaskEngine.Api\SM.TaskEngine.Api.csproj", "{B038A5F5-8550-4B4F-AEF4-0BE837A7DE8F}"
 EndProject
@@ -27,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Domain_", "SM.Domain_\SM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.WEB.Application_", "SM.WEB.Application_\SM.WEB.Application_.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.TaskEngine.Api.ActorModel", "SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj", "{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.TaskEngine.Api.ActorModel", "SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj", "{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,22 +41,6 @@ Global
 		{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}.Stage|Any CPU.Build.0 = Release|Any CPU
 		{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}.Test|Any CPU.Build.0 = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Release|Any CPU.Build.0 = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Stage|Any CPU.ActiveCfg = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Stage|Any CPU.Build.0 = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{814BDFAF-388B-4640-A2DF-845D3596D730}.Test|Any CPU.Build.0 = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Stage|Any CPU.ActiveCfg = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Stage|Any CPU.Build.0 = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{C5947258-86CC-4A00-8418-FE39E533DECF}.Test|Any CPU.Build.0 = Release|Any CPU
 		{B038A5F5-8550-4B4F-AEF4-0BE837A7DE8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B038A5F5-8550-4B4F-AEF4-0BE837A7DE8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B038A5F5-8550-4B4F-AEF4-0BE837A7DE8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
