@@ -346,9 +346,9 @@
       <Project>{16d86671-9e0b-4519-a1f8-6e8527277fc4}</Project>
       <Name>SM.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SM.Domain_\SM.Domain_.csproj">
+    <ProjectReference Include="..\SM.Domain\SM.Domain.csproj">
       <Project>{8B1C4566-FF40-4962-971A-33B6C92BA0B8}</Project>
-      <Name>SM.Domain_</Name>
+      <Name>SM.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj">
       <Project>{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}</Project>
@@ -358,9 +358,9 @@
       <Project>{eea483c0-7b1a-49aa-bb7f-a9992a0d4ac9}</Project>
       <Name>SM.TaskEngine.Persistence.ActorModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SM.WEB.Application_\SM.WEB.Application_.csproj">
+    <ProjectReference Include="..\SM.WEB.Application\SM.WEB.Application.csproj">
       <Project>{f3530be5-74bb-496b-bfdb-95a58b6580d2}</Project>
-      <Name>SM.WEB.Application_</Name>
+      <Name>SM.WEB.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.TaskEngine.Persistence.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Common", "SM.Common\SM.Common.csproj", "{16D86671-9E0B-4519-A1F8-6E8527277FC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Domain_", "SM.Domain_\SM.Domain_.csproj", "{8B1C4566-FF40-4962-971A-33B6C92BA0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.Domain", "SM.Domain\SM.Domain.csproj", "{8B1C4566-FF40-4962-971A-33B6C92BA0B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.WEB.Application_", "SM.WEB.Application_\SM.WEB.Application_.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.WEB.Application", "SM.WEB.Application\SM.WEB.Application.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.TaskEngine.Api.ActorModel", "SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj", "{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}"
 EndProject
