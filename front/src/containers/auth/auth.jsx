@@ -1,19 +1,26 @@
 /* eslint class-methods-use-this: 0 */
+/* eslint jsx-a11y/label-has-for: 0 */
+
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 
-import AuthExternalProvider from '../actions/authExternalProvider';
-import Login from '../actions/login';
+import { Login, AuthExternalProvider } from '../../actions';
+import { required } from '../../form-validators';
+import renderField from './renderField';
+
+const formName = 'auth';
+
+const emailRequered = required('Введите Email');
+const passwordRequered = required('Введите пароль');
+
 
 class Auth extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: 'olt.egor@gmail.com', password: '123' };
     this.login = this.login.bind(this);
-    this.emailHandleChange = this.emailHandleChange.bind(this);
-    this.passwordHandleChange = this.passwordHandleChange.bind(this);
   }
 
   componentWillMount() {
@@ -29,62 +36,51 @@ class Auth extends React.Component {
     this.style.parentNode.removeChild(this.style);
   }
 
-  login(event) {
-    this.props.onLogin(this.state);
-    event.preventDefault();
+  login(v, event) {
+    if (this.props.valid) {
+      this.props.onLogin(this.props.fields);
+      event.preventDefault();
+    }
   }
 
-  emailHandleChange(event) {
-    this.setState({ email: event.target.value });
-  }
-
-  passwordHandleChange(event) {
-    this.setState({ password: event.target.value });
-  }
 
   render() {
+    const { /* handleSubmit, */pristine, /* reset, */ submitting } = this.props;
     return (<main className="auth-main">
       <div className="auth-block">
         <h1>Sign in to Blur Admin</h1>
         <a href="reg.html" className="auth-link">New to Blur Admin? Sign up!</a>
 
-        <form className="form-horizontal">
-          <div className="form-group">
-            <label htmlFor="inputEmail3" className="col-sm-2 control-label">Email</label>
+        <div className="form-horizontal">
+          <form >
 
-            <div className="col-sm-10">
-              <input
-                type="email"
-                className="form-control"
-                value={this.state.email}
-                onChange={this.emailHandleChange}
-                placeholder="Email"
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputPassword3" className="col-sm-2 control-label">Password</label>
+            <Field
+              name="email"
+              component={renderField}
+              label="Email"
+              type="email"
+              validate={[emailRequered]}
+            />
 
-            <div className="col-sm-10">
-              <input
-                type="password"
-                className="form-control"
-                value={this.state.password}
-                onChange={this.passwordHandleChange}
-                placeholder="Password"
-              />
-            </div>
-          </div>
+            <Field
+              name="password"
+              component={renderField}
+              label="Password"
+              type="password"
+              validate={[passwordRequered]}
+            />
+          </form>
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
               <button
-                className="btn btn-default btn-auth"
                 onClick={this.login}
+                disabled={pristine || submitting}
+                className="btn btn-default btn-auth"
               >Sign in</button>
               <a href className="forgot-pass">Forgot password?</a>
             </div>
           </div>
-        </form>
+        </div>
 
         <div className="auth-sep"><span><span>or Sign in with one click</span></span></div>
 
@@ -105,8 +101,17 @@ class Auth extends React.Component {
 }
 
 
+const authForm = reduxForm({
+  // a unique name for the form
+  form: formName
+})(Auth);
+
+
 export default connect(
-  state => ({ state }), // map state to props
+  (state) => {
+    const values = state.form[formName] ? state.form[formName].values : null;
+    return { fields: values, auth: state.auth };
+  },
 dispatch => ({
   onAuthExternalProvider(provider) {
     dispatch(AuthExternalProvider(provider));
@@ -117,4 +122,4 @@ dispatch => ({
     dispatch(Login(loginData));
   }
 })
-)(Auth);
+)(authForm);

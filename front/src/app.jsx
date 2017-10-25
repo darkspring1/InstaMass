@@ -3,7 +3,7 @@ import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Layout from './containers/layout';
-import Auth from './containers/auth';
+import Auth from './containers/auth/auth';
 
 
 function App(props) {

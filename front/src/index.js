@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ConnectedRouter, routerReducer, routerMiddleware/* , push */ } from 'react-router-redux';
 import { Route } from 'react-router-dom';
@@ -25,7 +26,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const reducers = combineReducers({
   ...Reducers,
-  router: routerReducer
+  router: routerReducer,
+  form: formReducer
 });
 
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(routerMW, thunk, sagaMiddleware)));
