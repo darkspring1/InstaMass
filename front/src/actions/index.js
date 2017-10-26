@@ -1,5 +1,11 @@
 import ActionTypes from '../constants/actionTypes';
 
+import AuthExternalProvider from './authExternalProvider';
+import Login from './login';
+
+export { AuthExternalProvider };
+export { Login };
+
 export function RequestStarted(payload) {
   const p = payload || {};
   p.preloader = p.preloader || 'top';

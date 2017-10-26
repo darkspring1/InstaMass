@@ -2,12 +2,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import ContentTop from '../components/contentTop';
-import TagInfo from '../components/tagInfo';
+import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from '../components/';
 import Button from '../controls/button';
 import * as Actions from '../actions';
-import AddNewTag from '../components/addNewTag';
-import AccountDropDown from '../components/accountDropDown';
 
 
 class LikeTaskEditor extends React.Component {
@@ -70,20 +67,65 @@ class LikeTaskEditor extends React.Component {
           </div>
 
           <div className="panel-heading clearfix">
-            <h3 className="panel-title">Настройки</h3>
+            <h3 className="panel-title">Подписываться только если</h3>
           </div>
 
           <div className="panel-body" >
 
             <form>
-              <div className="form-group"><label htmlFor="exampleInputEmail1">Email address</label>
-                <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" /></div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+
+
+              <label className="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox01" value="option1" />
+                <span>Есть аватар</span>
+              </label>
+
+              <label className="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox01" value="option1" />
+                <span>Есть аватар</span>
+              </label>
+
+
+              <div className="checkbox">
+                <label className="custom-checkbox">
+                  <input type="checkbox" /> <span>Check me out</span>
+                </label>
               </div>
-              <div className="checkbox"><label className="custom-checkbox">
-                <input type="checkbox" /> <span>Check me out</span></label>
+
+              <div className="form-group">
+                <label htmlFor="input01">последняя побликация была</label>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control with-warning-addon"
+                    placeholder="Recipient's username"
+                    aria-describedby="basic-addon2"
+                  />
+                  <span
+                    className="input-group-addon input-group-addon-warning addon-right"
+                    id="basic-addon2"
+                  >дня назад</span>
+                </div>
+              </div>
+
+              <Range from="10" to="100500" />
+
+              <div className="form-group">
+                <label htmlFor="input01">Количество публикаций пользователя</label>
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="input01">Количество подписчиков пользователя</label>
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="input01">Количество подписок</label>
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
+                <input type="text" className="form-control" id="input01" placeholder="Text" />
               </div>
 
             </form>
