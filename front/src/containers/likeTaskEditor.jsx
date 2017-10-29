@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from '../components/';
 import Button from '../controls/button';
 import * as Actions from '../actions';
+import { InputGroup } from 'controls/';
 
 
 class LikeTaskEditor extends React.Component {
@@ -74,59 +75,20 @@ class LikeTaskEditor extends React.Component {
 
             <form>
 
-
-              <label className="checkbox-inline custom-checkbox nowrap">
-                <input type="checkbox" id="inlineCheckbox01" value="option1" />
-                <span>Есть аватар</span>
-              </label>
-
-              <label className="checkbox-inline custom-checkbox nowrap">
-                <input type="checkbox" id="inlineCheckbox01" value="option1" />
-                <span>Есть аватар</span>
-              </label>
-
-
               <div className="checkbox">
                 <label className="custom-checkbox">
-                  <input type="checkbox" /> <span>Check me out</span>
+                  <input type="checkbox" /> <span>Есть аватар</span>
                 </label>
               </div>
 
               <div className="form-group">
-                <label htmlFor="input01">последняя побликация была</label>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control with-warning-addon"
-                    placeholder="Recipient's username"
-                    aria-describedby="basic-addon2"
-                  />
-                  <span
-                    className="input-group-addon input-group-addon-warning addon-right"
-                    id="basic-addon2"
-                  >дня назад</span>
-                </div>
+                <label htmlFor="input01">Последняя побликация была</label>
+                <InputGroup primary right="дня назад" />
               </div>
 
-              <Range from="10" to="100500" />
-
-              <div className="form-group">
-                <label htmlFor="input01">Количество публикаций пользователя</label>
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="input01">Количество подписчиков пользователя</label>
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="input01">Количество подписок</label>
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-                <input type="text" className="form-control" id="input01" placeholder="Text" />
-              </div>
+              <Range from="10" to="100500" label="Количество публикаций пользователя" />
+              <Range from="10" to="100500" label="Количество подписчиков пользователя" />
+              <Range from="10" to="100500" label="Количество подписок" />
 
             </form>
 

@@ -1,5 +1,7 @@
-import button from './button';
-import topPreloader from './topPreloader';
+import Button from './button';
+import TopPreloader from './topPreloader';
+import InputGroup from './inputGroup';
 
-export { button };
-export { topPreloader };
+export { Button };
+export { TopPreloader };
+export { InputGroup };

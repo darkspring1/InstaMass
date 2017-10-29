@@ -1,29 +1,32 @@
 import React from 'react';
 
+import classBuilder from './utils';
+
+function inputGroupAddonBuilder(str) {
+  return `input-group-addon-${str}`;
+}
+
 export default (props) => {
-  let btnClassName = `btn ${props.cssClass}`;
-  if (props.primary) {
-    btnClassName += ' btn-primary';
-  } else if (props.danger) {
-    btnClassName += ' btn-danger';
-  } else if (props.success) {
-    btnClassName += ' btn-success';
-  } else {
-    btnClassName += ' btn-default';
+  const spanClass = `input-group-addon ${classBuilder(props, inputGroupAddonBuilder)}`;
+
+  function renderSpan(text, cssClass, subClass) {
+    if (text) {
+      return <span className={cssClass + subClass}>{text}</span>;
+    }
+    return null;
   }
 
-  if (props.large) {
-    btnClassName += ' btn-lg';
-  }
-
-  let icon = null;
-  if (props.icon) {
-    btnClassName += ' btn-with-icon';
-    icon = <i className={props.icon} />;
-  }
 
   return (
-    <button type="button" onClick={props.onClick} className={btnClassName} disabled={props.disabled}>
-      {icon}{props.text}
-    </button>);
+
+    <div className="input-group">
+      {renderSpan(props.left, spanClass, ' addon-left')}
+      <input
+        value={props.value}
+        type="text"
+        className="form-control with-primary-addon"
+      />
+      {renderSpan(props.right, spanClass, ' addon-right')}
+    </div>
+  );
 };
