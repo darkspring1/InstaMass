@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from '../components/';
-import Button from '../controls/button';
-import * as Actions from '../actions';
-import { InputGroup } from 'controls/';
+import { InputGroup, Button } from 'controls/';
+import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from 'components/';
+import * as Actions from 'actions';
 
 
 class LikeTaskEditor extends React.Component {

@@ -24,7 +24,7 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     rules: [
-     /* {
+     {
         enforce: 'pre',
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
@@ -32,7 +32,7 @@ module.exports = {
         options: {
           failOnError: true
         }
-      },*/
+      },
       {
       test: /\.(js|jsx)?$/,
       use: 'babel-loader',
@@ -47,10 +47,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
-    alias: {
-      //controls: path.resolve(__dirname, 'src/controls/')      
-    },
-    modules: [path.resolve(__dirname, "src"), 'node_modules'],
+    modules: ['src', 'node_modules'],
     mainFiles: ['index']
   },
   plugins: [

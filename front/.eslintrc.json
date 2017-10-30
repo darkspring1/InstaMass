@@ -31,5 +31,15 @@
         "NODE_ENV": true,
         "ReactDOM": true,
         "React": true
+    },
+    
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ]
+        }
+      }
     }
 }
