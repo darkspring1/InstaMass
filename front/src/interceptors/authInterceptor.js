@@ -19,6 +19,7 @@ const authTokenInterceptor = (config) => {
     const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
     if (authData) {
       logger.debug(`add authorization header. url:${config.url}`);
+      logger.debug(JSON.stringify(authData));
       config.headers.Authorization = `Bearer ${authData.access_token}`;
     }
   } else {
@@ -41,7 +42,9 @@ const refreshTokenInterceptor = (store, error) => {
         .then((response) => {
           store.dispatch({ type: ActionTypes.AUTHORIZATION_DATA, payload: response.data });
           refreshTokenPromise = null;
+          // LocalStorage.set(LocalStorageKeys.AUTHORIZATION_DATA, response.data);
           logger.debug('token was refreshed');
+          logger.debug(JSON.stringify(response.data));
         })
         .catch((err) => {
           debugger;
