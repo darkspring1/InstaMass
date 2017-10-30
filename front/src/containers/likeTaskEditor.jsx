@@ -13,10 +13,20 @@ class LikeTaskEditor extends React.Component {
     super(props);
     this.onAddNewTask = this.onAddNewTask.bind(this);
     this.onAccountSelected = this.onAccountSelected.bind(this);
+    this.onPostNumberChange = this.onPostNumberChange.bind(this);
+
+    this.state = {
+      postNumber: { from: 0, to: 100, disabled: false }
+    };
   }
 
   componentWillMount() {
     this.props.onAccountsRequested();
+  }
+
+  onPostNumberChange(postNumber) {
+    debugger;
+    this.setState({ postNumber });
   }
 
   onAddNewTask() {
@@ -31,7 +41,7 @@ class LikeTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
-
+    const state = this.state;
     const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
 
     return (
@@ -74,6 +84,7 @@ class LikeTaskEditor extends React.Component {
 
             <form>
 
+
               <div className="checkbox">
                 <label className="custom-checkbox">
                   <input type="checkbox" /> <span>Есть аватар</span>
@@ -85,7 +96,13 @@ class LikeTaskEditor extends React.Component {
                 <InputGroup primary right="дня назад" />
               </div>
 
-              <Range from="10" to="100500" label="Количество публикаций пользователя" />
+              <Range
+                onChange={this.onPostNumberChange}
+                disabled
+                from={state.po}
+                to="100500"
+                label="Количество публикаций пользователя"
+              />
               <Range from="10" to="100500" label="Количество подписчиков пользователя" />
               <Range from="10" to="100500" label="Количество подписок" />
 
