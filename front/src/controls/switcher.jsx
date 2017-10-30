@@ -1,4 +1,3 @@
-/* eslint jsx-a11y/label-has-for:0 */
 import React from 'react';
 
 import classBuilder from './utils';
@@ -7,10 +6,17 @@ function switcherBuilder(str) {
   return `switcher ${str}`;
 }
 
+
 export default (props) => {
   const switcherClass = classBuilder(props, switcherBuilder);
   return (
-    <label className="switcher-container">
+    <div
+      className="switcher-container"
+      aria-checked="false"
+      tabIndex="0"
+      role="checkbox"
+      onClick={props.onChange}
+    >
       <input type="checkbox" checked={!!props.checked} />
       <div className={switcherClass} >
         <div className="handle-container">
@@ -19,6 +25,6 @@ export default (props) => {
           <span className="handle handle-off">{props['off-text']}</span>
         </div>
       </div>
-    </label>
+    </div>
   );
 };

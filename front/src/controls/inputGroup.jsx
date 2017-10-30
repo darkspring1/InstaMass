@@ -16,6 +16,9 @@ export default (props) => {
     return null;
   }
 
+  function onChange(event) {
+    props.onChange(event.target.value, event);
+  }
 
   return (
 
@@ -24,6 +27,8 @@ export default (props) => {
       <input
         value={props.value}
         type="text"
+        onChange={onChange}
+        disabled={props.disabled}
         className="form-control with-primary-addon"
       />
       {renderSpan(props.right, spanClass, ' addon-right')}

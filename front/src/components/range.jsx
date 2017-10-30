@@ -16,15 +16,18 @@ export default class Range extends React.Component {
   }
 
   onSwitcherChange() {
-
+    const props = this.props;
+    props.onChange({ from: props.from, to: props.to, disabled: !props.disabled });
   }
 
-  onFromChange() {
-
+  onFromChange(from) {
+    const props = this.props;
+    props.onChange({ from, to: props.to, disabled: props.disabled });
   }
 
-  onToChange() {
-
+  onToChange(to) {
+    const props = this.props;
+    props.onChange({ from: props.from, to, disabled: props.disabled });
   }
 
   render() {
@@ -32,20 +35,26 @@ export default class Range extends React.Component {
     return (<div className="row">
       <div className="col-md-1">
         <div style={{ 'margin-top': '21px' }}>
-          <Switcher checked={props.disabled} primary on-text="вкл" onChange={this.onSwitcherChange} off-text="выкл" />
+          <Switcher
+            checked={!props.disabled}
+            primary
+            on-text="вкл"
+            onChange={this.onSwitcherChange}
+            off-text="выкл"
+          />
         </div>
       </div>
       <div className="col-md-5" >
         <div className="form-group">
           <label>{props.label}</label>
-          <InputGroup onChange={this.onFromChange} value={props.from} primary left="от" />
+          <InputGroup disabled={props.disabled} onChange={this.onFromChange} value={props.from} primary left="от" />
         </div>
       </div>
 
       <div className="col-md-6" >
         <div className="form-group">
           <label>&nbsp;</label>
-          <InputGroup onChange={this.onToChange} value={props.to} primary left="до" />
+          <InputGroup disabled={props.disabled} onChange={this.onToChange} value={props.to} primary left="до" />
         </div>
       </div>
     </div>);
