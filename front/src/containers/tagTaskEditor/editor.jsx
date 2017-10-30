@@ -7,7 +7,7 @@ import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from 'componen
 import * as Actions from 'actions';
 
 
-class LikeTaskEditor extends React.Component {
+class TagTaskEditor extends React.Component {
 
   constructor(props) {
     super(props);
@@ -151,7 +151,7 @@ function mapStateToProps(state) {
 }
 
 
-const likeTaskEditor = connect(
+const tagTaskEditor = connect(
   mapStateToProps, // map state to props
   dispatch => ({
     onAddNewTag(tag) {
@@ -167,6 +167,6 @@ const likeTaskEditor = connect(
     }
 
   })
-)(LikeTaskEditor);
+)(TagTaskEditor);
 
-export default likeTaskEditor;
+export default tagTaskEditor;
