@@ -17,26 +17,30 @@ export default class Range extends React.Component {
 
   onSwitcherChange() {
     const props = this.props;
-    props.onChange({ from: props.from, to: props.to, disabled: !props.disabled });
+    const model = { ...props.model };
+    model.disabled = !model.disabled;
+    props.onChange(model);
   }
 
   onFromChange(from) {
     const props = this.props;
-    props.onChange({ from, to: props.to, disabled: props.disabled });
+    const model = { ...props.model, ...{ from } };
+    props.onChange(model);
   }
 
   onToChange(to) {
     const props = this.props;
-    props.onChange({ from: props.from, to, disabled: props.disabled });
+    const model = { ...props.model, ...{ to } };
+    props.onChange(model);
   }
 
   render() {
     const props = this.props;
     return (<div className="row">
       <div className="col-md-1">
-        <div style={{ 'margin-top': '21px' }}>
+        <div style={{ marginTop: '21px' }}>
           <Switcher
-            checked={!props.disabled}
+            checked={!props.model.disabled}
             primary
             on-text="вкл"
             onChange={this.onSwitcherChange}
@@ -47,14 +51,26 @@ export default class Range extends React.Component {
       <div className="col-md-5" >
         <div className="form-group">
           <label>{props.label}</label>
-          <InputGroup disabled={props.disabled} onChange={this.onFromChange} value={props.from} primary left="от" />
+          <InputGroup
+            disabled={props.model.disabled}
+            onChange={this.onFromChange}
+            value={props.model.from}
+            primary
+            left="от"
+          />
         </div>
       </div>
 
       <div className="col-md-6" >
         <div className="form-group">
           <label>&nbsp;</label>
-          <InputGroup disabled={props.disabled} onChange={this.onToChange} value={props.to} primary left="до" />
+          <InputGroup
+            disabled={props.model.disabled}
+            onChange={this.onToChange}
+            value={props.model.to}
+            primary
+            left="до"
+          />
         </div>
       </div>
     </div>);

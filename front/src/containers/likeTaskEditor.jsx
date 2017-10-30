@@ -13,10 +13,18 @@ class LikeTaskEditor extends React.Component {
     super(props);
     this.onAddNewTask = this.onAddNewTask.bind(this);
     this.onAccountSelected = this.onAccountSelected.bind(this);
-    this.onPostNumberChange = this.onPostNumberChange.bind(this);
+    this.onPostsChange = this.onPostsChange.bind(this);
+    this.onFollowersChange = this.onFollowersChange.bind(this);
+    this.onFollowingsChange = this.onFollowingsChange.bind(this);
+
+    function range(from, to, disabled) {
+      return { from, to, disabled };
+    }
 
     this.state = {
-      postNumber: { from: 0, to: 100, disabled: false }
+      posts: range(0, 100, true),
+      followers: range(0, 100, true),
+      followings: range(0, 100, true),
     };
   }
 
@@ -24,9 +32,16 @@ class LikeTaskEditor extends React.Component {
     this.props.onAccountsRequested();
   }
 
-  onPostNumberChange(postNumber) {
-    debugger;
-    this.setState({ postNumber });
+  onPostsChange(posts) {
+    this.setState({ posts });
+  }
+
+  onFollowersChange(followers) {
+    this.setState({ followers });
+  }
+
+  onFollowingsChange(followings) {
+    this.setState({ followings });
   }
 
   onAddNewTask() {
@@ -97,14 +112,20 @@ class LikeTaskEditor extends React.Component {
               </div>
 
               <Range
-                onChange={this.onPostNumberChange}
-                disabled
-                from={state.po}
-                to="100500"
+                onChange={this.onPostsChange}
+                model={state.posts}
                 label="Количество публикаций пользователя"
               />
-              <Range from="10" to="100500" label="Количество подписчиков пользователя" />
-              <Range from="10" to="100500" label="Количество подписок" />
+              <Range
+                onChange={this.onFollowersChange}
+                model={state.followers}
+                label="Количество подписчиков пользователя"
+              />
+              <Range
+                onChange={this.onFollowingsChange}
+                model={state.followings}
+                label="Количество подписок"
+              />
 
             </form>
 
