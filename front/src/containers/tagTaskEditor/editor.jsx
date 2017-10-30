@@ -1,9 +1,14 @@
-/* eslint jsx-a11y/label-has-for: 0 */
-
 import React from 'react';
 import { connect } from 'react-redux';
-import { InputGroup, Button } from 'controls/';
-import { ContentTop, TagInfo, AddNewTag, AccountDropDown, Range } from 'components/';
+import { Button } from 'controls/';
+import {
+  ContentTop,
+  TagInfo,
+  AddNewTag,
+  AccountDropDown,
+  Range,
+  SwitchedInputGroup,
+  SwitchedLabel } from 'components/';
 import * as Actions from 'actions';
 
 
@@ -16,6 +21,8 @@ class TagTaskEditor extends React.Component {
     this.onPostsChange = this.onPostsChange.bind(this);
     this.onFollowersChange = this.onFollowersChange.bind(this);
     this.onFollowingsChange = this.onFollowingsChange.bind(this);
+    this.onLastPostChange = this.onLastPostChange.bind(this);
+    this.onAvatarExist = this.onAvatarExist.bind(this);
 
     function range(from, to, disabled) {
       return { from, to, disabled };
@@ -25,6 +32,8 @@ class TagTaskEditor extends React.Component {
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
+      lastPost: { value: 0, disabled: false },
+      avatarExist: true
     };
   }
 
@@ -42,6 +51,14 @@ class TagTaskEditor extends React.Component {
 
   onFollowingsChange(followings) {
     this.setState({ followings });
+  }
+
+  onLastPostChange(lastPost) {
+    this.setState({ lastPost });
+  }
+
+  onAvatarExist(avatarExist) {
+    this.setState({ avatarExist });
   }
 
   onAddNewTask() {
@@ -96,20 +113,17 @@ class TagTaskEditor extends React.Component {
           </div>
 
           <div className="panel-body" >
-
             <form>
-
-
-              <div className="checkbox">
-                <label className="custom-checkbox">
-                  <input type="checkbox" /> <span>Есть аватар</span>
-                </label>
+              <div style={{ marginBottom: '15px' }}>
+                <SwitchedLabel onChange={this.onAvatarExist} disabled={state.avatarExist} label="Если есть аватар" />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="input01">Последняя побликация была</label>
-                <InputGroup primary right="дня назад" />
-              </div>
+              <SwitchedInputGroup
+                onChange={this.onLastPostChange}
+                model={state.lastPost}
+                label="Последняя побликация была"
+                inputLabel="дня назад"
+              />
 
               <Range
                 onChange={this.onPostsChange}

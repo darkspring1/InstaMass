@@ -1,5 +1,6 @@
-import React from 'react';
+/* eslint jsx-a11y/no-static-element-interactions: 0 */
 
+import React from 'react';
 import classBuilder from './utils';
 
 function switcherBuilder(str) {
@@ -12,9 +13,6 @@ export default (props) => {
   return (
     <div
       className="switcher-container"
-      aria-checked="false"
-      tabIndex="0"
-      role="checkbox"
       onClick={props.onChange}
     >
       <input type="checkbox" checked={!!props.checked} />
