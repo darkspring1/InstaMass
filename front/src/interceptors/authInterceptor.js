@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: 0 */
-/* eslint no-unused-vars: 0 */
+
 import axios from 'axios';
 import { push } from 'react-router-redux';
 import LocalStorage from '../localStorage';
@@ -47,9 +47,11 @@ const refreshTokenInterceptor = (store, error) => {
           logger.debug(JSON.stringify(response.data));
         })
         .catch((err) => {
-          debugger;
           logger.error(err);
           store.dispatch(push('/auth'));
+          refreshTokenPromise = null;
+          // it neen to stop executing in next 'then'
+          throw err;
         });
     }
 
@@ -58,17 +60,19 @@ const refreshTokenInterceptor = (store, error) => {
       // wait refreshTokenPromise and repeat request
       logger.debug(`wait token refresh. url: ${error.config.url}`);
       return new Promise((resolve, reject) => {
-        refreshTokenPromise.then(() => {
-          logger.debug(`repeat ${error.config.url}`);
-          const options = {
-            method: error.config.method,
-            url: error.config.url
-          };
-          if (error.config.data) {
-            options.data = JSON.parse(error.config.data);
-          }
-          axios(options).then(resolve, reject);
-        }, reject);
+        refreshTokenPromise
+          .then(() => {
+            logger.debug(`repeat ${error.config.url}`);
+            const options = {
+              method: error.config.method,
+              url: error.config.url
+            };
+            if (error.config.data) {
+              options.data = JSON.parse(error.config.data);
+            }
+            axios(options).then(resolve, reject);
+          })
+          .catch(reject);
       });
     }
   }
