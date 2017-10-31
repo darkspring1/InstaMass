@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'controls/';
+import { Field, reduxForm } from 'redux-form';
+import { Button } from 'controls';
+import * as Actions from 'actions';
 import {
   ContentTop,
   TagInfo,
@@ -8,9 +10,19 @@ import {
   AccountDropDown,
   Range,
   SwitchedInputGroup,
-  SwitchedLabel } from 'components/';
-import * as Actions from 'actions';
+  SwitchedLabel } from 'components';
+import logger from 'logger';
+// import requiredIfEnabled from './validators';
 
+
+function requiredIfEnabled(enabled) {
+  if (enabled) {
+    // debugger;
+    return value => (value ? undefined : 'fff'); // required('Заполните это поле или выключите его');
+  }
+
+  return function () {};
+}
 
 class TagTaskEditor extends React.Component {
 
@@ -42,6 +54,8 @@ class TagTaskEditor extends React.Component {
   }
 
   onPostsChange(posts) {
+    this.props.change('postsFrom', posts.from);
+    this.props.change('postsTo', posts.to);
     this.setState({ posts });
   }
 
@@ -54,6 +68,7 @@ class TagTaskEditor extends React.Component {
   }
 
   onLastPostChange(lastPost) {
+    this.props.change('lastPost', lastPost.value);
     this.setState({ lastPost });
   }
 
@@ -62,8 +77,12 @@ class TagTaskEditor extends React.Component {
   }
 
   onAddNewTask() {
-    const tags = this.props.tags.map(tag => tag.tag);
-    this.props.onAddNewTask({ tags, accountId: this.selectedAccount.id });
+    if (this.props.valid) {
+      const tags = this.props.tags.map(tag => tag.tag);
+      this.props.onAddNewTask({ tags, accountId: this.selectedAccount.id });
+    } else {
+      logger.debug('form invalid');
+    }
   }
 
 
@@ -73,9 +92,9 @@ class TagTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
+    const validationErrors = props.validationErrors;
     const state = this.state;
     const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
-
     return (
       <div>
         <ContentTop title="Новая задача" />
@@ -114,6 +133,7 @@ class TagTaskEditor extends React.Component {
 
           <div className="panel-body" >
             <form>
+
               <div style={{ marginBottom: '15px' }}>
                 <SwitchedLabel onChange={this.onAvatarExist} disabled={state.avatarExist} label="Если есть аватар" />
               </div>
@@ -121,8 +141,9 @@ class TagTaskEditor extends React.Component {
               <SwitchedInputGroup
                 onChange={this.onLastPostChange}
                 model={state.lastPost}
-                label="Последняя побликация была"
+                label="Последняя публикация была"
                 inputLabel="дня назад"
+                errorMessage={validationErrors.lastPost}
               />
 
               <Range
@@ -141,6 +162,16 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписок"
               />
 
+              {/* form validation */}
+              <Field
+                name="lastPost"
+                component="input"
+                type="text"
+                validate={[requiredIfEnabled(!state.lastPost.disabled)]}
+              />
+              <Field name="postsFrom" component="input" type="text" />
+              <Field name="postsTo" component="input" type="text" />
+
             </form>
 
 
@@ -156,16 +187,25 @@ class TagTaskEditor extends React.Component {
 
 }
 
+const formName = 'TagTaskEditorForm';
+
+const TagTaskEditorForm = reduxForm({
+  form: formName
+})(TagTaskEditor);
+
 
 function mapStateToProps(state) {
+  const form = state.form[formName];
+  const validationErrors = form && form.syncErrors ? form.syncErrors : {};
+  debugger;
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
+    validationErrors
   };
 }
 
-
-const tagTaskEditor = connect(
+export default connect(
   mapStateToProps, // map state to props
   dispatch => ({
     onAddNewTag(tag) {
@@ -181,6 +221,4 @@ const tagTaskEditor = connect(
     }
 
   })
-)(TagTaskEditor);
-
-export default tagTaskEditor;
+)(TagTaskEditorForm);

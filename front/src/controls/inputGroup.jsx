@@ -8,6 +8,11 @@ function inputGroupAddonBuilder(str) {
 
 export default (props) => {
   const spanClass = `input-group-addon ${classBuilder(props, inputGroupAddonBuilder)}`;
+  let inputGroupClass = 'input-group';
+
+  if (props.hasError) {
+    inputGroupClass += ' has-error';
+  }
 
   function renderSpan(text, cssClass, subClass) {
     if (text) {
@@ -22,7 +27,7 @@ export default (props) => {
 
   return (
 
-    <div className="input-group">
+    <div className={inputGroupClass}>
       {renderSpan(props.left, spanClass, ' addon-left')}
       <input
         value={props.value}

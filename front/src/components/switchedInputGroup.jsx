@@ -28,6 +28,10 @@ export default class switchedInputGroup extends React.Component {
 
   render() {
     const props = this.props;
+    let error = null;
+    if (props.errorMessage) {
+      error = <span className="help-block">error</span>;
+    }
     return (<div className="row">
       <div className="col-md-1">
         <div style={{ marginTop: '21px' }}>
@@ -41,7 +45,7 @@ export default class switchedInputGroup extends React.Component {
         </div>
       </div>
       <div className="col-md-11" >
-        <div className="form-group">
+        <div className={!error ? 'form-group' : 'form-group has-error'}>
           <label>{props.label}</label>
           <InputGroup
             disabled={props.model.disabled}
@@ -49,7 +53,9 @@ export default class switchedInputGroup extends React.Component {
             value={props.model.value}
             primary
             right={props.inputLabel}
+            hasError={!!error}
           />
+          {error}
         </div>
       </div>
 
