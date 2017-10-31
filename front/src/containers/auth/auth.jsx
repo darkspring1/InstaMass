@@ -6,8 +6,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { Login, AuthExternalProvider } from '../../actions';
-import { required } from '../../form-validators';
+import { Login, AuthExternalProvider } from 'actions';
+import { required } from 'form-validators';
 import renderField from './renderField';
 
 const formName = 'auth';
