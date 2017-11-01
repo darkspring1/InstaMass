@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: 0 */
+/* eslint no-param-reassign: 0 */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -14,14 +16,41 @@ import {
 import logger from 'logger';
 // import requiredIfEnabled from './validators';
 
+const required = function (value, allValues) {
+  logger.debug(`value=${value}`);
+  logger.debug(`allValues=${allValues}`);
+  return value ? undefined : 'Required';
+};
 
-function requiredIfEnabled(enabled) {
-  if (enabled) {
-    // debugger;
-    return value => (value ? undefined : 'fff'); // required('Заполните это поле или выключите его');
+const renderSwitchedInputGroupField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+  model
+}) => {
+  const onChangeOld = input.onChange;
+
+  input.onChange = function (value, event) {
+    debugger;
+    onChangeOld(value);
+  };
+  return (
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      <SwitchedInputGroup
+        onChange={input.onChange}
+        model={model}
+        label="Последняя публикация была"
+        inputLabel="дня назад"
+      />
+    </div>);
+};
+
+function requiredIfEnabled(model) {
+  if (model.disabled) {
+    return undefined; // required('Заполните это поле или выключите его');
   }
-
-  return function () {};
 }
 
 class TagTaskEditor extends React.Component {
@@ -68,7 +97,8 @@ class TagTaskEditor extends React.Component {
   }
 
   onLastPostChange(lastPost) {
-    this.props.change('lastPost', lastPost.value);
+    debugger;
+    // this.props.change('lastPost', lastPost.value);
     this.setState({ lastPost });
   }
 
@@ -165,9 +195,11 @@ class TagTaskEditor extends React.Component {
               {/* form validation */}
               <Field
                 name="lastPost"
-                component="input"
+                component={renderSwitchedInputGroupField}
                 type="text"
-                validate={[requiredIfEnabled(!state.lastPost.disabled)]}
+                validate={[required]}
+                onChange={this.onLastPostChange}
+                model={state.lastPost}
               />
               <Field name="postsFrom" component="input" type="text" />
               <Field name="postsTo" component="input" type="text" />
@@ -197,7 +229,6 @@ const TagTaskEditorForm = reduxForm({
 function mapStateToProps(state) {
   const form = state.form[formName];
   const validationErrors = form && form.syncErrors ? form.syncErrors : {};
-  debugger;
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],

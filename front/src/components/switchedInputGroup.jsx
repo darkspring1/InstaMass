@@ -20,17 +20,17 @@ export default class switchedInputGroup extends React.Component {
     props.onChange(model);
   }
 
-  onValueChange(value) {
+  onValueChange(value, event) {
     const props = this.props;
     const model = { ...props.model, ...{ value } };
-    props.onChange(model);
+    props.onChange(model, event);
   }
 
   render() {
     const props = this.props;
     let error = null;
     if (props.errorMessage) {
-      error = <span className="help-block">error</span>;
+      error = <span className="help-block">{props.errorMessage}</span>;
     }
     return (<div className="row">
       <div className="col-md-1">
