@@ -1,5 +1,4 @@
 /* eslint jsx-a11y/label-has-for: 0 */
-/* eslint class-methods-use-this: 0 */
 import React from 'react';
 
 import { InputGroup, Switcher } from 'controls/';
@@ -7,6 +6,12 @@ import { InputGroup, Switcher } from 'controls/';
 
 export default class Range extends React.Component {
 
+  static GetErrorMessage(errorMessage) {
+    if (errorMessage) {
+      return <span className="help-block">{errorMessage}</span>;
+    }
+    return null;
+  }
   constructor(props) {
     super(props);
 
@@ -36,6 +41,8 @@ export default class Range extends React.Component {
 
   render() {
     const props = this.props;
+    const fromError = Range.GetErrorMessage(props.fromErrorMessage);
+    const toError = Range.GetErrorMessage(props.toErrorMessage);
     return (<div className="row">
       <div className="col-md-1">
         <div style={{ marginTop: '21px' }}>
@@ -49,7 +56,7 @@ export default class Range extends React.Component {
         </div>
       </div>
       <div className="col-md-5" >
-        <div className="form-group">
+        <div className={fromError ? 'form-group has-error' : 'form-group'}>
           <label>{props.label}</label>
           <InputGroup
             disabled={props.model.disabled}
@@ -57,12 +64,14 @@ export default class Range extends React.Component {
             value={props.model.from}
             primary
             left="от"
+            hasError={!!fromError}
           />
+          {fromError}
         </div>
       </div>
 
       <div className="col-md-6" >
-        <div className="form-group">
+        <div className={toError ? 'form-group has-error' : 'form-group'}>
           <label>&nbsp;</label>
           <InputGroup
             disabled={props.model.disabled}
@@ -70,7 +79,9 @@ export default class Range extends React.Component {
             value={props.model.to}
             primary
             left="до"
+            hasError={!!toError}
           />
+          {toError}
         </div>
       </div>
     </div>);

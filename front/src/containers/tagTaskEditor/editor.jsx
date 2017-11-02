@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-/* eslint no-param-reassign: 0 */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -13,45 +13,19 @@ import {
   Range,
   SwitchedInputGroup,
   SwitchedLabel } from 'components';
-import logger from 'logger';
-// import requiredIfEnabled from './validators';
+import Logger from 'logger';
+import RequiredIfEnabled from './requiredIfEnabledValidator';
+import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
+import RangeFromToValidator from './rangeFromToValidator';
 
-const required = function (value, allValues) {
-  logger.debug(`value=${value}`);
-  logger.debug(`allValues=${allValues}`);
-  return value ? undefined : 'Required';
-};
+import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
+import RenderSwitchedRange from './renderSwitchedRange';
 
-const renderSwitchedInputGroupField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning },
-  model
-}) => {
-  const onChangeOld = input.onChange;
 
-  input.onChange = function (value, event) {
-    debugger;
-    onChangeOld(value);
-  };
-  return (
-    <div>
-      <input {...input} placeholder={label} type={type} />
-      <SwitchedInputGroup
-        onChange={input.onChange}
-        model={model}
-        label="Последняя публикация была"
-        inputLabel="дня назад"
-      />
-    </div>);
-};
+const requiredIfEnabledValidator = RequiredIfEnabled('Заполните это поле или выключите его');
+const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator('Заполните это поле или выключите его');
+const rangeFromToValidator = RangeFromToValidator('Значение поля ОТ должнобыть меньше значения ДО');
 
-function requiredIfEnabled(model) {
-  if (model.disabled) {
-    return undefined; // required('Заполните это поле или выключите его');
-  }
-}
 
 class TagTaskEditor extends React.Component {
 
@@ -83,8 +57,6 @@ class TagTaskEditor extends React.Component {
   }
 
   onPostsChange(posts) {
-    this.props.change('postsFrom', posts.from);
-    this.props.change('postsTo', posts.to);
     this.setState({ posts });
   }
 
@@ -97,8 +69,6 @@ class TagTaskEditor extends React.Component {
   }
 
   onLastPostChange(lastPost) {
-    debugger;
-    // this.props.change('lastPost', lastPost.value);
     this.setState({ lastPost });
   }
 
@@ -111,7 +81,7 @@ class TagTaskEditor extends React.Component {
       const tags = this.props.tags.map(tag => tag.tag);
       this.props.onAddNewTask({ tags, accountId: this.selectedAccount.id });
     } else {
-      logger.debug('form invalid');
+      Logger.debug('form invalid');
     }
   }
 
@@ -168,19 +138,30 @@ class TagTaskEditor extends React.Component {
                 <SwitchedLabel onChange={this.onAvatarExist} disabled={state.avatarExist} label="Если есть аватар" />
               </div>
 
-              <SwitchedInputGroup
-                onChange={this.onLastPostChange}
-                model={state.lastPost}
+              <Field
+                name="lastPost"
+                component={RenderSwitchedInputGroup}
                 label="Последняя публикация была"
                 inputLabel="дня назад"
-                errorMessage={validationErrors.lastPost}
+                validate={[requiredIfEnabledValidator]}
+                onChange={this.onLastPostChange}
+                model={state.lastPost}
               />
 
-              <Range
+              <Field
+                name="posts"
+                component={RenderSwitchedRange}
+                label="Количество публикаций пользователя"
+                validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
+                onChange={this.onPostsChange}
+                model={state.posts}
+              />
+
+              {/* <Range
                 onChange={this.onPostsChange}
                 model={state.posts}
                 label="Количество публикаций пользователя"
-              />
+              /> */}
               <Range
                 onChange={this.onFollowersChange}
                 model={state.followers}
@@ -192,17 +173,6 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписок"
               />
 
-              {/* form validation */}
-              <Field
-                name="lastPost"
-                component={renderSwitchedInputGroupField}
-                type="text"
-                validate={[required]}
-                onChange={this.onLastPostChange}
-                model={state.lastPost}
-              />
-              <Field name="postsFrom" component="input" type="text" />
-              <Field name="postsTo" component="input" type="text" />
 
             </form>
 

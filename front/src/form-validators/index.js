@@ -1,7 +1,11 @@
 
 
+function isEmpty(value) {
+  return value == null || value === undefined || value === '';
+}
+
 function required(message) {
-  return value => (value ? undefined : message);
+  return value => (isEmpty(value) ? message : undefined);
 }
 
 
@@ -12,3 +16,4 @@ function maxLength(max, message) {
 
 export { required };
 export { maxLength };
+export { isEmpty };
