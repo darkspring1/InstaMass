@@ -8,7 +8,6 @@ import {
   TagInfo,
   AddNewTag,
   AccountDropDown,
-  SwitchedRange,
   SwitchedLabel } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
@@ -18,10 +17,10 @@ import RangeFromToValidator from './rangeFromToValidator';
 import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
 import RenderSwitchedRange from './renderSwitchedRange';
 
-
-const requiredIfEnabledValidator = RequiredIfEnabled('Заполните это поле или выключите его');
-const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator('Заполните это поле или выключите его');
-const rangeFromToValidator = RangeFromToValidator('Значение поля ОТ должнобыть меньше значения ДО');
+const requiredValidationMessage = 'Заполните это поле или выключите его';
+const requiredIfEnabledValidator = RequiredIfEnabled(requiredValidationMessage);
+const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator(requiredValidationMessage);
+const rangeFromToValidator = RangeFromToValidator('Значение ОТ должно быть меньше значения ДО');
 
 
 class TagTaskEditor extends React.Component {
@@ -153,25 +152,25 @@ class TagTaskEditor extends React.Component {
                 model={state.posts}
               />
 
-              {/* <Range
-                onChange={this.onPostsChange}
-                model={state.posts}
-                label="Количество публикаций пользователя"
-              /> */}
-              <SwitchedRange
+              <Field
+                name="followers"
+                component={RenderSwitchedRange}
+                label="Количество подписчиков пользователя"
+                validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowersChange}
                 model={state.followers}
-                label="Количество подписчиков пользователя"
               />
-              <SwitchedRange
+
+              <Field
+                name="followings"
+                component={RenderSwitchedRange}
+                label="Количество подписок"
+                validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowingsChange}
                 model={state.followings}
-                label="Количество подписок"
               />
 
-
             </form>
-
 
             <Button text="Сохранить" onClick={this.onAddNewTask} success large />
           </div>
