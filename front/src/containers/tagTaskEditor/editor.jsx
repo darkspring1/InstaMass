@@ -1,5 +1,3 @@
-/* eslint no-unused-vars: 0 */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -10,8 +8,7 @@ import {
   TagInfo,
   AddNewTag,
   AccountDropDown,
-  Range,
-  SwitchedInputGroup,
+  SwitchedRange,
   SwitchedLabel } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
@@ -92,7 +89,6 @@ class TagTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
-    const validationErrors = props.validationErrors;
     const state = this.state;
     const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
     return (
@@ -162,12 +158,12 @@ class TagTaskEditor extends React.Component {
                 model={state.posts}
                 label="Количество публикаций пользователя"
               /> */}
-              <Range
+              <SwitchedRange
                 onChange={this.onFollowersChange}
                 model={state.followers}
                 label="Количество подписчиков пользователя"
               />
-              <Range
+              <SwitchedRange
                 onChange={this.onFollowingsChange}
                 model={state.followings}
                 label="Количество подписок"
@@ -197,12 +193,9 @@ const TagTaskEditorForm = reduxForm({
 
 
 function mapStateToProps(state) {
-  const form = state.form[formName];
-  const validationErrors = form && form.syncErrors ? form.syncErrors : {};
   return {
     tags: state.likeTask.tags || [],
-    accounts: state.account || [],
-    validationErrors
+    accounts: state.account || []
   };
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Range } from 'components';
+import { SwitchedRange } from 'components';
 
 const RenderSwitchedInputGroupField = ({
   input,
@@ -13,7 +13,7 @@ const RenderSwitchedInputGroupField = ({
     <div>
       <input {...input} type="hidden" />
 
-      <Range
+      <SwitchedRange
         onChange={input.onChange}
         model={model}
         label={label}
