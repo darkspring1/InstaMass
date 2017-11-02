@@ -28,7 +28,7 @@ class TagTaskEditor extends React.Component {
   constructor(props) {
     super(props);
     this.onAddNewTask = this.onAddNewTask.bind(this);
-    this.onAccountSelected = this.onAccountSelected.bind(this);
+    this.onAccountChange = this.onAccountChange.bind(this);
     this.onPostsChange = this.onPostsChange.bind(this);
     this.onFollowersChange = this.onFollowersChange.bind(this);
     this.onFollowingsChange = this.onFollowingsChange.bind(this);
@@ -40,6 +40,7 @@ class TagTaskEditor extends React.Component {
     }
 
     this.state = {
+      accountId: null,
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
@@ -75,15 +76,14 @@ class TagTaskEditor extends React.Component {
   onAddNewTask() {
     if (this.props.valid) {
       const tags = this.props.tags.map(tag => tag.tag);
-      this.props.onAddNewTask({ tags, accountId: this.selectedAccount.id });
+      this.props.onAddNewTask({ tags, accountId: this.state.accountId });
     } else {
       Logger.debug('form invalid');
     }
   }
 
-
-  onAccountSelected(selectedAccount) {
-    this.selectedAccount = selectedAccount;
+  onAccountChange(accountId) {
+    this.setState({ accountId });
   }
 
   render() {
@@ -101,9 +101,10 @@ class TagTaskEditor extends React.Component {
 
           <div className="panel-body" >
             <AccountDropDown
-              onSelect={this.onAccountSelected}
+              onChange={this.onAccountChange}
               accounts={props.accounts}
-              title="Выберите Аккаунт"
+              selectedAccountId={state.accountId}
+              placeholder="Выберите Аккаунт"
               id="accoun-dropdown"
             />
           </div>
