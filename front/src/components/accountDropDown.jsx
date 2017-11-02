@@ -8,7 +8,7 @@ export default class AccountDropDown extends React.Component {
   }
 
   onSelect(eventKey, event) {
-    this.props.onChange(eventKey, event);
+    this.props.onChange({ selectedAccountId: eventKey }, event);
   }
 
   render() {

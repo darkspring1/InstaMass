@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'controls';
 import * as Actions from 'actions';
+import { required } from 'form-validators';
 import {
   ContentTop,
   TagInfo,
   AddNewTag,
-  AccountDropDown,
   SwitchedLabel } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
@@ -16,12 +16,13 @@ import RangeFromToValidator from './rangeFromToValidator';
 
 import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
 import RenderSwitchedRange from './renderSwitchedRange';
+import RenderAccountDropDown from './renderAccountDropDown';
 
 const requiredValidationMessage = 'Заполните это поле или выключите его';
 const requiredIfEnabledValidator = RequiredIfEnabled(requiredValidationMessage);
 const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator(requiredValidationMessage);
 const rangeFromToValidator = RangeFromToValidator('Значение ОТ должно быть меньше значения ДО');
-
+const requiredAccount = required('Выберите аккаунт');
 
 class TagTaskEditor extends React.Component {
 
@@ -82,8 +83,8 @@ class TagTaskEditor extends React.Component {
     }
   }
 
-  onAccountChange(accountId) {
-    this.setState({ accountId });
+  onAccountChange(value) {
+    this.setState({ accountId: value.selectedAccountId });
   }
 
   render() {
@@ -100,12 +101,23 @@ class TagTaskEditor extends React.Component {
           </div>
 
           <div className="panel-body" >
-            <AccountDropDown
+            {/* <AccountDropDown
               onChange={this.onAccountChange}
               accounts={props.accounts}
               selectedAccountId={state.accountId}
               placeholder="Выберите Аккаунт"
               id="accoun-dropdown"
+            /> */}
+
+            <Field
+              name="account"
+              component={RenderAccountDropDown}
+              placeholder="Выберите Аккаунт"
+              id="accoun-dropdown"
+              validate={[requiredAccount]}
+              onChange={this.onAccountChange}
+              accounts={props.accounts}
+              selectedAccountId={state.accountId}
             />
           </div>
 
