@@ -20,10 +20,11 @@ export default class TagsInput extends React.Component {
   }
 
   onAddTag(event) {
-    this.props.onAddTag(this.state.tag, event);
+    if (this.state.tag) {
+      this.props.onAddTag(this.state.tag, event);
+    }
     this.setState({ tag: '' });
   }
-
 
   onKeyPress(event) {
     if (event.key === 'Enter') {

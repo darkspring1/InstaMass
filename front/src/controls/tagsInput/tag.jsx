@@ -8,6 +8,6 @@ export default props => (
     {props.text}
     <span
       data-role="remove"
-      onClick={props.onRemoveTag(props.text)}
+      onClick={() => props.onRemoveTag(props.text)}
     />
   </span>);

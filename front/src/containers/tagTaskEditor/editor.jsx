@@ -37,6 +37,7 @@ class TagTaskEditor extends React.Component {
     this.onLastPostChange = this.onLastPostChange.bind(this);
     this.onAvatarExist = this.onAvatarExist.bind(this);
     this.onAddTag = this.onAddTag.bind(this);
+    this.onRemoveTag = this.onRemoveTag.bind(this);
 
     function range(from, to, disabled) {
       return { from, to, disabled };
