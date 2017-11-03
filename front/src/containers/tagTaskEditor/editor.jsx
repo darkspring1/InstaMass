@@ -8,7 +8,8 @@ import {
   ContentTop,
   TagInfo,
   AddNewTag,
-  SwitchedLabel } from 'components';
+  SwitchedLabel,
+  TagsInput } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
 import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
@@ -35,6 +36,7 @@ class TagTaskEditor extends React.Component {
     this.onFollowingsChange = this.onFollowingsChange.bind(this);
     this.onLastPostChange = this.onLastPostChange.bind(this);
     this.onAvatarExist = this.onAvatarExist.bind(this);
+    this.onAddTag = this.onAddTag.bind(this);
 
     function range(from, to, disabled) {
       return { from, to, disabled };
@@ -42,6 +44,7 @@ class TagTaskEditor extends React.Component {
 
     this.state = {
       accountId: null,
+      tags: ['tag1', 'tag2'],
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
@@ -83,6 +86,18 @@ class TagTaskEditor extends React.Component {
     }
   }
 
+  onAddTag(tag) {
+    this.state.tags.push(tag);
+    this.setState({ tags: this.state.tags });
+  }
+
+  onRemoveTag(tag) {
+    const tags = this.state.tags;
+    const index = tags.indexOf(tag);
+    tags.splice(index, 1);
+    this.setState({ tags });
+  }
+
   onAccountChange(value) {
     this.setState({ accountId: value.selectedAccountId });
   }
@@ -101,13 +116,7 @@ class TagTaskEditor extends React.Component {
           </div>
 
           <div className="panel-body" >
-            {/* <AccountDropDown
-              onChange={this.onAccountChange}
-              accounts={props.accounts}
-              selectedAccountId={state.accountId}
-              placeholder="Выберите Аккаунт"
-              id="accoun-dropdown"
-            /> */}
+
 
             <Field
               name="account"
@@ -124,6 +133,14 @@ class TagTaskEditor extends React.Component {
           <div className="panel-heading clearfix">
             <h3 className="panel-title">Хэштеги</h3>
           </div>
+
+
+          <TagsInput
+            placeholder="Добавить тэг"
+            onAddTag={this.onAddTag}
+            onRemoveTag={this.onRemoveTag}
+            tags={state.tags}
+          />
 
           <div className="panel-body" >
             <AddNewTag onAddBtnClick={props.onAddNewTag} />

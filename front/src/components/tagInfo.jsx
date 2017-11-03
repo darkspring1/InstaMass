@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../controls/button';
+import Button from 'controls/button';
 
 export default props => (<div className="panel panel-success bootstrap-panel">
   <div className="panel-heading">
