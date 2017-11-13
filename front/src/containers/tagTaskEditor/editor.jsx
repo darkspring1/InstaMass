@@ -8,8 +8,7 @@ import {
   ContentTop,
   TagInfo,
   AddNewTag,
-  SwitchedLabel,
-  TagsInput } from 'components';
+  SwitchedLabel } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
 import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
@@ -18,6 +17,7 @@ import RangeFromToValidator from './rangeFromToValidator';
 import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
 import RenderSwitchedRange from './renderSwitchedRange';
 import RenderAccountDropDown from './renderAccountDropDown';
+import RenderTagsInput from './renderTagsInput';
 
 const requiredValidationMessage = 'Заполните это поле или выключите его';
 const requiredIfEnabledValidator = RequiredIfEnabled(requiredValidationMessage);
@@ -38,6 +38,7 @@ class TagTaskEditor extends React.Component {
     this.onAvatarExist = this.onAvatarExist.bind(this);
     this.onAddTag = this.onAddTag.bind(this);
     this.onRemoveTag = this.onRemoveTag.bind(this);
+    this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
     function range(from, to, disabled) {
       return { from, to, disabled };
@@ -46,6 +47,7 @@ class TagTaskEditor extends React.Component {
     this.state = {
       accountId: null,
       tags: ['tag1', 'tag2'],
+      tagsInputValue: null,
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
@@ -96,16 +98,22 @@ class TagTaskEditor extends React.Component {
     const tags = this.state.tags;
     const index = tags.indexOf(tag);
     tags.splice(index, 1);
-    this.setState({ tags });
+    this.setState({ tags: tags.slice() });
   }
 
   onAccountChange(value) {
     this.setState({ accountId: value.selectedAccountId });
   }
 
+  onTagsInputChange(event) {
+    this.setState({ tagsInputValue: event.target.value });
+  }
+
   render() {
+    Logger.debug('Render');
     const props = this.props;
     const state = this.state;
+    debugger;
     const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
     return (
       <div>
@@ -117,7 +125,6 @@ class TagTaskEditor extends React.Component {
           </div>
 
           <div className="panel-body" >
-
 
             <Field
               name="account"
@@ -135,10 +142,13 @@ class TagTaskEditor extends React.Component {
             <h3 className="panel-title">Хэштеги</h3>
           </div>
 
-
-          <TagsInput
+          <Field
             placeholder="Добавить тэг"
+            name="tags"
+            component={RenderTagsInput}
             onAddTag={this.onAddTag}
+            value={state.tagsInputValue}
+            onChange={this.onTagsInputChange}
             onRemoveTag={this.onRemoveTag}
             tags={state.tags}
           />

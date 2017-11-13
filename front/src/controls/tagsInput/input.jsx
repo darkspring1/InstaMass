@@ -7,23 +7,18 @@ export default class TagsInput extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onAddTag = this.onAddTag.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
-    this.state = { tag: null };
   }
 
   onChange(event) {
-    const tag = event.target.value;
     if (this.props.onChange) {
-      this.props.onChange(tag, event);
+      this.props.onChange(event);
     }
-
-    this.setState({ tag });
   }
 
   onAddTag(event) {
-    if (this.state.tag) {
-      this.props.onAddTag(this.state.tag, event);
+    if (this.props.value) {
+      this.props.onAddTag(this.props.value, event);
     }
-    this.setState({ tag: '' });
   }
 
   onKeyPress(event) {
@@ -40,7 +35,7 @@ export default class TagsInput extends React.Component {
         <input
           type="text"
           onChange={this.onChange}
-          value={this.state.tag}
+          value={this.props.value}
           onBlur={this.onAddTag}
           onKeyPress={this.onKeyPress}
           placeholder={props.placeholder}
