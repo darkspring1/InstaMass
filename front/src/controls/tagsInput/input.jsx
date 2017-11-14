@@ -29,8 +29,14 @@ export default class TagsInput extends React.Component {
 
   render() {
     const props = this.props;
+
+    let style = null;
+    if (props.hasError) {
+      style = { border: '1px solid #ed7878' };
+    }
+
     return (
-      <div className="bootstrap-tagsinput">
+      <div className="bootstrap-tagsinput" style={style}>
         {props.children}
         <input
           type="text"

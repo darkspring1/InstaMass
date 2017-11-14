@@ -6,13 +6,12 @@ import * as Actions from 'actions';
 import { required } from 'form-validators';
 import {
   ContentTop,
-  TagInfo,
-  AddNewTag,
   SwitchedLabel } from 'components';
 import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
 import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
 import RangeFromToValidator from './rangeFromToValidator';
+import TagInputRequiredValidator from './tagInputRequiredValidator';
 
 import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
 import RenderSwitchedRange from './renderSwitchedRange';
@@ -24,6 +23,7 @@ const requiredIfEnabledValidator = RequiredIfEnabled(requiredValidationMessage);
 const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator(requiredValidationMessage);
 const rangeFromToValidator = RangeFromToValidator('Значение ОТ должно быть меньше значения ДО');
 const requiredAccount = required('Выберите аккаунт');
+const tagInputRequired = TagInputRequiredValidator('Введите тэги');
 
 class TagTaskEditor extends React.Component {
 
@@ -36,8 +36,6 @@ class TagTaskEditor extends React.Component {
     this.onFollowingsChange = this.onFollowingsChange.bind(this);
     this.onLastPostChange = this.onLastPostChange.bind(this);
     this.onAvatarExist = this.onAvatarExist.bind(this);
-    this.onAddTag = this.onAddTag.bind(this);
-    this.onRemoveTag = this.onRemoveTag.bind(this);
     this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
     function range(from, to, disabled) {
@@ -46,8 +44,7 @@ class TagTaskEditor extends React.Component {
 
     this.state = {
       accountId: null,
-      tags: ['tag1', 'tag2'],
-      tagsInputValue: null,
+      tagsInput: { tags: ['tag1', 'tag2'], value: null },
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
@@ -89,32 +86,18 @@ class TagTaskEditor extends React.Component {
     }
   }
 
-  onAddTag(tag) {
-    this.state.tags.push(tag);
-    this.setState({ tags: this.state.tags });
-  }
-
-  onRemoveTag(tag) {
-    const tags = this.state.tags;
-    const index = tags.indexOf(tag);
-    tags.splice(index, 1);
-    this.setState({ tags: tags.slice() });
-  }
-
   onAccountChange(value) {
     this.setState({ accountId: value.selectedAccountId });
   }
 
-  onTagsInputChange(event) {
-    this.setState({ tagsInputValue: event.target.value });
+  onTagsInputChange(tagsInput) {
+    this.setState({ tagsInput });
   }
 
   render() {
     Logger.debug('Render');
     const props = this.props;
     const state = this.state;
-    debugger;
-    const tags = props.tags.map(t => <TagInfo tag={t.tag} total={t.total} />);
     return (
       <div>
         <ContentTop title="Новая задача" />
@@ -125,7 +108,6 @@ class TagTaskEditor extends React.Component {
           </div>
 
           <div className="panel-body" >
-
             <Field
               name="account"
               component={RenderAccountDropDown}
@@ -142,25 +124,16 @@ class TagTaskEditor extends React.Component {
             <h3 className="panel-title">Хэштеги</h3>
           </div>
 
-          <Field
-            placeholder="Добавить тэг"
-            name="tags"
-            component={RenderTagsInput}
-            onAddTag={this.onAddTag}
-            value={state.tagsInputValue}
-            onChange={this.onTagsInputChange}
-            onRemoveTag={this.onRemoveTag}
-            tags={state.tags}
-          />
-
           <div className="panel-body" >
-            <AddNewTag onAddBtnClick={props.onAddNewTag} />
-
-            <div className="row">
-              <div className="col-md-3" >
-                {tags}
-              </div>
-            </div>
+            <Field
+              placeholder="Добавить тэг"
+              name="tags"
+              component={RenderTagsInput}
+              model={state.tagsInput}
+              value={state.tagsInput}
+              onChange={this.onTagsInputChange}
+              validate={[tagInputRequired]}
+            />
           </div>
 
           <div className="panel-heading clearfix">
