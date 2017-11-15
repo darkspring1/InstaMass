@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, getFormValues } from 'redux-form';
 import { Button } from 'controls';
 import * as Actions from 'actions';
 import { required } from 'form-validators';
@@ -77,8 +77,11 @@ class TagTaskEditor extends React.Component {
 
   onAddNewTask() {
     debugger;
-    const tags = this.props.tags.map(tag => tag.tag);
-    this.props.onAddNewTask({ tags, accountId: this.state.accountId });
+    const state = this.state;
+    this.props.onAddNewTask({
+      tags: state.tagsInput.tags,
+      lastPost: state.lastPost,
+      accountId: this.state.account.id });
   }
 
   onAccountChange(account) {
@@ -93,6 +96,7 @@ class TagTaskEditor extends React.Component {
     const props = this.props;
     const { submitting, handleSubmit } = props;
     const state = this.state;
+    debugger;
     return (
       <div>
         <form onSubmit={handleSubmit(this.onAddNewTask)}>
@@ -209,7 +213,8 @@ function mapStateToProps(state) {
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
-    initialValues
+    initialValues,
+    values_: getFormValues(formName)(state)
   };
 }
 

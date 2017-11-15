@@ -311,7 +311,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ExternalLoginModels.cs" />
     <Compile Include="Models\NewAccountModel.cs" />
-    <Compile Include="Models\NewLikeTaskModel.cs" />
+    <Compile Include="Models\NewTagTaskModel.cs" />
+    <Compile Include="Models\SwitchedPropertyModel.cs" />
+    <Compile Include="Models\SwitchedRangeModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="NLogExceptionLogger.cs" />
     <Compile Include="Akka\Printer.cs" />
