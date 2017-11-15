@@ -221,7 +221,7 @@ export default connect(
     },
 
     onAddNewTask(task) {
-      dispatch(Actions.AddNewLikeTaskRequested(task));
+      dispatch(Actions.AddNewTagTaskRequested(task));
     },
 
     onAccountsRequested() {

@@ -3,12 +3,13 @@ import { put, /* select, */takeEvery } from 'redux-saga/effects';
 import ActionTypes from '../constants/actionTypes';
 
 import * as Actions from '../actions';
-import { CreateLikeTask } from '../api/';
+import { CreateTagTask } from '../api/';
 
 function* fetch(action) {
   try {
     yield put(Actions.RequestStarted());
-    yield CreateLikeTask(action.payload);
+    debugger;
+    yield CreateTagTask(action.payload);
     yield put(Actions.ShowToastr());
   } catch (e) {
     debugger;
@@ -18,5 +19,5 @@ function* fetch(action) {
 }
 
 export default function* AddNewLikeTaskSaga() {
-  yield takeEvery(ActionTypes.ADD_NEW_LIKE_TASK_REQUESTED, fetch);
+  yield takeEvery(ActionTypes.ADD_NEW_TAG_TASK_REQUESTED, fetch);
 }

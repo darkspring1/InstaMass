@@ -2,7 +2,7 @@
 
 namespace SM.WEB.API.Models
 {
-    public class NewLikeTaskModel
+    public class NewTagTaskModel
     {
         public string[] Tags { get; set; }
 

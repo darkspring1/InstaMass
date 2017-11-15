@@ -1,7 +1,7 @@
 import AddNewAccount from './addNewAccount';
 import AddNewTag from './addNewTag';
 import GetAccounts from './getAccounts';
-import AddNewLikeTask from './addNewLikeTask';
+import AddNewLikeTask from './addNewTagTask';
 
 export default function* rootSaga() {
   yield [

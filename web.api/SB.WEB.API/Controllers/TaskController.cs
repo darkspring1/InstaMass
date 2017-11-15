@@ -26,8 +26,8 @@ namespace SM.WEB.API.Controllers
 
 
         [HttpPost]
-        [Route(Routes.ApiTaskLike)]
-        public Task<IHttpActionResult> CreateLikeTask(NewLikeTaskModel model)
+        [Route(Routes.ApiTaskTag)]
+        public Task<IHttpActionResult> CreateTagTask(NewTagTaskModel model)
         {
             return ActionResultAsync(_taskServiceServiceFunc().CreateLikeTask(model.AccountId, model.Tags));
         }

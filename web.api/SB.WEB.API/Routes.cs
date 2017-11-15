@@ -10,7 +10,7 @@
 
         public const string ApiTasks = "api/tasks";
 
-        public const string ApiTaskLike = "api/task/like";
+        public const string ApiTaskTag = "api/task/tag";
     }
 }
 

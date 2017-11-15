@@ -59,6 +59,6 @@ export function AddNewTagSucceeded(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_SUCCEEDED, payload };
 }
 
-export function AddNewLikeTaskRequested(payload) {
-  return { type: ActionTypes.ADD_NEW_LIKE_TASK_REQUESTED, payload };
+export function AddNewTagTaskRequested(payload) {
+  return { type: ActionTypes.ADD_NEW_TAG_TASK_REQUESTED, payload };
 }
