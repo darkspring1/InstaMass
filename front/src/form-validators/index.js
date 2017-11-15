@@ -1,5 +1,9 @@
 
 
+function isEmptyArray(value) {
+  return value == null || value === undefined || value.length === 0;
+}
+
 function isEmpty(value) {
   return value == null || value === undefined || value === '';
 }
@@ -17,3 +21,4 @@ function maxLength(max, message) {
 export { required };
 export { maxLength };
 export { isEmpty };
+export { isEmptyArray };

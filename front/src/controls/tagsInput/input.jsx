@@ -29,10 +29,11 @@ export default class TagsInput extends React.Component {
   }
 
   onBlur(event) {
-    this.onAddTag(event);
+     // !!! order is important !!!
     if (this.props.onBlur) {
       this.props.onBlur(event);
     }
+    this.onAddTag(event);
   }
 
   onFocus(event) {

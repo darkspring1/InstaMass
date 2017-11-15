@@ -7,29 +7,53 @@ import { TagsInput, Tag } from 'controls';
 
 export default class tagsInput extends React.Component {
 
+
+  static clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onRemoveTag = this.onRemoveTag.bind(this);
     this.onAddTag = this.onAddTag.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
   }
 
   onChange(event) {
-    const value = event.target.value;
-    this.props.onChange({ value, tags: this.props.model.tags }, event);
+    const model = this.cloneModel();
+    model.value = event.target.value;
+    this.props.onChange(model);
   }
 
   onRemoveTag(tag, event) {
-    const model = this.props.model;
+    const model = this.cloneModel();
     const index = model.tags.indexOf(tag);
     model.tags.splice(index, 1);
-    this.props.onChange({ value: model.value, tags: model.tags }, event);
+    this.props.onChange(model, event);
+    this.props.onBlur(model);
   }
 
   onAddTag(tag, event) {
-    const model = this.props.model;
-    model.tags.push(tag);
-    this.props.onChange({ value: '', tags: model.tags });
+    const model = this.cloneModel();
+    if (!model.tags.includes(tag)) {
+      model.tags.push(tag);
+    }
+    model.value = '';
+    this.props.onChange(model);
+  }
+
+  onBlur(event) {
+    this.props.onBlur(this.cloneModel());
+  }
+
+  onFocus(event) {
+    this.props.onFocus(this.cloneModel());
+  }
+
+  cloneModel() {
+    return tagsInput.clone(this.props.model);
   }
 
   render() {
@@ -48,8 +72,8 @@ export default class tagsInput extends React.Component {
           placeholder={props.placeholder}
           onChange={this.onChange}
           onAddTag={this.onAddTag}
-          onBlur={props.onBlur}
-          onFocus={props.onFocus}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
           value={props.model.value}
         >
           {tags}

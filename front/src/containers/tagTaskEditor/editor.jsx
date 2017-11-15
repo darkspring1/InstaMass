@@ -12,6 +12,7 @@ import RequiredIfEnabled from './requiredIfEnabledValidator';
 import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
 import RangeFromToValidator from './rangeFromToValidator';
 import TagInputRequiredValidator from './tagInputRequiredValidator';
+import TagInputUniqueValidator from './tagInputUniqueValidator';
 
 import RenderSwitchedInputGroup from './renderSwitchedInputGroup';
 import RenderSwitchedRange from './renderSwitchedRange';
@@ -24,6 +25,7 @@ const rangeRequiredIfEnabledValidator = RangeRequiredIfEnabledValidator(required
 const rangeFromToValidator = RangeFromToValidator('Значение ОТ должно быть меньше значения ДО');
 const requiredAccount = required('Выберите аккаунт');
 const tagInputRequired = TagInputRequiredValidator('Введите тэги');
+const tagInputUnique = TagInputUniqueValidator('Хэш-тэг "{tag_name}" уже добавлен');
 
 class TagTaskEditor extends React.Component {
 
@@ -44,7 +46,7 @@ class TagTaskEditor extends React.Component {
 
     this.state = {
       accountId: null,
-      tagsInput: { tags: ['tag1', 'tag2'], value: null },
+      tagsInput: { tags: ['tag1', 'tag2'], value: '' },
       posts: range(0, 100, true),
       followers: range(0, 100, true),
       followings: range(0, 100, true),
@@ -128,12 +130,11 @@ class TagTaskEditor extends React.Component {
             <div className="panel-body" >
               <Field
                 placeholder="Добавить тэг"
-                name="tags"
+                name="tagsInput"
                 component={RenderTagsInput}
-                model={state.tagsInput}
                 value={state.tagsInput}
                 onChange={this.onTagsInputChange}
-                validate={[tagInputRequired]}
+                validate={[tagInputRequired, tagInputUnique]}
               />
             </div>
 
@@ -208,7 +209,8 @@ const TagTaskEditorForm = reduxForm({
 function mapStateToProps(state) {
   return {
     tags: state.likeTask.tags || [],
-    accounts: state.account || []
+    accounts: state.account || [],
+    initialValues: { tagsInput: { tags: [/* 'tag1', 'tag2' */], value: '' } }
   };
 }
 

@@ -1,13 +1,16 @@
-/* eslint no-unused-vars: 0 */
-
-function isEmptyArray(value) {
-  return value == null || value === undefined || value.length === 0;
-}
-
+import { isEmptyArray } from 'form-validators';
 
 export default function (message) {
-  return (model, allValues, props, name) => {
-    if (!model || isEmptyArray(model.tags)) {
+  return (model) => {
+    if (!model) {
+      return message;
+    }
+
+    if (model.value) {
+      return undefined;
+    }
+
+    if (isEmptyArray(model.tags)) {
       return message;
     }
 
