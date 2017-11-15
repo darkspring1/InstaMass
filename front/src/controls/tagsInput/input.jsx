@@ -5,7 +5,8 @@ export default class TagsInput extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.onAddTag = this.onAddTag.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus(this);
     this.onKeyPress = this.onKeyPress.bind(this);
   }
 
@@ -27,6 +28,19 @@ export default class TagsInput extends React.Component {
     }
   }
 
+  onBlur(event) {
+    this.onAddTag(event);
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
+  }
+
+  onFocus(event) {
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
+  }
+
   render() {
     const props = this.props;
 
@@ -42,7 +56,8 @@ export default class TagsInput extends React.Component {
           type="text"
           onChange={this.onChange}
           value={this.props.value}
-          onBlur={this.onAddTag}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
           onKeyPress={this.onKeyPress}
           placeholder={props.placeholder}
         />

@@ -34,18 +34,27 @@ export default class tagsInput extends React.Component {
 
   render() {
     const props = this.props;
+    let error = null;
+    let cssClass = 'form-group';
+    if (props.errorMessage) {
+      error = <span className="help-block">{props.errorMessage}</span>;
+      cssClass += ' has-error';
+    }
     const tags = props.model.tags.map(tag => <Tag text={tag} key={tag} onRemoveTag={this.onRemoveTag} />);
     return (
-      <div className="form-group">
+      <div className={cssClass}>
         <TagsInput
-          hasError={props.hasError}
+          hasError={!!props.errorMessage}
           placeholder={props.placeholder}
           onChange={this.onChange}
           onAddTag={this.onAddTag}
+          onBlur={props.onBlur}
+          onFocus={props.onFocus}
           value={props.model.value}
         >
           {tags}
         </TagsInput>
+        {error}
       </div>
     );
   }

@@ -78,12 +78,9 @@ class TagTaskEditor extends React.Component {
   }
 
   onAddNewTask() {
-    if (this.props.valid) {
-      const tags = this.props.tags.map(tag => tag.tag);
-      this.props.onAddNewTask({ tags, accountId: this.state.accountId });
-    } else {
-      Logger.debug('form invalid');
-    }
+    debugger;
+    const tags = this.props.tags.map(tag => tag.tag);
+    this.props.onAddNewTask({ tags, accountId: this.state.accountId });
   }
 
   onAccountChange(value) {
@@ -97,51 +94,55 @@ class TagTaskEditor extends React.Component {
   render() {
     Logger.debug('Render');
     const props = this.props;
+
+    const { submitting, handleSubmit } = props;
+
     const state = this.state;
     return (
       <div>
-        <ContentTop title="Новая задача" />
+        <form onSubmit={handleSubmit(this.onAddNewTask)}>
+          <ContentTop title="Новая задача" />
 
-        <div className="panel animated zoomIn">
-          <div className="panel-heading clearfix">
-            <h3 className="panel-title">Аккаунт</h3>
-          </div>
+          <div className="panel animated zoomIn">
+            <div className="panel-heading clearfix">
+              <h3 className="panel-title">Аккаунт</h3>
+            </div>
 
-          <div className="panel-body" >
-            <Field
-              name="account"
-              component={RenderAccountDropDown}
-              placeholder="Выберите Аккаунт"
-              id="accoun-dropdown"
-              validate={[requiredAccount]}
-              onChange={this.onAccountChange}
-              accounts={props.accounts}
-              selectedAccountId={state.accountId}
-            />
-          </div>
+            <div className="panel-body" >
+              <Field
+                name="account"
+                component={RenderAccountDropDown}
+                placeholder="Выберите Аккаунт"
+                id="accoun-dropdown"
+                validate={[requiredAccount]}
+                onChange={this.onAccountChange}
+                accounts={props.accounts}
+                selectedAccountId={state.accountId}
+              />
+            </div>
 
-          <div className="panel-heading clearfix">
-            <h3 className="panel-title">Хэштеги</h3>
-          </div>
+            <div className="panel-heading clearfix">
+              <h3 className="panel-title">Хэштеги</h3>
+            </div>
 
-          <div className="panel-body" >
-            <Field
-              placeholder="Добавить тэг"
-              name="tags"
-              component={RenderTagsInput}
-              model={state.tagsInput}
-              value={state.tagsInput}
-              onChange={this.onTagsInputChange}
-              validate={[tagInputRequired]}
-            />
-          </div>
+            <div className="panel-body" >
+              <Field
+                placeholder="Добавить тэг"
+                name="tags"
+                component={RenderTagsInput}
+                model={state.tagsInput}
+                value={state.tagsInput}
+                onChange={this.onTagsInputChange}
+                validate={[tagInputRequired]}
+              />
+            </div>
 
-          <div className="panel-heading clearfix">
-            <h3 className="panel-title">Подписываться только если</h3>
-          </div>
+            <div className="panel-heading clearfix">
+              <h3 className="panel-title">Подписываться только если</h3>
+            </div>
 
-          <div className="panel-body" >
-            <form>
+            <div className="panel-body" >
+
 
               <div style={{ marginBottom: '15px' }}>
                 <SwitchedLabel onChange={this.onAvatarExist} disabled={state.avatarExist} label="Если есть аватар" />
@@ -184,13 +185,12 @@ class TagTaskEditor extends React.Component {
                 model={state.followings}
               />
 
-            </form>
+              <Button disabled={submitting} type="submit" text="Сохранить" success large />
 
-            <Button text="Сохранить" onClick={this.onAddNewTask} success large />
+            </div>
+
           </div>
-
-
-        </div>
+        </form>
       </div>
 
     );

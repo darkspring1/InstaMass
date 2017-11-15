@@ -7,7 +7,6 @@ function isEmptyArray(value) {
 
 export default function (message) {
   return (model, allValues, props, name) => {
-    debugger;
     if (!model || isEmptyArray(model.tags)) {
       return message;
     }

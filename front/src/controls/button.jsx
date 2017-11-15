@@ -22,8 +22,10 @@ export default (props) => {
     icon = <i className={props.icon} />;
   }
 
+  const type = props.type ? props.type : 'button';
+
   return (
-    <button type="button" onClick={props.onClick} className={btnClassName} disabled={props.disabled}>
+    <button type={type} onClick={props.onClick} className={btnClassName} disabled={props.disabled}>
       {icon}{props.text}
     </button>);
 };

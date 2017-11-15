@@ -5,19 +5,19 @@ import { TagsInput } from 'components';
 
 const RenderTagsInput = ({
   input,
-  meta: { /* touched, */error/* , warning */ },
+  meta: { touched, error /* , warning */ },
   model,
   placeholder
 }) => {
-  //debugger;
   return (<div>
     <input {...input} type="hidden" />
-
     <TagsInput
       placeholder={placeholder}
       model={model}
       onChange={input.onChange}
-      hasError={!!error}
+      onBlur={input.onBlur}
+      onFocus={input.onFocus}
+      errorMessage={ touched && error ? error : '' }
     />
   </div>);
 };
