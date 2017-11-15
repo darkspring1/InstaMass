@@ -7,7 +7,7 @@ import { required } from 'form-validators';
 import {
   ContentTop,
   SwitchedLabel } from 'components';
-import Logger from 'logger';
+// import Logger from 'logger';
 import RequiredIfEnabled from './requiredIfEnabledValidator';
 import RangeRequiredIfEnabledValidator from './rangeRequiredIfEnabledValidator';
 import RangeFromToValidator from './rangeFromToValidator';
@@ -45,7 +45,7 @@ class TagTaskEditor extends React.Component {
     this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
     this.state = {
-      accountId: null,
+      account: null,
       lastPost: { value: 0, disabled: false },
       avatarExist: true
     };
@@ -81,8 +81,8 @@ class TagTaskEditor extends React.Component {
     this.props.onAddNewTask({ tags, accountId: this.state.accountId });
   }
 
-  onAccountChange(value) {
-    this.setState({ accountId: value.selectedAccountId });
+  onAccountChange(account) {
+    this.setState({ account });
   }
 
   onTagsInputChange(tagsInput) {
@@ -90,11 +90,8 @@ class TagTaskEditor extends React.Component {
   }
 
   render() {
-    Logger.debug('Render');
     const props = this.props;
-
     const { submitting, handleSubmit } = props;
-
     const state = this.state;
     return (
       <div>
@@ -115,7 +112,7 @@ class TagTaskEditor extends React.Component {
                 validate={[requiredAccount]}
                 onChange={this.onAccountChange}
                 accounts={props.accounts}
-                selectedAccountId={state.accountId}
+                value={state.account}
               />
             </div>
 

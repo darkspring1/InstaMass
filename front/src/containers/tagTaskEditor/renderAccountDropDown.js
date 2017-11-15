@@ -3,22 +3,22 @@ import { AccountDropDown } from 'components';
 
 export default ({
   input,
-  meta: { error },
-  selectedAccountId,
+  meta: { error, touched },
   placeholder,
   id,
   accounts
 }) => (
   <div className="has-error">
-    <input {...input} type="hidden" />
     <div className="input-group">
       <AccountDropDown
         onChange={input.onChange}
+        onBlur={input.onBlur}
+        onFocus={input.onFocus}
         accounts={accounts}
-        selectedAccountId={selectedAccountId}
+        selectedAccountModel={input.value}
         placeholder={placeholder}
         id={id}
       />
     </div>
-    <span className="help-block">{error}</span>
+    <span className="help-block">{ touched && error ? error : ''}</span>
   </div>);
