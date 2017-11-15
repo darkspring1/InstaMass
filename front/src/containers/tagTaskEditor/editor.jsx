@@ -27,6 +27,10 @@ const requiredAccount = required('Выберите аккаунт');
 const tagInputRequired = TagInputRequiredValidator('Введите тэги');
 const tagInputUnique = TagInputUniqueValidator('Хэш-тэг "{tag_name}" уже добавлен');
 
+function range(from, to, disabled) {
+  return { from, to, disabled };
+}
+
 class TagTaskEditor extends React.Component {
 
   constructor(props) {
@@ -40,16 +44,8 @@ class TagTaskEditor extends React.Component {
     this.onAvatarExist = this.onAvatarExist.bind(this);
     this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
-    function range(from, to, disabled) {
-      return { from, to, disabled };
-    }
-
     this.state = {
       accountId: null,
-      tagsInput: { tags: ['tag1', 'tag2'], value: '' },
-      posts: range(0, 100, true),
-      followers: range(0, 100, true),
-      followings: range(0, 100, true),
       lastPost: { value: 0, disabled: false },
       avatarExist: true
     };
@@ -165,7 +161,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество публикаций пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onPostsChange}
-                model={state.posts}
+                value={state.posts}
               />
 
               <Field
@@ -174,7 +170,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписчиков пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowersChange}
-                model={state.followers}
+                value={state.followers}
               />
 
               <Field
@@ -183,7 +179,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписок"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowingsChange}
-                model={state.followings}
+                value={state.followings}
               />
 
               <Button disabled={submitting} type="submit" text="Сохранить" success large />
@@ -205,12 +201,18 @@ const TagTaskEditorForm = reduxForm({
   form: formName
 })(TagTaskEditor);
 
+const initialValues = {
+  tagsInput: { tags: [/* 'tag1', 'tag2' */], value: '' },
+  posts: range(0, 100, false),
+  followers: range(0, 100, true),
+  followings: range(0, 100, true)
+};
 
 function mapStateToProps(state) {
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
-    initialValues: { tagsInput: { tags: [/* 'tag1', 'tag2' */], value: '' } }
+    initialValues
   };
 }
 

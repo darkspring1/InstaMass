@@ -1,8 +1,6 @@
 /* eslint jsx-a11y/label-has-for: 0 */
 import React from 'react';
-
 import { InputGroup, Switcher } from 'controls/';
-
 
 export default class Range extends React.Component {
 
@@ -18,6 +16,8 @@ export default class Range extends React.Component {
     this.onSwitcherChange = this.onSwitcherChange.bind(this);
     this.onFromChange = this.onFromChange.bind(this);
     this.onToChange = this.onToChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
   }
 
   onSwitcherChange() {
@@ -38,6 +38,15 @@ export default class Range extends React.Component {
     const model = { ...props.model, ...{ to } };
     props.onChange(model);
   }
+
+  onBlur() {
+    this.props.onBlur(this.props.model);
+  }
+
+  onFocus() {
+    this.props.onFocus(this.props.model);
+  }
+
 
   render() {
     const props = this.props;
@@ -61,6 +70,8 @@ export default class Range extends React.Component {
           <InputGroup
             disabled={props.model.disabled}
             onChange={this.onFromChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
             value={props.model.from}
             primary
             left="от"
@@ -76,6 +87,8 @@ export default class Range extends React.Component {
           <InputGroup
             disabled={props.model.disabled}
             onChange={this.onToChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
             value={props.model.to}
             primary
             left="до"

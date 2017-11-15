@@ -1,12 +1,8 @@
-/* eslint class-methods-use-this: 0 */
-/* eslint no-unused-vars: 0 */
 
 import React from 'react';
-
 import { TagsInput, Tag } from 'controls';
 
 export default class tagsInput extends React.Component {
-
 
   static clone(obj) {
     return JSON.parse(JSON.stringify(obj));
@@ -35,7 +31,7 @@ export default class tagsInput extends React.Component {
     this.props.onBlur(model);
   }
 
-  onAddTag(tag, event) {
+  onAddTag(tag) {
     const model = this.cloneModel();
     if (!model.tags.includes(tag)) {
       model.tags.push(tag);
@@ -44,11 +40,11 @@ export default class tagsInput extends React.Component {
     this.props.onChange(model);
   }
 
-  onBlur(event) {
+  onBlur() {
     this.props.onBlur(this.cloneModel());
   }
 
-  onFocus(event) {
+  onFocus() {
     this.props.onFocus(this.cloneModel());
   }
 

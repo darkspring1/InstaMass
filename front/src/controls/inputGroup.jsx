@@ -33,6 +33,8 @@ export default (props) => {
         value={props.value}
         type="text"
         onChange={onChange}
+        onBlur={props.onBlur}
+        onFocus={props.onFocus}
         disabled={props.disabled}
         className="form-control with-primary-addon"
       />

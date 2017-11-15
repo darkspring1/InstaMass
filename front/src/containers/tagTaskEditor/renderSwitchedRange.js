@@ -4,18 +4,19 @@ import { SwitchedRange } from 'components';
 const RenderSwitchedInputGroupField = ({
   input,
   label,
-  meta: { /* touched, */error/* , warning */ },
-  model
+  meta: { touched, error },
 }) => {
-  const errorFrom = error ? error.from : null;
-  const errorTo = error ? error.to : null;
+  const errorFrom = touched && error ? error.from : null;
+  const errorTo = touched && error ? error.to : null;
   return (
     <div>
       <input {...input} type="hidden" />
 
       <SwitchedRange
         onChange={input.onChange}
-        model={model}
+        onBlur={input.onBlur}
+        onFocus={input.onFocus}
+        model={input.value}
         label={label}
         fromErrorMessage={errorFrom}
         toErrorMessage={errorTo}
