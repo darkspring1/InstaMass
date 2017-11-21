@@ -29,7 +29,7 @@ namespace SM.WEB.API.Controllers
         [Route(Routes.ApiTaskTag)]
         public Task<IHttpActionResult> CreateTagTask(NewTagTaskModel model)
         {
-            return ActionResultAsync(_taskServiceServiceFunc().CreateLikeTask(model.AccountId, model.Tags));
+            return ActionResultAsync(_taskServiceServiceFunc().CreateTagTask(model.AccountId, model.Tags));
         }
 
     }

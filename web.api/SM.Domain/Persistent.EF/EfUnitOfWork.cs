@@ -17,7 +17,7 @@ namespace SM.Domain.Persistent.EF
             RefreshTokenRepository = new RefreshTokenRepository(cacheProvider, context);
             AccountRepository = new AccountRepository(cacheProvider, context);
             TaskRepository = new TaskRepository(cacheProvider, context);
-            LikeTaskRepository = new TagTaskRepository(cacheProvider, context);
+            TagTaskRepository = new TagTaskRepository(cacheProvider, context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -30,7 +30,7 @@ namespace SM.Domain.Persistent.EF
 
         public ITaskRepository TaskRepository { get; }
 
-        public ITagTaskRepository LikeTaskRepository { get; }
+        public ITagTaskRepository TagTaskRepository { get; }
 
         public void Complete()
         {

@@ -22,7 +22,7 @@ namespace SM.WEB.Application.DomainEventHandlers
 
         public async Task HandleAsync(TagTaskWasSyncWithExternalSystem domainEvent)
         {
-            TagTask task = await _unitOfWork.LikeTaskRepository.GetTagTaskByIdAsync(Guid.Parse(domainEvent.TaskId));
+            TagTask task = await _unitOfWork.TagTaskRepository.GetTagTaskByIdAsync(Guid.Parse(domainEvent.TaskId));
             task.InceraseExternalSystemVersion(domainEvent.ExternalSystemVersion);
             await _unitOfWork.CompleteAsync();
         }

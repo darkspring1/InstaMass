@@ -13,7 +13,7 @@ namespace SM.Domain.Persistent.EF
         {
         }
 
-        public void AddLikeTask(TagTask task)
+        public void AddTagTask(TagTask task)
         {
             Set.Add(task.State);
         }

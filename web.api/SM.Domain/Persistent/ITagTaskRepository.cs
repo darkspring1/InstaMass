@@ -8,6 +8,6 @@ namespace SM.Domain.Persistent
     {
         Task<TagTask> GetTagTaskByIdAsync(Guid taskId);
 
-        void AddLikeTask(TagTask task);
+        void AddTagTask(TagTask task);
     }
 }
