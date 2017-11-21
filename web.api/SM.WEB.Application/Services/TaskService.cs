@@ -19,11 +19,21 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => UnitOfWork.TaskRepository.GetByUserAsync(userId));
         }
 
-        public Task<ServiceResult<TagTask>> CreateTagTask(Guid accountId, string[] tags)
+        public Task<ServiceResult<TagTask>> CreateTagTask(
+            Guid accountId,
+            string[] tags,
+            bool avatarExistDisabled,
+            SwitchedProperty lastPost,
+            SwitchedRange posts,
+            SwitchedRange followers,
+            SwitchedRange followings)
         {
             return RunAsync(async () =>
             {
-                TagTask task = TagTask.Create(accountId, tags);
+                TagTask task = TagTask.Create(
+                    accountId, tags, avatarExistDisabled, 
+                    lastPost, posts: posts, followers: followers, followings: followings);
+
                 UnitOfWork.TagTaskRepository.AddTagTask(task);
                 var completeTask = UnitOfWork.CompleteAsync();
 
