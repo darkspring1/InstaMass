@@ -5,14 +5,13 @@ const RenderSwitchedInputGroupField = ({
   input,
   label,
   meta: { /* touched, */error/* , warning */ },
-  model,
   inputLabel
 }) => (
   <div>
     <input {...input} type="hidden" />
     <SwitchedInputGroup
       onChange={input.onChange}
-      model={model}
+      model={input.value}
       label={label}
       inputLabel={inputLabel}
       errorMessage={error}

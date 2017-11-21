@@ -45,9 +45,7 @@ class TagTaskEditor extends React.Component {
     this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
     this.state = {
-      account: null,
-      lastPost: { value: 0, disabled: false },
-      avatarExist: true
+      avatarExistDisabled: props.avatarExistDisabled
     };
   }
 
@@ -71,8 +69,8 @@ class TagTaskEditor extends React.Component {
     this.setState({ lastPost });
   }
 
-  onAvatarExist(avatarExist) {
-    this.setState({ avatarExist });
+  onAvatarExist(avatarExistDisabled) {
+    this.setState({ avatarExistDisabled });
   }
 
   onAddNewTask() {
@@ -94,6 +92,7 @@ class TagTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
+    const formValues = props.formValues || {};
     const { submitting, handleSubmit } = props;
     const state = this.state;
     debugger;
@@ -116,7 +115,7 @@ class TagTaskEditor extends React.Component {
                 validate={[requiredAccount]}
                 onChange={this.onAccountChange}
                 accounts={props.accounts}
-                value={state.account}
+                value={formValues.account}
               />
             </div>
 
@@ -129,7 +128,7 @@ class TagTaskEditor extends React.Component {
                 placeholder="Добавить тэг"
                 name="tagsInput"
                 component={RenderTagsInput}
-                value={state.tagsInput}
+                value={formValues.tagsInput}
                 onChange={this.onTagsInputChange}
                 validate={[tagInputRequired, tagInputUnique]}
               />
@@ -141,9 +140,12 @@ class TagTaskEditor extends React.Component {
 
             <div className="panel-body" >
 
-
               <div style={{ marginBottom: '15px' }}>
-                <SwitchedLabel onChange={this.onAvatarExist} disabled={state.avatarExist} label="Если есть аватар" />
+                <SwitchedLabel
+                  onChange={this.onAvatarExist}
+                  disabled={state.avatarExistDisabled}
+                  label="Если есть аватар"
+                />
               </div>
 
               <Field
@@ -153,7 +155,7 @@ class TagTaskEditor extends React.Component {
                 inputLabel="дня назад"
                 validate={[requiredIfEnabledValidator]}
                 onChange={this.onLastPostChange}
-                model={state.lastPost}
+                value={formValues.lastPost}
               />
 
               <Field
@@ -162,7 +164,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество публикаций пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onPostsChange}
-                value={state.posts}
+                value={formValues.posts}
               />
 
               <Field
@@ -171,7 +173,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписчиков пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowersChange}
-                value={state.followers}
+                value={formValues.followers}
               />
 
               <Field
@@ -180,7 +182,7 @@ class TagTaskEditor extends React.Component {
                 label="Количество подписок"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
                 onChange={this.onFollowingsChange}
-                value={state.followings}
+                value={formValues.followings}
               />
 
               <Button disabled={submitting} type="submit" text="Сохранить" success large />
@@ -206,15 +208,18 @@ const initialValues = {
   tagsInput: { tags: [/* 'tag1', 'tag2' */], value: '' },
   posts: range(0, 100, false),
   followers: range(0, 100, true),
-  followings: range(0, 100, true)
+  followings: range(0, 100, true),
+  account: null,
+  lastPost: { value: 0, disabled: false },
 };
 
 function mapStateToProps(state) {
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
+    avatarExistDisabled: false,
     initialValues,
-    values_: getFormValues(formName)(state)
+    formValues: getFormValues(formName)(state)
   };
 }
 
