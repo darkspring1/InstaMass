@@ -8,7 +8,7 @@ namespace SM.WEB.API.Models
 
         public Guid AccountId { get; set; }
 
-        public bool AvatarExist { get; set; }
+        public bool AvatarExistDisabled { get; set; }
 
         public SwitchedPropertyModel LastPost { get; set; }
 

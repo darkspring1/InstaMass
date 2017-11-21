@@ -36,13 +36,7 @@ class TagTaskEditor extends React.Component {
   constructor(props) {
     super(props);
     this.onAddNewTask = this.onAddNewTask.bind(this);
-    this.onAccountChange = this.onAccountChange.bind(this);
-    this.onPostsChange = this.onPostsChange.bind(this);
-    this.onFollowersChange = this.onFollowersChange.bind(this);
-    this.onFollowingsChange = this.onFollowingsChange.bind(this);
-    this.onLastPostChange = this.onLastPostChange.bind(this);
     this.onAvatarExist = this.onAvatarExist.bind(this);
-    this.onTagsInputChange = this.onTagsInputChange.bind(this);
 
     this.state = {
       avatarExistDisabled: props.avatarExistDisabled
@@ -53,49 +47,30 @@ class TagTaskEditor extends React.Component {
     this.props.onAccountsRequested();
   }
 
-  onPostsChange(posts) {
-    this.setState({ posts });
-  }
-
-  onFollowersChange(followers) {
-    this.setState({ followers });
-  }
-
-  onFollowingsChange(followings) {
-    this.setState({ followings });
-  }
-
-  onLastPostChange(lastPost) {
-    this.setState({ lastPost });
-  }
-
   onAvatarExist(avatarExistDisabled) {
     this.setState({ avatarExistDisabled });
   }
 
   onAddNewTask() {
-    debugger;
-    const state = this.state;
+    const { avatarExistDisabled } = this.state;
+    const { lastPost, followers, followings, posts, tagsInput, account } = this.props.formValues;
     this.props.onAddNewTask({
-      tags: state.tagsInput.tags,
-      lastPost: state.lastPost,
-      accountId: this.state.account.id });
+      lastPost,
+      followers,
+      followings,
+      posts,
+      avatarExistDisabled,
+      tags: tagsInput.tags,
+      accountId: account.id,
+    });
   }
 
-  onAccountChange(account) {
-    this.setState({ account });
-  }
-
-  onTagsInputChange(tagsInput) {
-    this.setState({ tagsInput });
-  }
 
   render() {
     const props = this.props;
     const formValues = props.formValues || {};
     const { submitting, handleSubmit } = props;
     const state = this.state;
-    debugger;
     return (
       <div>
         <form onSubmit={handleSubmit(this.onAddNewTask)}>
@@ -113,7 +88,6 @@ class TagTaskEditor extends React.Component {
                 placeholder="Выберите Аккаунт"
                 id="accoun-dropdown"
                 validate={[requiredAccount]}
-                onChange={this.onAccountChange}
                 accounts={props.accounts}
                 value={formValues.account}
               />
@@ -129,7 +103,6 @@ class TagTaskEditor extends React.Component {
                 name="tagsInput"
                 component={RenderTagsInput}
                 value={formValues.tagsInput}
-                onChange={this.onTagsInputChange}
                 validate={[tagInputRequired, tagInputUnique]}
               />
             </div>
@@ -154,7 +127,6 @@ class TagTaskEditor extends React.Component {
                 label="Последняя публикация была"
                 inputLabel="дня назад"
                 validate={[requiredIfEnabledValidator]}
-                onChange={this.onLastPostChange}
                 value={formValues.lastPost}
               />
 
@@ -163,7 +135,6 @@ class TagTaskEditor extends React.Component {
                 component={RenderSwitchedRange}
                 label="Количество публикаций пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
-                onChange={this.onPostsChange}
                 value={formValues.posts}
               />
 
@@ -172,7 +143,6 @@ class TagTaskEditor extends React.Component {
                 component={RenderSwitchedRange}
                 label="Количество подписчиков пользователя"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
-                onChange={this.onFollowersChange}
                 value={formValues.followers}
               />
 
@@ -181,7 +151,6 @@ class TagTaskEditor extends React.Component {
                 component={RenderSwitchedRange}
                 label="Количество подписок"
                 validate={[rangeRequiredIfEnabledValidator, rangeFromToValidator]}
-                onChange={this.onFollowingsChange}
                 value={formValues.followings}
               />
 
