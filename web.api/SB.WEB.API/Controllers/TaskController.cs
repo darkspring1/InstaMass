@@ -1,4 +1,5 @@
 ﻿using SM.Common.Log;
+using SM.Domain.Model;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
@@ -29,8 +30,18 @@ namespace SM.WEB.API.Controllers
         [Route(Routes.ApiTaskTag)]
         public Task<IHttpActionResult> CreateTagTask(NewTagTaskModel model)
         {
-            return ActionResultAsync(_taskServiceServiceFunc().CreateTagTask(model.AccountId, model.Tags));
+            var lastPost = new SwitchedProperty(model.LastPost.Value, model.LastPost.Disabled);
+            var posts = FromModel(model.Posts);
+            var followers = FromModel(model.Followers);
+            var followings = FromModel(model.Followings);
+            return ActionResultAsync(_taskServiceServiceFunc().CreateTagTask(model.AccountId, model.Tags, model.AvatarExistDisabled, lastPost, posts: posts, followers: followers, followings: followings));
         }
+
+
+        SwitchedRange FromModel(SwitchedRangeModel model) {
+            return new SwitchedRange(model.From, model.To, model.Disabled);
+        }
+
 
     }
     
