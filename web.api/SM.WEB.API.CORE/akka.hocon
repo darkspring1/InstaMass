@@ -1,0 +1,41 @@
+﻿app {
+	actorsystem: "instamass"
+} 
+
+akka {
+	actor {
+	provider = "Akka.Cluster.ClusterActorRefProvider, Akka.Cluster"
+
+			deployment {
+				/taskApi {
+					router = round-robin-pool
+					nr-of-instances = 1
+					cluster {
+						enabled = on
+						max-nr-of-instances-per-node = 10
+						allow-local-routees = off
+						use-role = task.api
+					}
+				}
+			}
+
+	serializers {
+		hyperion = "Akka.Serialization.HyperionSerializer, Akka.Serialization.Hyperion"
+	}
+	serialization-bindings {
+		"System.Object" = hyperion
+	}
+	}
+	remote {
+		dot-netty.tcp {
+		public-hostname = "127.0.0.1"
+		hostname = "127.0.0.1"
+		port = 6662
+	}
+	}
+	cluster {
+	seed-nodes = ["akka.tcp://instamass@127.0.0.1:4053"]
+		roles = [api.client]
+	}
+             
+}

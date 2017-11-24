@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.API", "SB.WEB.API\SM.WEB.API.csproj", "{3A13633F-2177-4C4A-8CD4-4B538E17EFDA}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.WEB.Application", "SM.WEB.Application\SM.WEB.Application.csproj", "{F3530BE5-74BB-496B-BFDB-95A58B6580D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.TaskEngine.Api.ActorModel", "SM.TaskEngine.Api.ActorModel\SM.TaskEngine.Api.ActorModel.csproj", "{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.WEB.API.CORE", "SM.WEB.API.CORE\SM.WEB.API.CORE.csproj", "{CC44E70D-A82B-46A4-8592-6A975109C30E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,14 @@ Global
 		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Stage|Any CPU.Build.0 = Debug|Any CPU
 		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{204ADEB8-27FC-4CFC-83E3-14D9AF5A2015}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Stage|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Stage|Any CPU.Build.0 = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC44E70D-A82B-46A4-8592-6A975109C30E}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
