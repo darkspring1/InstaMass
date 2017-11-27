@@ -12,8 +12,9 @@ export default provider => (dispatch) => {
   const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
   /* не переводить строку */
   const externalProviderUrl = `${AuthSettings.apiServiceBaseUri}api/user/ExternalLogin?provider=${provider}&response_type=token&client_id=${AuthSettings.clientId}&redirect_uri=${redirectUri}`;
-
+  debugger;
   window.dispatchAuthExternalProvider = (fragment) => {
+    debugger;
     // dispatch({ type: ActionNames.AUTH_EXTERNAL_PROVIDER, payload });
     const externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
     if (fragment.haslocalaccount === 'False') {
