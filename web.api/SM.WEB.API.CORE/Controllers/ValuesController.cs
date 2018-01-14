@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SM.WEB.API.CORE.Controllers
 {
@@ -11,6 +13,8 @@ namespace SM.WEB.API.CORE.Controllers
     {
         // GET api/values
         [HttpGet]
+        //[AllowAnonymous]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

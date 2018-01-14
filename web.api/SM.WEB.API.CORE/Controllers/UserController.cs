@@ -63,15 +63,10 @@ namespace SM.WEB.API.Controllers
 
             if (User == null || !User.Identity.IsAuthenticated)
             {
-                var uri = "http%3A%2F%2Flocalhost%3A8080%2Fauthcomplete.html";
-                Dictionary<string, string> items = new Dictionary<string, string>
-                {
-                    { "redirect_uri", uri }
-                };
-                var authenticationProperties = new AuthenticationProperties(items);
-                authenticationProperties.RedirectUri = "uri";
+                var authenticationProperties = new AuthenticationProperties();
+                authenticationProperties.RedirectUri = "/api/user/ExternalLogin";
                 
-                return new ChallengeResult(provider/*, authenticationProperties*/);
+                return new ChallengeResult(provider, authenticationProperties);
             }
 
             var redirectUriValidationResult = await ValidateClientAndRedirectUri(this.Request);

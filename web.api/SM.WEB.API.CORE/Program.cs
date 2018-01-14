@@ -17,10 +17,21 @@ namespace SM.WEB.API.CORE
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://localhost:90/")
+        
+        static IWebHost BuildWebHost(string[] args)
+        {
+            var config = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json")
+               .AddJsonFile("appsettings.Development.json")
+               .AddEnvironmentVariables()
+               .Build();
+
+            return WebHost.CreateDefaultBuilder(args)
+                .UseUrls(config["Urls"])
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .Build();
+        }
     }
 }

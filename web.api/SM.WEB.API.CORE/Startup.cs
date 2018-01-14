@@ -10,8 +10,9 @@ using Akka.Actor;
 using SM.WEB.API.Akka;
 using SM.TaskEngine.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace SM.WEB.API.CORE
 {
@@ -30,43 +31,53 @@ namespace SM.WEB.API.CORE
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            /*
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
+                    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
                     {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
-                            ValidateIssuer = true,
-                            // строка, представляющая издателя
-                            ValidIssuer = AuthOptions.ISSUER,
-
-                            // будет ли валидироваться потребитель токена
-                            ValidateAudience = true,
-                            // установка потребителя токена
-                            ValidAudience = AuthOptions.AUDIENCE,
-                            // будет ли валидироваться время существования
-                            ValidateLifetime = true,
-
-                            // установка ключа безопасности
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
-                            ValidateIssuerSigningKey = true,
-                        };
+                        o.RequireHttpsMetadata = false;
+                        o.Authority = "dsdsd";
+                        o.Audience = "audience";
                     })
                     .AddFacebook(o =>
                     {
                         o.AppId = "196483557554508";
                         o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
                     });
-
+              */      
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = SmAuthenticationSignInDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                //.AddCookie(o => o.LoginPath = new PathString("/login"))
+                .AddSignIn()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.Authority = "dsdsd";
+                    o.Audience = "audience";
+                })
+                .AddFacebook(o =>
+                {
+                    o.AppId = "196483557554508";
+                    o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
+                });
+                
 
             services
                 .AddMvc()
                 .AddFluentValidation()
                 .AddControllersAsServices();
-
+                
             return ConfigureIoC(services);
         }
 
@@ -78,6 +89,7 @@ namespace SM.WEB.API.CORE
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseMvc();
         }
 
