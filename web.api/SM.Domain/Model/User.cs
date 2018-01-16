@@ -27,39 +27,6 @@ namespace SM.Domain.Model
             return new User(new UserState { CreatedAt = DateTime.UtcNow,  Email = email, UserName = userName, PasswordHash = SHA(password) });
         }
 
-        public static User CreateExternal(ExternalUserInfo externalUserInfo)
-        {
-            ExternalAuthProviderTypeState externalAuthProviderType = new ExternalAuthProviderTypeState { Type = externalUserInfo.ProviderType.ToString() };
-            ExternalAuthProviderState externalAuthProviderState = new ExternalAuthProviderState
-            {
-                ExternalUserId = externalUserInfo.UserId,
-                ExternalAuthProviderType = externalAuthProviderType
-            };
-
-            var userState = new UserState
-            {
-                CreatedAt = DateTime.UtcNow,
-                Email = externalUserInfo.Email,
-                UserName = $"{externalUserInfo.FirstName} {externalUserInfo.LastName}",
-                ExternalAuthProviders = new List<ExternalAuthProviderState> { externalAuthProviderState }
-            };
-
-            return new User(userState);
-        }
-
-        static ExternalAuthService GetExternalAuthService(ExternalAuthProviderType providerType)
-        {
-            return new FBAuthService();
-        }
-
-        public static Task<ExternalUserInfo> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)
-        {
-            var s = GetExternalAuthService(providerType);
-            return s.GetUserAsync(accessToken);
-        }
-
-
-
         internal static string SHA(string str)
         {
             var crypt = new SHA512Managed();

@@ -290,7 +290,6 @@
     <Compile Include="AuthContext.cs" />
     <Compile Include="ClaimTypes.cs" />
     <Compile Include="Controllers\TaskController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />

@@ -19,7 +19,7 @@ namespace SM.WEB.API.Controllers
             Logger = logger;
             _userId = new Lazy<Guid>(() =>
             {
-                var claim = ((System.Security.Claims.ClaimsPrincipal)this.User).Claims.First(c => c.Type == SMClaimTypes.UserId);
+                var claim = User.Claims.First(c => c.Type == SMClaimTypes.UserId);
                 return Guid.Parse(claim.Value);
             });
         }

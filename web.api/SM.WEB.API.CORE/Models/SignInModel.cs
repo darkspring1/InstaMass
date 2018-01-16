@@ -4,37 +4,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AngularJSAuthentication.API.Models
 {
-    [Validator(typeof(UserValidator))]
-    public class UserModel
+    [Validator(typeof(SignInValidator))]
+    public class SignInModel
     {
 
         public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
     }
 
 
-    public class UserValidator : AbstractValidator<UserModel>
+    public class SignInValidator : AbstractValidator<SignInModel>
     {
-        public UserValidator()
+        public SignInValidator()
         {
             RuleFor(x => x.Email).NotEmpty();
 
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("The User Name cannot be blank.")
-                                        .Length(0, 100).WithMessage("The First Name cannot be more than 100 characters.");
             /*
             RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
 

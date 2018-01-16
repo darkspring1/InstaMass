@@ -60,23 +60,18 @@ namespace SM.Domain.Persistent.EF
             Set.Add(newUser.State);
         }
 
-        public Task<User> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
-        {
-            var externalAuthProviderStates = Context.DbSet<ExternalAuthProviderState>().Entities;
-            var providerTypeStr = providerType.ToString().ToLower();
-            var userState = FirstOrDefaultAsync(externalAuthProviderStates
-                .Where(p => p.ExternalUserId == externalUserId && p.ExternalAuthProviderType.Type == providerTypeStr)
-                .Include(p => p.User)
-                .Include(p => p.User.ExternalAuthProviders)
-                .Select(p => p.User));
-
-            return CreateAsync(userState);
-        }
+        
 
         public Task<User> FindAsync(string email, string password)
         {
             var passwordHash = User.SHA(password);
             var userState = FirstOrDefaultAsync(Set.Entities.Where(u => u.Email == email && u.PasswordHash == passwordHash));
+            return CreateAsync(userState);
+        }
+
+        public Task<User> FindAsync(string email)
+        {
+            var userState = FirstOrDefaultAsync(Set.Entities.Where(u => u.Email == email));
             return CreateAsync(userState);
         }
     }

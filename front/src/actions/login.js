@@ -9,7 +9,7 @@ import LocalStorage from '../localStorage';
 
 function action(loginData, dispatch) {
   debugger;
-  return Login(loginData.email, loginData.password, Settings.clientId)
+  return Login(loginData.email, loginData.password)
   .then((response) => {
     debugger;
   });

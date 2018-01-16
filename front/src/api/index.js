@@ -16,16 +16,16 @@ function responseWrap(apiPromise) {
 }
 
 function RegisterExternal(registerExternalData) {
-  return axios.post(`${Settings.apiServiceBaseUri}api/user/registerexternal`, registerExternalData);
+  return axios.post(`${Settings.apiServiceBaseUri}user/registerexternal`, registerExternalData);
 }
 
 function ObtainLocalAccessToken(externalData) {
-  const url = `${Settings.apiServiceBaseUri}api/user/ObtainLocalAccessToken`;
+  const url = `${Settings.apiServiceBaseUri}user/ObtainLocalAccessToken`;
   return axios.get(url, { params: externalData });
 }
 
 function Orders() {
-  const url = `${Settings.apiServiceBaseUri}api/orders`;
+  const url = `${Settings.apiServiceBaseUri}orders`;
   return axios.get(url);
 }
 
@@ -34,37 +34,38 @@ function RefreshToken(externalData) {
   return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 
-function Login(email, password, appId) {
+function Login(email, password) {
   debugger;
-  let data = `grant_type=password&username=${email}&password=${password}`;
-  data = `${data}&client_id=${appId}`;
-
-  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+  const data = `email=${email}&password=${password}`;
+  return axios.post(`${Settings.apiServiceBaseUri}user/login`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
-/*
-function LoginExternal(externalData) {
-  return axios.post(`${Settings.apiServiceBaseUri}token`, externalData, { headers: { 'grant-type': 'external-token' } });
-} */
+
+function Register(email, userName, password) {
+  debugger;
+  const data = `email=${email}&username=${userName}&password=${password}`;
+  return axios.post(`${Settings.apiServiceBaseUri}user/login`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+}
+
 
 function LoginExternal(externalData) {
+  debugger;
   let data = `grant_type=password&external_token=${externalData.externalAccessToken}&provider=${externalData.provider}`;
   data = `${data}&client_id=${externalData.appId}`;
-
-  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+  return axios.post(`${Settings.apiServiceBaseUri}user/loginExternal`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 }
 
 
 function AddNewAccount(newAccount) {
-  return responseWrap(axios.post(`${Settings.apiServiceBaseUri}api/account`, newAccount));
+  return responseWrap(axios.post(`${Settings.apiServiceBaseUri}account`, newAccount));
 }
 
 function GetAccounts() {
-  return responseWrap(axios.get(`${Settings.apiServiceBaseUri}api/accounts`));
+  return responseWrap(axios.get(`${Settings.apiServiceBaseUri}accounts`));
 }
 
 function CreateTagTask(task) {
-  return responseWrap(axios.post(`${Settings.apiServiceBaseUri}api/task/tag`, task));
+  return responseWrap(axios.post(`${Settings.apiServiceBaseUri}task/tag`, task));
 }
 
 
-export { CreateTagTask, GetAccounts, RegisterExternal, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };
+export { CreateTagTask, GetAccounts, RegisterExternal, Register, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };

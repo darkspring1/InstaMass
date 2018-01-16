@@ -24,29 +24,14 @@ namespace SM.WEB.Application.Services
             });  
         }
 
-        public Task<ServiceResult<User>> CreateExternalAsync(ExternalUserInfo userInfo)
+        public Task<ServiceResult<User>> FindByEmailAsync(string email)
         {
-            return RunAsync(async () => {
-                var newUser = User.CreateExternal(userInfo);
-                UnitOfWork.UserRepository.RegisterNewUser(newUser);
-                await UnitOfWork.CompleteAsync();
-                return newUser;
-            });
-        }
-
-        public Task<ServiceResult<User>> FindAsync(ExternalAuthProviderType providerType, string externalUserId)
-        {
-            return RunAsync(() => UnitOfWork.UserRepository.FindAsync(providerType, externalUserId));
+            return RunAsync(() => UnitOfWork.UserRepository.FindAsync(email));
         }
 
         public Task<ServiceResult<User>> FindAsync(string email, string password)
         {
             return RunAsync(() => UnitOfWork.UserRepository.FindAsync(email, password));
-        }
-
-        public Task<ServiceResult<ExternalUserInfo>> GetExternalUserInfoAsync(ExternalAuthProviderType providerType, string accessToken)
-        {
-            return RunAsync(() => User.GetExternalUserInfoAsync(providerType, accessToken));
         }
     }
 }
