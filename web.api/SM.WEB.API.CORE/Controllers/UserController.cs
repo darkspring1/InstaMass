@@ -62,7 +62,7 @@ namespace SM.WEB.API.Controllers
                 {
                     properties.Items.Add(SMClaimTypes.CreateNewUser, "");
                 }
-                properties.RedirectUri = "/api/user/ExternalLogin";
+                //properties.RedirectUri = "http://localhost:8080/authcomplete.html";
                 return new ChallengeResult(provider, properties);
             }
 
@@ -83,7 +83,7 @@ namespace SM.WEB.API.Controllers
             return SignInPrivate(model, model.UserName, true);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route(Routes.LoginExternal)]
         public ActionResult LoginExternal(string provider)
         {

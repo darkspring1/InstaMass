@@ -12,7 +12,7 @@ using SM.TaskEngine.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SM.WEB.API.CORE
 {
@@ -51,7 +51,7 @@ namespace SM.WEB.API.CORE
                         o.AppId = "196483557554508";
                         o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
                     });
-              */      
+              */
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -59,7 +59,10 @@ namespace SM.WEB.API.CORE
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
                 //.AddCookie(o => o.LoginPath = new PathString("/login"))
-                .AddSignIn()
+                .AddSmSignIn(o =>
+                {
+                    o.RedirectUri = "http://localhost:8080/authcomplete.html?auth={0}";
+                })
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
                 {
                     o.RequireHttpsMetadata = false;
@@ -70,6 +73,11 @@ namespace SM.WEB.API.CORE
                 {
                     o.AppId = "196483557554508";
                     o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
+                    o.Events.OnTicketReceived = async ticketContext =>
+                    {
+                        await ticketContext.HttpContext.SignInAsync(ticketContext.Options.SignInScheme, ticketContext.Principal, ticketContext.Properties);
+                        ticketContext.HandleResponse();
+                    };
                 });
                 
 

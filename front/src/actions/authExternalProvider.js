@@ -10,8 +10,9 @@ import LocalStorage from '../localStorage';
 
 export default provider => (dispatch) => {
   const redirectUri = `${location.protocol}//${location.host}/authcomplete.html`;
+  debugger;
   /* не переводить строку */
-  const externalProviderUrl = `${AuthSettings.apiServiceBaseUri}api/user/ExternalLogin?provider=${provider}&response_type=token&client_id=${AuthSettings.clientId}&redirect_uri=${redirectUri}`;
+  const externalProviderUrl = `${AuthSettings.apiServiceBaseUri}user/LoginExternal?provider=${provider}`;
   debugger;
   window.dispatchAuthExternalProvider = (fragment) => {
     debugger;

@@ -1,60 +1,19 @@
 ﻿
-window.common = (function cmn() {
-  const common = {};
-
-  function parseQueryString(queryString) {
-    const data = {};
-
-    let pair;
-    let separatorIndex;
-    let escapedKey;
-    let escapedValue;
-    let key;
-    let value;
-
-    if (queryString === null) {
-      return data;
-    }
-
-    const pairs = queryString.split('&');
-
-    for (let i = 0; i < pairs.length; i += 1) {
-      pair = pairs[i];
-      separatorIndex = pair.indexOf('=');
-
-      if (separatorIndex === -1) {
-        escapedKey = pair;
-        escapedValue = null;
-      } else {
-        escapedKey = pair.substr(0, separatorIndex);
-        escapedValue = pair.substr(separatorIndex + 1);
-      }
-
-      key = decodeURIComponent(escapedKey);
-      value = decodeURIComponent(escapedValue);
-
-      data[key] = value;
-    }
-
-    return data;
-  }
-
-  common.getFragment = function getFragment() {
-    if (window.location.hash.indexOf('#') === 0) {
-      return parseQueryString(window.location.hash.substr(1));
-    }
-    return {};
-  };
-
-  return common;
-}());
+function extractAuthInf() {
+  debugger;
+  const search = decodeURIComponent(window.location.search);
+  const start = search.indexOf('{');
+  const finish = search.indexOf('}');
+  const authInf = search.substring(start, finish);
+  debugger;
+  return JSON.parse(authInf);
+}
 
 debugger;
-const fragment = window.common.getFragment();
+const authInf = extractAuthInf();
 
-window.location.hash = fragment.state || '';
 
-window.opener.dispatchAuthExternalProvider(fragment);
+window.opener.dispatchAuthExternalProvider(authInf);
 
 window.close();
 
