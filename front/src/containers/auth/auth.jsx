@@ -6,8 +6,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { Login, AuthExternalProvider } from 'actions';
+// import { Login, AuthExternalProvider } from 'actions';
 import { required } from 'form-validators';
+import { SignIn, SignInExternal } from 'actions';
 import renderField from './renderField';
 
 const formName = 'auth';
@@ -114,12 +115,15 @@ export default connect(
   },
 dispatch => ({
   onAuthExternalProvider(provider) {
-    dispatch(AuthExternalProvider(provider));
+    debugger;
+    dispatch(SignInExternal(provider));
+    // dispatch(AuthExternalProvider(provider));
   },
 
   onLogin(loginData) {
     debugger;
-    dispatch(Login(loginData));
+    dispatch(SignIn(loginData));
+    // dispatch(Login(loginData));
   }
 })
 )(authForm);

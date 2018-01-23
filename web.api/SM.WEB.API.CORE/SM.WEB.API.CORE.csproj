@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>2dbd29a7-f07d-4065-94b1-12184ecfd87e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.1" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
   </ItemGroup>
 

@@ -73,7 +73,7 @@ namespace SM.WEB.API.CORE
                         signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
                 var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-                var authInfo = JsonConvert.SerializeObject(new { token });
+                var authInfo = JsonConvert.SerializeObject(new { access_token = token });
 
                 Response.Redirect(string.Format(Options.RedirectUri, authInfo));
             }

@@ -62,3 +62,23 @@ export function AddNewTagSucceeded(payload) {
 export function AddNewTagTaskRequested(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_TASK_REQUESTED, payload };
 }
+
+export function SignIn(payload) {
+  return { type: ActionTypes.SIGN_IN_REQUESTED, payload };
+}
+
+export function SignInExternal(payload) {
+  return { type: ActionTypes.SIGN_IN_EXTERNAL_REQUESTED, payload };
+}
+
+export function SignUp(payload) {
+  return { type: ActionTypes.SIGN_UP_REQUESTED, payload };
+}
+
+export function SignUpExternal(payload) {
+  return { type: ActionTypes.SIGN_UP_EXTERNAL_REQUESTED, payload };
+}
+
+export function AuthorizationData(payload) {
+  return { type: ActionTypes.AUTHORIZATION_DATA, payload };
+}

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SM.WEB.API.CORE
 {
@@ -54,9 +55,9 @@ namespace SM.WEB.API.CORE
               */
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = SmAuthenticationSignInDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
                 //.AddCookie(o => o.LoginPath = new PathString("/login"))
                 .AddSmSignIn(o =>
@@ -66,8 +67,28 @@ namespace SM.WEB.API.CORE
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
                 {
                     o.RequireHttpsMetadata = false;
-                    o.Authority = "dsdsd";
-                    o.Audience = "audience";
+                    //o.Authority = "dsdsd";
+                    //o.Audience = "audience";
+
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // укзывает, будет ли валидироваться издатель при валидации токена
+                        ValidateIssuer = true,
+                        // строка, представляющая издателя
+                        ValidIssuer = AuthOptions.ISSUER,
+
+                        // будет ли валидироваться потребитель токена
+                        //ValidateAudience = true,
+                        // установка потребителя токена
+                        //ValidAudience = AuthOptions.AUDIENCE,
+                        // будет ли валидироваться время существования
+                        ValidateLifetime = true,
+
+                        // установка ключа безопасности
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        // валидация ключа безопасности
+                        ValidateIssuerSigningKey = true,
+                    };
                 })
                 .AddFacebook(o =>
                 {
@@ -97,6 +118,12 @@ namespace SM.WEB.API.CORE
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(o =>
+            {
+                o.AllowAnyOrigin();
+                o.AllowAnyHeader();
+                o.AllowAnyMethod();
+            });
             app.UseAuthentication();
             app.UseMvc();
         }
