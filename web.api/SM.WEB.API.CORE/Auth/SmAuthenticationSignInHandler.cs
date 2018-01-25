@@ -58,22 +58,30 @@ namespace SM.WEB.API.CORE
             else
             {
                 var user = serviceResult.Result;
-                var claims = new Claim[]
-                    {
-                        new Claim(SMClaimTypes.UserId, user.Id.ToString())
-                    };
+                var claims = new Claim[] { new Claim(SMClaimTypes.UserId, user.Id.ToString()) };
                 var now = DateTime.UtcNow;
+                var key = AuthOptions.GetSymmetricSecurityKey();
+                var algorithm = SecurityAlgorithms.HmacSha256;
                 // создаем JWT-токен
-                var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        notBefore: now,
+                var accessToken = new JwtSecurityToken(
+                        issuer: AuthOptions.Issuer,
+                        audience: AuthOptions.Audience,
                         claims: claims,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-                var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.AccessTokenLifeTime)),
+                        signingCredentials: new SigningCredentials(key, algorithm));
 
-                var authInfo = JsonConvert.SerializeObject(new { access_token = token });
+                var refreshToken = new JwtSecurityToken(
+                        issuer: AuthOptions.Issuer,
+                        audience: AuthOptions.Audience,
+                        claims: claims,
+                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.RefreshTokenLifeTime)),
+                        signingCredentials: new SigningCredentials(key, algorithm));
+
+
+                var accessTokenWriten = new JwtSecurityTokenHandler().WriteToken(accessToken);
+                var refreshTokenWriten = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+
+                var authInfo = JsonConvert.SerializeObject(new { access_token = accessTokenWriten, refresh_token = refreshTokenWriten });
 
                 Response.Redirect(string.Format(Options.RedirectUri, authInfo));
             }

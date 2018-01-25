@@ -67,20 +67,17 @@ namespace SM.WEB.API.CORE
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
                 {
                     o.RequireHttpsMetadata = false;
-                    //o.Authority = "dsdsd";
-                    //o.Audience = "audience";
-
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         // укзывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
                         // строка, представляющая издателя
-                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidIssuer = AuthOptions.Issuer,
 
                         // будет ли валидироваться потребитель токена
-                        //ValidateAudience = true,
+                        ValidateAudience = true,
                         // установка потребителя токена
-                        //ValidAudience = AuthOptions.AUDIENCE,
+                        ValidAudience = AuthOptions.Audience,
                         // будет ли валидироваться время существования
                         ValidateLifetime = true,
 

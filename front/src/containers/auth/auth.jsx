@@ -115,7 +115,6 @@ export default connect(
   },
 dispatch => ({
   onAuthExternalProvider(provider) {
-    debugger;
     dispatch(SignInExternal(provider));
     // dispatch(AuthExternalProvider(provider));
   },

@@ -76,6 +76,7 @@ const refreshTokenInterceptor = (store, error) => {
       });
     }
   }
+  store.dispatch(push('/auth'));
   return Promise.reject(error);
 }
 ;
