@@ -2,6 +2,17 @@
 import axios from 'axios';
 import Settings from '../settings';
 
+function post(params) {
+  const absolutUrl = params.absolutUrl ? params.absolutUrl : `${Settings.apiServiceBaseUri}${params.url}`;
+  const headers = params.headers || {};
+  const data = params.data || {};
+  if (!headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  return axios.post(absolutUrl, data, { headers });
+}
+
 function responseWrap(apiPromise) {
   return apiPromise.then(response => response.data)
   .catch((e) => {
@@ -30,8 +41,8 @@ function Orders() {
 }
 
 function RefreshToken(externalData) {
-  const data = `grant_type=refresh_token&refresh_token=${externalData.refresh_token}&client_id=${externalData.appId}`;
-  return axios.post(`${Settings.apiServiceBaseUri}token`, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+  const headers = { Authorization: `Bearer ${externalData.refresh_token}` };
+  return post({ url: 'user/token/refresh', headers });
 }
 
 function Login(email, password) {

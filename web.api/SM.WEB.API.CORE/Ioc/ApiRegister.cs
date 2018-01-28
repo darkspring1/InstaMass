@@ -9,8 +9,7 @@ namespace SM.WEB.API.Ioc
 {
     public class ApiRegistry : Registry
     {
-        const string connectionString = "Host=localhost;Port=5432;Database=SocialMass;Username=postgres;Password=postgres";
-        public ApiRegistry()
+        public ApiRegistry(string connectionString)
         {
             For<IDomainEventDispatcher>().Use<EventDispatcher>();
             /*
@@ -21,15 +20,12 @@ namespace SM.WEB.API.Ioc
             */
             For<ILogger>().Use<NLogLogger>();
 
-            //For(typeof(Business.Dal.IRepository<>)).Use(typeof(EFRepository<>));
-
             For<IEntityFrameworkDataContext>()
                 .Use<EFDataContext>()
                 .Ctor<string>("connectionString").Is(connectionString);
 
             For<ICacheProvider>().Use<MemoryCacheProvider>().Singleton();
 
-            
             For<IUnitOfWork>().Use<EfUnitOfWork>();
         }
     }

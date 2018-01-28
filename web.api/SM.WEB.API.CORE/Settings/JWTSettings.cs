@@ -22,7 +22,7 @@ namespace SM.WEB.API.CORE.Settings
         {
             get
             {
-                return double.Parse(configuration["${prefix}:AccessTokenLifeTime"], CultureInfo.InvariantCulture);
+                return double.Parse(configuration[$"{prefix}:AccessTokenLifeTime"], CultureInfo.InvariantCulture);
             }
         }
 
@@ -33,6 +33,10 @@ namespace SM.WEB.API.CORE.Settings
                 return double.Parse(configuration[$"{prefix}:RefreshTokenLifeTime"], CultureInfo.InvariantCulture);
             }
         }
+
+        public string Audience => configuration[$"{prefix}:Audience"];
+
+        public string Issuer => configuration[$"{prefix}:Issuer"];
 
 
         public  SymmetricSecurityKey GetSymmetricSecurityKey()

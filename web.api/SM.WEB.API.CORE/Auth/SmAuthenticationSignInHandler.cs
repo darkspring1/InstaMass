@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SM.Common.Services;
 using SM.Domain.Model;
+using SM.WEB.API.CORE.Settings;
 using SM.WEB.Application.Services;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,11 +18,18 @@ namespace SM.WEB.API.CORE
     public class SmAuthenticationSignInHandler : AuthenticationHandler<SmAuthenticationSignInOptions>,
         IAuthenticationSignInHandler
     {
-
+        private readonly SMSettings _settings;
         private readonly Func<UserService> _userServiceFunc;
 
-        public SmAuthenticationSignInHandler(Func<UserService> userServiceFunc, IOptionsMonitor<SmAuthenticationSignInOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        public SmAuthenticationSignInHandler(
+            SMSettings settings,
+            Func<UserService> userServiceFunc,
+            IOptionsMonitor<SmAuthenticationSignInOptions> options,
+            ILoggerFactory logger,
+            UrlEncoder
+            encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
+            this._settings = settings;
             _userServiceFunc = userServiceFunc;
         }
 
@@ -60,21 +68,21 @@ namespace SM.WEB.API.CORE
                 var user = serviceResult.Result;
                 var claims = new Claim[] { new Claim(SMClaimTypes.UserId, user.Id.ToString()) };
                 var now = DateTime.UtcNow;
-                var key = AuthOptions.GetSymmetricSecurityKey();
+                var key = _settings.JWT.GetSymmetricSecurityKey();
                 var algorithm = SecurityAlgorithms.HmacSha256;
                 // создаем JWT-токен
                 var accessToken = new JwtSecurityToken(
-                        issuer: AuthOptions.Issuer,
-                        audience: AuthOptions.Audience,
                         claims: claims,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.AccessTokenLifeTime)),
+                        expires: now.AddSeconds(_settings.JWT.AccessTokenLifeTime),
+                        issuer: _settings.JWT.Issuer,
+                        audience: _settings.JWT.Audience,
                         signingCredentials: new SigningCredentials(key, algorithm));
 
                 var refreshToken = new JwtSecurityToken(
-                        issuer: AuthOptions.Issuer,
-                        audience: AuthOptions.Audience,
                         claims: claims,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.RefreshTokenLifeTime)),
+                        expires: now.AddSeconds(_settings.JWT.RefreshTokenLifeTime),
+                        issuer: _settings.JWT.Issuer,
+                        audience: _settings.JWT.Audience,
                         signingCredentials: new SigningCredentials(key, algorithm));
 
 

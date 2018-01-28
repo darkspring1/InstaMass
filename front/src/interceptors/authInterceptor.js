@@ -12,9 +12,11 @@ import logger from '../logger';
 
 const regex = /^.*\/api\/.*$/;
 
+const refreshTokenUrl = Settings.apiServiceBaseUri + Settings.refreshTokenUri;
+
 const authTokenInterceptor = (config) => {
   const r = regex.exec(config.url);
-  if (r !== null) {
+  if (r !== null && config.url !== refreshTokenUrl) {
     // This is necessary to avoid infinite loops with zero-width matches
     const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
     if (authData) {

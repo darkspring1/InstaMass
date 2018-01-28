@@ -11,48 +11,27 @@ using SM.WEB.API.Akka;
 using SM.TaskEngine.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
+using SM.WEB.API.CORE.Settings;
 
 namespace SM.WEB.API.CORE
 {
     public class Startup
     {
 
+        SMSettings _settings;
         public static ActorSystem ActorSystem { get; private set; }
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _settings = new SMSettings(configuration);
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            /*
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
-                    {
-                        o.RequireHttpsMetadata = false;
-                        o.Authority = "dsdsd";
-                        o.Audience = "audience";
-                    })
-                    .AddFacebook(o =>
-                    {
-                        o.AppId = "196483557554508";
-                        o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
-                    });
-              */
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,26 +50,25 @@ namespace SM.WEB.API.CORE
                     {
                         // укзывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
-                        // строка, представляющая издателя
-                        ValidIssuer = AuthOptions.Issuer,
-
+                        ValidIssuer = _settings.JWT.Issuer,
                         // будет ли валидироваться потребитель токена
                         ValidateAudience = true,
-                        // установка потребителя токена
-                        ValidAudience = AuthOptions.Audience,
+                        ValidAudience = _settings.JWT.Audience,
                         // будет ли валидироваться время существования
                         ValidateLifetime = true,
 
                         // установка ключа безопасности
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = _settings.JWT.GetSymmetricSecurityKey(),
                         // валидация ключа безопасности
                         ValidateIssuerSigningKey = true,
+
+                        ClockSkew = TimeSpan.Zero
                     };
                 })
                 .AddFacebook(o =>
                 {
-                    o.AppId = "196483557554508";
-                    o.AppSecret = "601ca0e2d0898e7105785db885bca4c9";
+                    o.AppId = _settings.Facebook.AppId;
+                    o.AppSecret = _settings.Facebook.AppSecret;
                     o.Events.OnTicketReceived = async ticketContext =>
                     {
                         await ticketContext.HttpContext.SignInAsync(ticketContext.Options.SignInScheme, ticketContext.Principal, ticketContext.Properties);
@@ -127,7 +105,7 @@ namespace SM.WEB.API.CORE
 
         public IServiceProvider ConfigureIoC(IServiceCollection services)
         {
-            var apiRegistry = new ApiRegistry();
+            var apiRegistry = new ApiRegistry(_settings.ConnectionString);
             var container = new Container(apiRegistry);
 
             ActorSystem = AkkaConfig.CreateActorSystem();

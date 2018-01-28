@@ -96,5 +96,12 @@ namespace SM.WEB.API.Controllers
         {
             return ChallengeResultPrivate(provider, true);
         }
+
+        [HttpPost]
+        [Route(Routes.TokenRefresh)]
+        public ActionResult TokenRefresh([FromBody]string refreshToken)
+        {
+            return null;
+        }
     }
 }
