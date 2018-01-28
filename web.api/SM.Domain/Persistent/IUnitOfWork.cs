@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SM.Domain.Persistent
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         IUserRepository UserRepository { get; }
 

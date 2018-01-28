@@ -39,12 +39,9 @@ namespace SM.WEB.Application.Services
 
                 Task<Account> accountTask;
                 //2 паралельных запроса
-                using (var unitOfWork2 = UnitOfWork.CreateNewInstance())
-                {
-                    accountTask = unitOfWork2.AccountRepository.GetByIdAsync(accountId);
-                    await Task.WhenAll(accountTask, completeTask);
-                }
-                
+                var unitOfWork2 = UnitOfWork.CreateNewInstance();
+                accountTask = unitOfWork2.AccountRepository.GetByIdAsync(accountId);
+                await Task.WhenAll(accountTask, completeTask);
                 await RaiseAsync(new TagTaskWasCreated(accountTask.Result.Login, task));
                 return task;
             });

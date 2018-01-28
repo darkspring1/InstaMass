@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SM.Common.Cache;
 
 namespace SM.Domain.Persistent.EF
 {
-    public class EfUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IUnitOfWork, IDisposable
     {
         readonly IEntityFrameworkDataContext _context;
         readonly ICacheProvider _cacheProvider;
@@ -42,13 +43,28 @@ namespace SM.Domain.Persistent.EF
             return _context.SaveChangesAsync();
         }
 
+
+        List<EfUnitOfWork> _uowInstances;
         public IUnitOfWork CreateNewInstance()
         {
-            return new EfUnitOfWork(_context.CreateNewInstance(), _cacheProvider);
+            if (_uowInstances == null)
+            {
+                _uowInstances = new List<EfUnitOfWork>();
+            }
+            var result = new EfUnitOfWork(_context.CreateNewInstance(), _cacheProvider);
+            _uowInstances.Add(result);
+            return result;
         }
 
         public void Dispose()
         {
+            if (_uowInstances != null)
+            {
+                foreach (var uow in _uowInstances)
+                {
+                    uow.Dispose();
+                }
+            }
             _context.Dispose();
         }
     }
