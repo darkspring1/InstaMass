@@ -13,6 +13,9 @@ namespace SM.Domain.Persistent.EF
 
         Task<T> FindAsync(params object[] keyValues);
 
-        T Remove(T entity);
+        void Remove(T entity);
+
+        void RemoveRange(params T[] entities);
+
     }
 }

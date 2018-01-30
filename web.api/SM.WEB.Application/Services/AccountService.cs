@@ -9,7 +9,7 @@ using SM.Domain.Events;
 namespace SM.WEB.Application.Services
 {
 
-    public class AccountService : SMBaseService
+    public class AccountService : ApplicationService
     {
         public const int AccountAlreadyRegistred = 1;
 

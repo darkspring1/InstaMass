@@ -9,7 +9,7 @@ namespace SM.Domain.Persistent
 
         IApplicationRepository ApplicationRepository { get; }
 
-        IRefreshTokenRepository RefreshTokenRepository { get; }
+        IAuthTokenRepository AuthTokenRepository { get; }
 
         IAccountRepository AccountRepository { get; }
         ITaskRepository TaskRepository { get; }

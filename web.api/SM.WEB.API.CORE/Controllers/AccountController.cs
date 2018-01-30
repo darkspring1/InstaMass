@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
+using SM.WEB.API.CORE.Auth;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SM.WEB.API.Controllers
 {
-    [Authorize]
+    [SmAuth]
     public class AccountController : BaseController
     {
         private readonly Func<AccountService> _accountServiceServiceFunc;

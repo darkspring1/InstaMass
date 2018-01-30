@@ -16,7 +16,7 @@ namespace SM.WEB.API.CORE.Settings
             this.prefix = prefix;
         }
         
-        public string Key => configuration[$"{prefix}:Key"];
+        string Key => configuration[$"{prefix}:Key"];
 
         public double AccessTokenLifeTime
         {

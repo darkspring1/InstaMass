@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SM.WEB.Application.Services
 {
-    public class TaskService : SMBaseService
+    public class TaskService : ApplicationService
     {
         public TaskService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {

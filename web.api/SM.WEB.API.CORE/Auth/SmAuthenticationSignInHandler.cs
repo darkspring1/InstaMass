@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SM.Common.Services;
 using SM.Domain.Model;
 using SM.WEB.API.CORE.Settings;
+using SM.WEB.Application.DTO;
 using SM.WEB.Application.Services;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -19,44 +18,49 @@ namespace SM.WEB.API.CORE
         IAuthenticationSignInHandler
     {
         private readonly SMSettings _settings;
-        private readonly Func<UserService> _userServiceFunc;
+        private readonly UserService _userService;
 
         public SmAuthenticationSignInHandler(
             SMSettings settings,
-            Func<UserService> userServiceFunc,
+            UserService userServiceFunc,
             IOptionsMonitor<SmAuthenticationSignInOptions> options,
             ILoggerFactory logger,
             UrlEncoder
             encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
             this._settings = settings;
-            _userServiceFunc = userServiceFunc;
-        }
-
-
-        Task<ServiceResult<User>> CreateUserAsync(string email, string userName, string password)
-        {
-            return  _userServiceFunc().CreateAync(email, userName, password);
-        }
-
-        Task<ServiceResult<User>> GetUserAsync(string email)
-        {
-            return _userServiceFunc().FindByEmailAsync(email);
+            _userService = userServiceFunc;
         }
 
         public async Task SignInAsync(ClaimsPrincipal principal, AuthenticationProperties properties)
         {
             var email = principal.FindFirstValue(ClaimTypes.Email);
-            ServiceResult<User> serviceResult;
-            if (properties.Items.ContainsKey(SMClaimTypes.CreateNewUser))
+            ServiceResult<TokenData> serviceResult;
+            if (properties.Items.ContainsKey(Claims.CreateNewUser))
             {
                 var userName = principal.FindFirstValue(ClaimTypes.Name);
-                var password = principal.FindFirstValue(SMClaimTypes.Password);
-                serviceResult = await CreateUserAsync(email, userName, password);
+                var password = principal.FindFirstValue(Claims.Password);
+                serviceResult = await _userService.CreateNewUserAync(
+                    email,
+                    userName,
+                    password,
+                    _settings.JWT.AccessTokenLifeTime,
+                    _settings.JWT.RefreshTokenLifeTime,
+                    _settings.JWT.Issuer,
+                    _settings.JWT.Audience,
+                    _settings.JWT.GetSymmetricSecurityKey()
+                    );
             }
             else
             {
-                serviceResult = await GetUserAsync(email);
+                serviceResult = await _userService.FindByEmailAsync(
+                    email,
+                    _settings.JWT.AccessTokenLifeTime,
+                    _settings.JWT.RefreshTokenLifeTime,
+                    _settings.JWT.Issuer,
+                    _settings.JWT.Audience,
+                    _settings.JWT.GetSymmetricSecurityKey()
+                    );
             }
 
             if (serviceResult.IsFaulted)
@@ -65,38 +69,10 @@ namespace SM.WEB.API.CORE
             }
             else
             {
-                var user = serviceResult.Result;
-                var claims = new Claim[] { new Claim(SMClaimTypes.UserId, user.Id.ToString()) };
-                var now = DateTime.UtcNow;
-                var key = _settings.JWT.GetSymmetricSecurityKey();
-                var algorithm = SecurityAlgorithms.HmacSha256;
-                // создаем JWT-токен
-                var accessToken = new JwtSecurityToken(
-                        claims: claims,
-                        expires: now.AddSeconds(_settings.JWT.AccessTokenLifeTime),
-                        issuer: _settings.JWT.Issuer,
-                        audience: _settings.JWT.Audience,
-                        signingCredentials: new SigningCredentials(key, algorithm));
-
-                var refreshToken = new JwtSecurityToken(
-                        claims: claims,
-                        expires: now.AddSeconds(_settings.JWT.RefreshTokenLifeTime),
-                        issuer: _settings.JWT.Issuer,
-                        audience: _settings.JWT.Audience,
-                        signingCredentials: new SigningCredentials(key, algorithm));
-
-
-                var accessTokenWriten = new JwtSecurityTokenHandler().WriteToken(accessToken);
-                var refreshTokenWriten = new JwtSecurityTokenHandler().WriteToken(refreshToken);
-
-                var authInfo = JsonConvert.SerializeObject(new { access_token = accessTokenWriten, refresh_token = refreshTokenWriten });
-
+                var tokenData = serviceResult.Result;
+                var authInfo = JsonConvert.SerializeObject(new { access_token =  tokenData.AccessToken, refresh_token = tokenData.RefreshToken });
                 Response.Redirect(string.Format(Options.RedirectUri, authInfo));
             }
-
-            
-
-            
         }
 
         public Task SignOutAsync(AuthenticationProperties properties)

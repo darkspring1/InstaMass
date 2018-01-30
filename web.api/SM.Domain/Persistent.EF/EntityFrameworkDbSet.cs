@@ -19,9 +19,9 @@ namespace SM.Domain.Persistent.EF
             return _set.Add(entity).Entity;
         }
 
-        public T Remove(T entity)
+        public void Remove(T entity)
         {
-            return _set.Remove(entity).Entity;
+            _set.Remove(entity);
         }
 
         public T Find(params object[] keyValues)
@@ -32,6 +32,11 @@ namespace SM.Domain.Persistent.EF
         public Task<T> FindAsync(params object[] keyValues)
         {
             return _set.FindAsync(keyValues);
+        }
+
+        public void RemoveRange(params T[] entities)
+        {
+            _set.RemoveRange(entities);
         }
     }
 }

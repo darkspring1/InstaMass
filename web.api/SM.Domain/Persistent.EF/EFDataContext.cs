@@ -39,6 +39,9 @@ namespace SM.Domain.Persistent.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AuthTokenState>()
+                .ToTable("AuthTokens", schema)
+                .HasKey(c => c.Token);
             modelBuilder.Entity<UserState>().ToTable("Users", schema);
             modelBuilder.Entity<ApplicationState>().ToTable("Applications", schema);
 
@@ -48,7 +51,6 @@ namespace SM.Domain.Persistent.EF
 
         modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
 
-            modelBuilder.Entity<RefreshTokenState>().ToTable("RefreshTokens", schema);
             modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
             modelBuilder.Entity<TaskState>().ToTable("Tasks", schema);
             modelBuilder

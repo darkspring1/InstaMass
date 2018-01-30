@@ -1,16 +1,13 @@
 ﻿using AngularJSAuthentication.API.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
-using SM.Domain.Model;
 using SM.WEB.API.CORE;
 using SM.WEB.Application.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace SM.WEB.API.Controllers
 {
@@ -18,12 +15,12 @@ namespace SM.WEB.API.Controllers
     public class UserController : BaseController
     {
 
-        private readonly Func<ApplicationService> _applicationServiceFunc;
+        private readonly Func<AppService> _applicationServiceFunc;
         private readonly Func<UserService> _userServiceFunc;
 
         public UserController(
             ILogger logger,
-            Func<ApplicationService> applicationServiceFunc,
+            Func<AppService> applicationServiceFunc,
             Func<UserService> userServiceFunc) : base(logger)
         {
             _applicationServiceFunc = applicationServiceFunc;
@@ -40,14 +37,14 @@ namespace SM.WEB.API.Controllers
             List<Claim> claims = new List<Claim>
             {
                     new Claim(ClaimTypes.Email, model.Email),
-                    new Claim(SMClaimTypes.Password, model.Password)
+                    new Claim(Claims.Password, model.Password)
             };
 
             AuthenticationProperties properties = new AuthenticationProperties();
             if (createNewUser)
             {
                 claims.Add(new Claim(ClaimTypes.Name, userName));
-                properties.Items.Add(SMClaimTypes.CreateNewUser, "");
+                properties.Items.Add(Claims.CreateNewUser, "");
             }
 
             return SignIn(new ClaimsPrincipal(new ClaimsIdentity(claims)), properties, SmAuthenticationSignInDefaults.AuthenticationScheme);
@@ -60,7 +57,7 @@ namespace SM.WEB.API.Controllers
                 var properties = new AuthenticationProperties();
                 if (createNewUser)
                 {
-                    properties.Items.Add(SMClaimTypes.CreateNewUser, "");
+                    properties.Items.Add(Claims.CreateNewUser, "");
                 }
                 //properties.RedirectUri = "http://localhost:8080/authcomplete.html";
                 return new ChallengeResult(provider, properties);
@@ -97,6 +94,7 @@ namespace SM.WEB.API.Controllers
             return ChallengeResultPrivate(provider, true);
         }
 
+        [Authorize]
         [HttpPost]
         [Route(Routes.TokenRefresh)]
         public ActionResult TokenRefresh([FromBody]string refreshToken)

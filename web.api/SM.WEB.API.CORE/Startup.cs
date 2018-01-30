@@ -76,6 +76,11 @@ namespace SM.WEB.API.CORE
                     };
                 });
                 
+            services.AddAuthorization(options =>
+            {
+                Auth.Policies.Init(options);
+
+            });
 
             services
                 .AddMvc()
