@@ -11,10 +11,11 @@ namespace SM.WEB.API.CORE.Auth
         {
             options.AddPolicy(RefreshToken, builder =>
             {
+                builder.RequireClaim(Claims.UserId);
                 builder.RequireClaim(Claims.Refresh);
             });
 
-            options.AddPolicy(Policies.RefreshToken, builder =>
+            options.AddPolicy(AccessToken, builder =>
             {
                 builder.RequireClaim(Claims.UserId);
                 builder.RequireClaim(Claims.Access);

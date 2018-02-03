@@ -31,7 +31,7 @@ namespace SM.Domain.Persistent.EF
 
         protected override AuthToken Create(AuthTokenState state)
         {
-            throw new NotImplementedException();
+            return new AuthToken(state);
         }
     }
 }

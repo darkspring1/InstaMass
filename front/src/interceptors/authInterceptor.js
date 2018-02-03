@@ -22,7 +22,7 @@ const authTokenInterceptor = (config) => {
     if (authData) {
       logger.debug(`add authorization header. url:${config.url}`);
       logger.debug(JSON.stringify(authData));
-      config.headers.Authorization = `Bearer ${authData.access_token}`;
+      config.headers.Authorization = `Bearer ${authData.accessToken}`;
     }
   } else {
     logger.debug(`no auth request. url:${config.url}`);
@@ -36,7 +36,7 @@ let refreshTokenPromise = null;
 const refreshTokenInterceptor = (store, error) => {
   if (error.response.status === 401) {
     const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
-    if (!refreshTokenPromise && authData && authData.refresh_token) {
+    if (!refreshTokenPromise && authData && authData.refreshToken) {
       LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
       authData.appId = Settings.clientId;
       logger.debug('start token refresh');

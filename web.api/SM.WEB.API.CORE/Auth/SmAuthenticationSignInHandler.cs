@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SM.Common.Services;
 using SM.Domain.Model;
 using SM.WEB.API.CORE.Settings;
@@ -70,7 +71,10 @@ namespace SM.WEB.API.CORE
             else
             {
                 var tokenData = serviceResult.Result;
-                var authInfo = JsonConvert.SerializeObject(new { access_token =  tokenData.AccessToken, refresh_token = tokenData.RefreshToken });
+                var authInfo = JsonConvert.SerializeObject(tokenData, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
                 Response.Redirect(string.Format(Options.RedirectUri, authInfo));
             }
         }

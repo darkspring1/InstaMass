@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SM.WEB.API.Controllers
 {
-    [SmAuth]
+    [SmAuthorize]
     public class AccountController : BaseController
     {
         private readonly Func<AccountService> _accountServiceServiceFunc;

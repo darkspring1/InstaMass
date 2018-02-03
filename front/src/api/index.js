@@ -41,7 +41,7 @@ function Orders() {
 }
 
 function RefreshToken(externalData) {
-  const headers = { Authorization: `Bearer ${externalData.refresh_token}` };
+  const headers = { Authorization: `Bearer ${externalData.refreshToken}` };
   return post({ url: 'user/token/refresh', headers });
 }
 

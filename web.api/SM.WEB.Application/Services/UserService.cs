@@ -118,7 +118,7 @@ namespace SM.WEB.Application.Services
         /// <param name="audience"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public Task<ServiceResult<TokenData>> RefreshTokenAync(
+        public Task<ServiceResult<TokenData>> RefreshTokenAsync(
             Guid userId,
             string oldToken,
             double accessTokenLifeTime,

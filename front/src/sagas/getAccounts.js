@@ -12,7 +12,6 @@ function* fetch(/* action */) {
     yield put(Actions.AccountsLoaded(accounts));
     yield put(Actions.ShowToastr({ message: 'Аккаунт был успешно создан' }));
   } catch (e) {
-    debugger;
     yield put(Actions.AccountsLoaded());
     yield put(Actions.RequestError(e));
   }

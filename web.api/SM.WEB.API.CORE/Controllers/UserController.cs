@@ -4,26 +4,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
 using SM.WEB.API.CORE;
+using SM.WEB.API.CORE.Auth;
+using SM.WEB.API.CORE.Settings;
 using SM.WEB.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SM.WEB.API.Controllers
 {
     [Route(Routes.ApiUser)]
     public class UserController : BaseController
     {
-
-        private readonly Func<AppService> _applicationServiceFunc;
         private readonly Func<UserService> _userServiceFunc;
+
+        readonly SMSettings _settings;
 
         public UserController(
             ILogger logger,
-            Func<AppService> applicationServiceFunc,
+            SMSettings settings,
             Func<UserService> userServiceFunc) : base(logger)
         {
-            _applicationServiceFunc = applicationServiceFunc;
+            _settings = settings;
             _userServiceFunc = userServiceFunc;
         }
 
@@ -94,12 +97,24 @@ namespace SM.WEB.API.Controllers
             return ChallengeResultPrivate(provider, true);
         }
 
-        [Authorize]
+        [SmAuthorize(policy: Policies.RefreshToken)]
         [HttpPost]
         [Route(Routes.TokenRefresh)]
-        public ActionResult TokenRefresh([FromBody]string refreshToken)
+        public Task<ActionResult> TokenRefresh()
         {
-            return null;
+            var tokenHeaderValue = this.Request.Headers["Authorization"];
+            string oldToken = tokenHeaderValue[0].Substring(7);
+            var result =  _userServiceFunc().RefreshTokenAsync(
+                UserId,
+                oldToken,
+                _settings.JWT.AccessTokenLifeTime,
+                _settings.JWT.RefreshTokenLifeTime,
+                _settings.JWT.Issuer,
+                _settings.JWT.Audience,
+                _settings.JWT.GetSymmetricSecurityKey()
+                );
+
+            return ActionResultAsync(result);
         }
     }
 }
