@@ -51,6 +51,10 @@ export function AccountsLoaded(payload) {
   return { type: ActionTypes.ACCOUNTS_LOADED, payload };
 }
 
+export function TasksLoaded(payload) {
+  return { type: ActionTypes.TASKS_LOADED, payload };
+}
+
 export function AddNewTagRequested(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_REQUESTED, payload };
 }
@@ -81,4 +85,8 @@ export function SignUpExternal(payload) {
 
 export function AuthorizationData(payload) {
   return { type: ActionTypes.AUTHORIZATION_DATA, payload };
+}
+
+export function TasksRequested() {
+  return { type: ActionTypes.TASKS_REQUESTED };
 }

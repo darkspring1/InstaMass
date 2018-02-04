@@ -74,9 +74,16 @@ function GetAccounts() {
   return responseWrap(axios.get(`${Settings.apiServiceBaseUri}accounts`));
 }
 
+function GetTasks() {
+  return responseWrap(axios.get(`${Settings.apiServiceBaseUri}tasks`));
+}
+
 function CreateTagTask(task) {
   return responseWrap(axios.post(`${Settings.apiServiceBaseUri}task/tag`, task));
 }
 
 
-export { CreateTagTask, GetAccounts, RegisterExternal, Register, ObtainLocalAccessToken, Orders, RefreshToken, Login, LoginExternal, AddNewAccount };
+export { CreateTagTask, GetAccounts, GetTasks,
+  RegisterExternal, Register, ObtainLocalAccessToken,
+  Orders, RefreshToken, Login, LoginExternal,
+  AddNewAccount };

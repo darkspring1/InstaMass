@@ -6,7 +6,9 @@ namespace SM.Domain.Model
     {
         internal SMTask(TaskState state) : base(state)
         {
-            
+            Account = new Account(state.Account);
         }
+
+        public Account Account { get; }
     }
 }
