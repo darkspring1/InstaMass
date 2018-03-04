@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SM.Common.Cache;
 using SM.Domain.Model;
-using SM.Domain.Persistent.EF.State;
 
 namespace SM.Domain.Persistent.EF
 {
-    class AuthTokenRepository : BaseRepository<AuthToken, AuthToken>, IAuthTokenRepository
+    class AuthTokenRepository : BaseRepository<AuthToken>, IAuthTokenRepository
     {
         public AuthTokenRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
@@ -21,17 +19,12 @@ namespace SM.Domain.Persistent.EF
 
         public Task<AuthToken[]> GetBySubjectAsync(string subject)
         {
-             return CreateArrayAsync(Set.Where(t => t.Subject == subject).ToArrayAsync());
+             return Set.Where(t => t.Subject == subject).ToArrayAsync();
         }
 
         public void Remove(params AuthToken[] tokens)
         {
             Set.RemoveRange(tokens);
-        }
-
-        protected override AuthToken Create(AuthToken state)
-        {
-            return state;
         }
     }
 }

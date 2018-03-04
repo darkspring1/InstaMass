@@ -1,13 +1,13 @@
 ﻿using SM.Domain.Model;
-using SM.Domain.Persistent.EF.State;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SM.Common.Cache;
+using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
-    class TagTaskRepository :  BaseRepository<TagTask, TagTask>, ITagTaskRepository
+    class TagTaskRepository :  BaseRepository<TagTask>, ITagTaskRepository
     {
         public TagTaskRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
@@ -20,13 +20,7 @@ namespace SM.Domain.Persistent.EF
 
         public Task<TagTask> GetTagTaskByIdAsync(Guid taskId)
         {
-            var tasks = Set.Where(lt => lt.TaskId == taskId);
-            return CreateAsync(FirstOrDefaultAsync(tasks));
-        }
-
-        protected override TagTask Create(TagTask state)
-        {
-            return state;
+            return Set.Where(lt => lt.TaskId == taskId).FirstOrDefaultAsync();
         }
     }
 }

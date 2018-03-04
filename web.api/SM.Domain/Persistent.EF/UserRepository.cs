@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SM.Domain.Persistent.EF
 {
-    public class UserRepository : BaseRepository<User, User>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         public UserRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
@@ -18,13 +18,7 @@ namespace SM.Domain.Persistent.EF
         public Task<User> GetByIdAsync(object key)
         {
             var id = (Guid)key;
-            var stateTask = FirstOrDefaultAsync(Include(Set.Where(u => u.Id == id)));
-            return CreateAsync(stateTask);
-        }
-
-        internal IQueryable<User> Include(IQueryable<User> users)
-        {
-            return users;
+            return Set.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
         IEnumerable<ExternalAuthProviderTypeState> GetExternalAuthProviderTypes()
@@ -36,11 +30,6 @@ namespace SM.Domain.Persistent.EF
         ExternalAuthProviderTypeState GetExternalAuthProviderTypeByType(string type)
         {
             return GetExternalAuthProviderTypes().First();
-        }
-
-        protected override User Create(User state)
-        {
-            return state;
         }
 
         public void RegisterNewUser(User newUser)
@@ -57,19 +46,17 @@ namespace SM.Domain.Persistent.EF
             Set.Add(newUser);
         }
 
-        
-
         public Task<User> FindAsync(string email, string password)
         {
             var passwordHash = User.SHA(password);
-            var user = FirstOrDefaultAsync(Set.Where(u => u.EmailStr == email && u.PasswordHash == passwordHash));
-            return CreateAsync(user);
+            return Set
+                .Where(u => u.EmailStr == email && u.PasswordHash == passwordHash)
+                .FirstOrDefaultAsync();
         }
 
         public Task<User> FindAsync(string email)
         {
-            var user = FirstOrDefaultAsync(Set.Where(u => u.EmailStr == email));
-            return CreateAsync(user);
+            return Set.Where(u => u.EmailStr == email).FirstOrDefaultAsync();
         }
     }
 }

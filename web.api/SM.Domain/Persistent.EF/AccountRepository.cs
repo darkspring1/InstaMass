@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
-    class AccountRepository : BaseRepository<Account, Account>, IAccountRepository
+    class AccountRepository : BaseRepository<Account>, IAccountRepository
     {
         public AccountRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
@@ -21,13 +21,12 @@ namespace SM.Domain.Persistent.EF
 
         public async Task<Account[]> FindByUserAsync(Guid userId)
         {
-            var accountStates = await Set.Where(a => a.UserId == userId).ToArrayAsync();
-            return accountStates.Select(s => Create(s)).ToArray();
+            return await Set.Where(a => a.UserId == userId).ToArrayAsync();
         }
 
         Task<Account> FindByLogin(string login)
         {
-            return FirstOrDefaultAsync(Set.Where(a => a.Login == login));
+            return Set.Where(a => a.Login == login).FirstOrDefaultAsync();
         }
 
         public async Task<bool> IsExistAsync(string login)
@@ -36,14 +35,9 @@ namespace SM.Domain.Persistent.EF
             return state != null;
         }
 
-        protected override Account Create(Account state)
-        {
-            return state;
-        }
-
         public Task<Account> GetByIdAsync(Guid accountId)
         {
-            return CreateAsync(FirstAsync(Set.Where(a => a.Id == accountId)));
+            return Set.Where(a => a.Id == accountId).FirstAsync();
         }
     }
 }

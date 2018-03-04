@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
-    class TaskRepository :  BaseRepository<SMTask, SMTask>, ITaskRepository
+    class TaskRepository :  BaseRepository<SMTask>, ITaskRepository
     {
         public TaskRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
@@ -15,17 +15,11 @@ namespace SM.Domain.Persistent.EF
 
         public Task<SMTask[]> GetByUserAsync(Guid userId)
         {
-            var taskStates =  Set
+            return  Set
                 .Where(t => t.Account.UserId == userId)
                 .Include(t => t.Account)
                 .ToArrayAsync();
-            return CreateArrayAsync(taskStates);
 
-        }
-
-        protected override SMTask Create(SMTask state)
-        {
-            return state;
         }
     }
 }
