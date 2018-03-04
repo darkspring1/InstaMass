@@ -12,40 +12,24 @@ namespace SM.Domain.Model
 
         internal TagTask()
         {
-            _tagsLazy = PropertyFromJsonLazy<string[]>(TagsJson);
-            _lastPost = PropertyFromJsonLazy<SwitchedProperty>(LastPostJson);
-            _posts = PropertyFromJsonLazy<SwitchedRange>(PostsJson);
-            _followers = PropertyFromJsonLazy<SwitchedRange>(FollowersJson);
-            _followings = PropertyFromJsonLazy<SwitchedRange>(FollowingsJson);
+
+            _tagsLazy = PropertyFromJsonLazy<string[]>(() => TagsJson);
+            _lastPost = PropertyFromJsonLazy<SwitchedProperty>(() => LastPostJson);
+            _posts = PropertyFromJsonLazy<SwitchedRange>(() => PostsJson);
+            _followers = PropertyFromJsonLazy<SwitchedRange>(() => FollowersJson);
+            _followings = PropertyFromJsonLazy<SwitchedRange>(() => FollowingsJson);
         }
 
-        private Lazy<T> PropertyFromJsonLazy<T>(string json) => new Lazy<T>(() => PropertyFromJson<T>(json));
+        private Lazy<T> PropertyFromJsonLazy<T>(Func<string> property) => new Lazy<T>(() => PropertyFromJson<T>(property()));
 
         static private T PropertyFromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json);
         static private string PropertyToJson(object property) => JsonConvert.SerializeObject(property);
 
-        public Guid Id => TaskId;
+        public Guid Id => Task.Id;
 
         internal Guid TaskId { get; set; }
 
-        public int Version { get; private set; }
-
-        private int ExternalSystemVersion { get; set; }
-
         public string[] Tags => _tagsLazy.Value;
-
-        /// <summary>
-        /// Устанавливает новое значений ExternalSystemVersion.
-        /// Новое значение должно быть больше, текущего значения ExternalSystemVersion.
-        /// </summary>
-        /// <param name="newExternalSystemVersionValue"></param>
-        public void InceraseExternalSystemVersion(int newExternalSystemVersionValue)
-        {
-            if (ExternalSystemVersion < newExternalSystemVersionValue)
-            {
-                ExternalSystemVersion = newExternalSystemVersionValue;
-            }
-        }
 
         public static TagTask Create(Guid accountId,
             string[] tags,
@@ -84,7 +68,9 @@ namespace SM.Domain.Model
             };
         }
 
-        SMTask Task { get; set; }
+        internal SMTask Task { get; set; }
+
+        public int Version => Task.Version;
 
         public bool AvatarExistDisabled { get; private set; }
 
@@ -95,6 +81,14 @@ namespace SM.Domain.Model
         internal string PostsJson { get; set; }
         internal string FollowersJson { get; set; }
         internal string FollowingsJson { get; set; }
+
+
+        /// <summary>
+        /// Устанавливает новое значений ExternalSystemVersion.
+        /// Новое значение должно быть больше, текущего значения ExternalSystemVersion.
+        /// </summary>
+        /// <param name="newExternalSystemVersionValue"></param>
+        public void InceraseExternalSystemVersion(int newExternalSystemVersionValue) => Task.InceraseExternalSystemVersion(newExternalSystemVersionValue);
 
 
     }

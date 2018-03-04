@@ -29,7 +29,7 @@ namespace SM.WEB.API.Controllers
 
         [HttpPost]
         [Route(Routes.ApiTaskTag)]
-        public Task<ActionResult> CreateTagTask(NewTagTaskModel model)
+        public Task<ActionResult> CreateTagTask([FromBody]NewTagTaskModel model)
         {
             var lastPost = new SwitchedProperty(model.LastPost.Value, model.LastPost.Disabled);
             var posts = FromModel(model.Posts);

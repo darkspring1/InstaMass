@@ -51,15 +51,20 @@ namespace SM.Domain.Persistent.EF
                 .Entity<Account>()
                 .HasColumn(a => a.UserId)
                 .ToTable("Accounts", schema);
-
+            
             modelBuilder
                 .Entity<SMTask>()
+                .HasColumn(t => t.TypeId)
+                .HasColumn(t => t.CreatedAt)
+                .HasColumn(t => t.AccountId)
+                .HasColumn(t => t.Version)
+                .HasColumn(t => t.ExternalSystemVersion)
                 .ToTable("Tasks", schema)
                 .HasOne(t => t.Account)
                 .WithMany()
                 .HasForeignKey(t => t.AccountId);
 
-            modelBuilder
+            var tagTaskBuilder = modelBuilder
                 .Entity<TagTask>()
                 .ToTable("TagTasks", schema)
                 .HasColumn(t => t.TagsJson, "Tags")
@@ -67,6 +72,13 @@ namespace SM.Domain.Persistent.EF
                 .HasColumn(t => t.PostsJson, "Posts")
                 .HasColumn(t => t.FollowersJson, "Followers")
                 .HasColumn(t => t.FollowingsJson, "Followings")
+                .HasColumn(t => t.TaskId);
+
+            tagTaskBuilder.HasOne(t => t.Task)
+                .WithMany()
+                .HasForeignKey(t => t.TaskId);
+
+            tagTaskBuilder
                 .HasKey(t => t.TaskId);
         }
 
