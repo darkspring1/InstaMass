@@ -26,7 +26,11 @@ namespace SM.Domain.Persistent.EF
             modelBuilder.Entity<AuthToken>()
                 .ToTable("AuthTokens", schema)
                 .HasKey(c => c.Token);
-            modelBuilder.Entity<User>().ToTable("Users", schema);
+
+            var userBuilder = modelBuilder.Entity<User>()
+                .ToTable("Users", schema);
+
+            userBuilder.Property(u => u.EmailStr).HasColumnName("Email");
 
             modelBuilder.Entity<ExternalAuthProvider>()
                 .ToTable("ExternalAuthProviders", schema)
@@ -36,7 +40,10 @@ namespace SM.Domain.Persistent.EF
 
             modelBuilder
                 .Entity<Account>()
-                .ToTable("Accounts", schema);
+                .ToTable("Accounts", schema)
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId);
                 
 
             modelBuilder
@@ -46,16 +53,16 @@ namespace SM.Domain.Persistent.EF
                 .WithMany()
                 .HasForeignKey(t => t.AccountId);
 
-            var tt = modelBuilder
+            var tagTaskBuilder = modelBuilder
                 .Entity<TagTask>()
                 .ToTable("TagTasks", schema);
-                //.HasOne(t => t.Task)
-                //.WithOne();
-            tt.Property(t => t.TagsJson).HasColumnName("Tags");
-            tt.Property(t => t.LastPostJson).HasColumnName("LastPost");
-            tt.Property(t => t.PostsJson).HasColumnName("Posts");
-            tt.Property(t => t.FollowersJson).HasColumnName("Followers");
-            tt.Property(t => t.FollowingsJson).HasColumnName("Followings");
+
+            tagTaskBuilder.HasKey(t => t.TaskId);
+            tagTaskBuilder.Property(t => t.TagsJson).HasColumnName("Tags");
+            tagTaskBuilder.Property(t => t.LastPostJson).HasColumnName("LastPost");
+            tagTaskBuilder.Property(t => t.PostsJson).HasColumnName("Posts");
+            tagTaskBuilder.Property(t => t.FollowersJson).HasColumnName("Followers");
+            tagTaskBuilder.Property(t => t.FollowingsJson).HasColumnName("Followings");
         }
 
         public DataContext CreateNewInstance()
