@@ -10,7 +10,7 @@ namespace SM.Domain.Persistent.EF
     public abstract class BaseRepository<TEntity, TState> : CacheRepository
         where TState : class
     {
-        protected readonly IEntityFrameworkDbSet<TState> Set;
+        protected readonly DbSet<TState> Set;
 
         protected abstract TEntity Create(TState state);
 
@@ -41,7 +41,7 @@ namespace SM.Domain.Persistent.EF
 
         public BaseRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
-            Set = context.DbSet<TState>();
+            Set = context.Set<TState>();
         }
     }
 }

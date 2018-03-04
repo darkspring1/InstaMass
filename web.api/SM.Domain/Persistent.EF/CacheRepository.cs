@@ -37,7 +37,7 @@ namespace SM.Domain.Persistent.EF
 
         protected T[] AddOrGetExistingEntities<T>(string key) where T : class
         {
-            return AddOrGetExisting(key, () => Context.DbSet<T>().Entities.ToArray());
+            return AddOrGetExisting(key, () => Context.Set<T>().ToArray());
         }
     }
 }

@@ -21,13 +21,13 @@ namespace SM.Domain.Persistent.EF
 
         public async Task<Account[]> FindByUserAsync(Guid userId)
         {
-            var accountStates = await Set.Entities.Where(a => a.UserId == userId).ToArrayAsync();
+            var accountStates = await Set.Where(a => a.UserId == userId).ToArrayAsync();
             return accountStates.Select(s => Create(s)).ToArray();
         }
 
         Task<Account> FindByLogin(string login)
         {
-            return FirstOrDefaultAsync(Set.Entities.Where(a => a.Login == login));
+            return FirstOrDefaultAsync(Set.Where(a => a.Login == login));
         }
 
         public async Task<bool> IsExistAsync(string login)
@@ -43,7 +43,7 @@ namespace SM.Domain.Persistent.EF
 
         public Task<Account> GetByIdAsync(Guid accountId)
         {
-            return CreateAsync(FirstAsync(Set.Entities.Where(a => a.Id == accountId)));
+            return CreateAsync(FirstAsync(Set.Where(a => a.Id == accountId)));
         }
     }
 }

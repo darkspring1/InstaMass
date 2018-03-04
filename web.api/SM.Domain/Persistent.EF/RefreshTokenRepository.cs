@@ -21,7 +21,7 @@ namespace SM.Domain.Persistent.EF
 
         public Task<AuthToken[]> GetBySubjectAsync(string subject)
         {
-             return CreateArrayAsync(Set.Entities.Where(t => t.Subject == subject).ToArrayAsync());
+             return CreateArrayAsync(Set.Where(t => t.Subject == subject).ToArrayAsync());
         }
 
         public void Remove(params AuthToken[] tokens)

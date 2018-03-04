@@ -15,7 +15,7 @@ namespace SM.Domain.Persistent.EF
 
         public Task<SMTask[]> GetByUserAsync(Guid userId)
         {
-            var taskStates =  Set.Entities
+            var taskStates =  Set
                 .Where(t => t.Account.UserId == userId)
                 .Include(t => t.Account)
                 .ToArrayAsync();

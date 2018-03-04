@@ -5,7 +5,6 @@ using SM.Domain.Persistent.EF.State;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using SM.Domain.Model;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SM.Domain.Persistent.EF
 {
@@ -62,19 +61,6 @@ namespace SM.Domain.Persistent.EF
             tt.Property(t => t.PostsJson).HasColumnName("Posts");
             tt.Property(t => t.FollowersJson).HasColumnName("Followers");
             tt.Property(t => t.FollowingsJson).HasColumnName("Followings");
-        }
-        /*
-        public void ChangeObjectState(object entity, EntityState entityState)
-        {
-            var t = ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntry(entity);
-            ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.ChangeObjectState(entity, entityState);
-        }
-        */
-       
-
-        public IEntityFrameworkDbSet<T> DbSet<T>() where T : class
-        {
-            return new EntityFrameworkDbSet<T>(Set<T>());
         }
 
         int IEntityFrameworkDataContext.SaveChanges()

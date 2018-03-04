@@ -18,7 +18,7 @@ namespace SM.Domain.Persistent.EF
         public Task<User> GetByIdAsync(object key)
         {
             var id = (Guid)key;
-            var stateTask = FirstOrDefaultAsync(Include(Set.Entities.Where(u => u.Id == id)));
+            var stateTask = FirstOrDefaultAsync(Include(Set.Where(u => u.Id == id)));
             return CreateAsync(stateTask);
         }
 
@@ -30,7 +30,7 @@ namespace SM.Domain.Persistent.EF
         IEnumerable<ExternalAuthProviderTypeState> GetExternalAuthProviderTypes()
         {
             const string key = "userRepository.GetExternalAuthProviderTypes";
-            return AddOrGetExisting(key, () => Context.DbSet<ExternalAuthProviderTypeState>().Entities.ToArray());
+            return AddOrGetExisting(key, () => Context.Set<ExternalAuthProviderTypeState>().ToArray());
         }
 
         ExternalAuthProviderTypeState GetExternalAuthProviderTypeByType(string type)
@@ -62,13 +62,13 @@ namespace SM.Domain.Persistent.EF
         public Task<User> FindAsync(string email, string password)
         {
             var passwordHash = User.SHA(password);
-            var user = FirstOrDefaultAsync(Set.Entities.Where(u => u.EmailStr == email && u.PasswordHash == passwordHash));
+            var user = FirstOrDefaultAsync(Set.Where(u => u.EmailStr == email && u.PasswordHash == passwordHash));
             return CreateAsync(user);
         }
 
         public Task<User> FindAsync(string email)
         {
-            var user = FirstOrDefaultAsync(Set.Entities.Where(u => u.EmailStr == email));
+            var user = FirstOrDefaultAsync(Set.Where(u => u.EmailStr == email));
             return CreateAsync(user);
         }
     }
