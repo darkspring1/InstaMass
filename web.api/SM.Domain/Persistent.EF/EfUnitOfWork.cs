@@ -7,9 +7,9 @@ namespace SM.Domain.Persistent.EF
 {
     public class EfUnitOfWork : IUnitOfWork, IDisposable
     {
-        readonly IEntityFrameworkDataContext _context;
+        readonly DataContext _context;
         readonly ICacheProvider _cacheProvider;
-        public EfUnitOfWork(IEntityFrameworkDataContext context, ICacheProvider cacheProvider)
+        public EfUnitOfWork(DataContext context, ICacheProvider cacheProvider)
         {
             _context = context;
             _cacheProvider = cacheProvider;

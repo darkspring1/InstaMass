@@ -10,9 +10,9 @@ namespace SM.Domain.Persistent.EF
         readonly TimeSpan _cacheTime = TimeSpan.FromMinutes(5);
         readonly ICacheProvider _cacheProvider;
 
-        protected readonly IEntityFrameworkDataContext Context;
+        protected readonly DataContext Context;
 
-        public CacheRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context)
+        public CacheRepository(ICacheProvider cacheProvider, DataContext context)
         {
             _cacheProvider = cacheProvider;
             Context = context;

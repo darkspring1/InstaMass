@@ -10,7 +10,7 @@ namespace SM.Domain.Persistent.EF
 {
     class AuthTokenRepository : BaseRepository<AuthToken, AuthToken>, IAuthTokenRepository
     {
-        public AuthTokenRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        public AuthTokenRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
         }
 

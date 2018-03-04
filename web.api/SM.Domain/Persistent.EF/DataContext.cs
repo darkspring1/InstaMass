@@ -1,21 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using SM.Domain.Persistent.EF.State;
+﻿using SM.Domain.Persistent.EF.State;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using SM.Domain.Model;
 
 namespace SM.Domain.Persistent.EF
 {
-    public class EFDataContext : DbContext, IEntityFrameworkDataContext
+    public class DataContext : DbContext
     {
         const string schema = "public";
 
-
         readonly string _connectionString;
 
-        public EFDataContext(string connectionString)
+        public DataContext(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -63,25 +58,9 @@ namespace SM.Domain.Persistent.EF
             tt.Property(t => t.FollowingsJson).HasColumnName("Followings");
         }
 
-        int IEntityFrameworkDataContext.SaveChanges()
+        public DataContext CreateNewInstance()
         {
-            return this.SaveChanges();
-        }
-
-        public IQueryable<T> Include<T>(IQueryable<T> source, params Expression<Func<T, object>>[] path) where T : class
-        {
-            foreach (var p in path) { source = source.Include(p); }
-            return source;
-        }
-
-        Task<int> IEntityFrameworkDataContext.SaveChangesAsync()
-        {
-            return base.SaveChangesAsync();
-        }
-
-        public IEntityFrameworkDataContext CreateNewInstance()
-        {
-            return new EFDataContext(_connectionString);
+            return new DataContext(_connectionString);
         }
     }
 }

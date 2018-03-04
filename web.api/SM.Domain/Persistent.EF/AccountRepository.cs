@@ -10,7 +10,7 @@ namespace SM.Domain.Persistent.EF
 {
     class AccountRepository : BaseRepository<Account, Account>, IAccountRepository
     {
-        public AccountRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        public AccountRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
         }
 

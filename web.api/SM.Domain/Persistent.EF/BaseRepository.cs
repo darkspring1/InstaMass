@@ -39,7 +39,7 @@ namespace SM.Domain.Persistent.EF
             return states.FirstAsync(predicate);
         }
 
-        public BaseRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        public BaseRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
             Set = context.Set<TState>();
         }

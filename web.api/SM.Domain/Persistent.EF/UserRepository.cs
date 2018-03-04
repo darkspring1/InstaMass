@@ -11,7 +11,7 @@ namespace SM.Domain.Persistent.EF
 {
     public class UserRepository : BaseRepository<User, User>, IUserRepository
     {
-        public UserRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        public UserRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
         }
 

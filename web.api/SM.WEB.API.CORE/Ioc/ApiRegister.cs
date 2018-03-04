@@ -20,8 +20,8 @@ namespace SM.WEB.API.Ioc
             */
             For<ILogger>().Use<NLogLogger>();
 
-            For<IEntityFrameworkDataContext>()
-                .Use<EFDataContext>()
+            For<DataContext>()
+                .Use<DataContext>()
                 .Ctor<string>("connectionString").Is(connectionString);
 
             For<ICacheProvider>().Use<MemoryCacheProvider>().Singleton();

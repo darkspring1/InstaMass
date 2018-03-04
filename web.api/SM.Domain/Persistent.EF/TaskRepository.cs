@@ -9,7 +9,7 @@ namespace SM.Domain.Persistent.EF
 {
     class TaskRepository :  BaseRepository<SMTask, SMTask>, ITaskRepository
     {
-        public TaskRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
+        public TaskRepository(ICacheProvider cacheProvider, DataContext context) : base(cacheProvider, context)
         {
         }
 
