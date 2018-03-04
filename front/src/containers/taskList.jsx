@@ -23,16 +23,16 @@ class TaskList extends React.Component {
       <td>
         <table>
           <tbody>
-            <tr>
+            <tr className="side-message-navigation-item little-human shineHover family">
               <td className="little-human photo-td">
                 <img alt="_" className="little-human-picture" src="assets/img/app/profile/Kostya.png" />
               </td>
               <td>
                 <div className="name-container">
-                  <div>
+                  <div style={{ 'line-height': '16px' }}>
                     <span className="name">{t.account.login}</span>
                   </div>
-                  <div>
+                  <div style={{ 'line-height': '16px' }}>
                     <span className="tag label label-primary family">family</span>
                   </div>
                 </div>
@@ -48,16 +48,9 @@ class TaskList extends React.Component {
         <span className="editable">Активна</span>
       </td>
       <td>
-        <form name="rowform" className="form-buttons form-inline">
-          <button type="submit" className="btn btn-primary editable-table-button btn-xs">Save</button>
-          <button
-            type="button"
-            className="btn btn-default editable-table-button btn-xs"
-          >Cancel</button>
-        </form>
         <div className="buttons">
-          <button className="btn btn-primary editable-table-button btn-xs">Edit</button>
-          <button className="btn btn-danger editable-table-button btn-xs">Delete</button>
+          <button className="btn btn-primary editable-table-button btn-xs">Редактировать</button>
+          <button className="btn btn-danger editable-table-button btn-xs">Удалить</button>
         </div>
       </td>
     </tr>));
@@ -77,7 +70,7 @@ class TaskList extends React.Component {
               <div className="panel-body" >
 
                 <div className="add-row-editable-table">
-                  <button className="btn btn-primary">Создать задачу</button>
+                  <button className="btn btn-primary" onClick={this.props.goToNewTask}>Создать задачу</button>
                 </div>
                 <table className="table table-bordered table-hover table-condensed">
                   <tbody>

@@ -2,29 +2,22 @@
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
-using SM.Domain.Persistent.EF.State;
-using System.Threading.Tasks;
-using SM.Domain.Services;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SM.Domain.Model
 {
-    public  class User : Entity<UserState>
+    public  class User
     {
-        public Guid Id => State.Id;
-
-
-        internal User(UserState state) : base(state)
-        {
-            if (state.Email != null)
-            {
-                Email = new MailAddress(state.Email);
-            }
-        }
-
         public static User Create(string email, string userName, string password)
         {
-            return new User(new UserState { CreatedAt = DateTime.UtcNow,  Email = email, UserName = userName, PasswordHash = SHA(password) });
+            return new User
+            {
+                CreatedAt = DateTime.UtcNow,
+                EmailStr = email,
+                UserName = userName,
+                PasswordHash = SHA(password)
+            };
         }
 
         internal static string SHA(string str)
@@ -39,12 +32,29 @@ namespace SM.Domain.Model
             return hash;
         }
 
-        
-        public string UserName => State.UserName;
+        public MailAddress Email => new MailAddress(EmailStr);
 
+        internal User()
+        {
+            Id = Guid.NewGuid();
+            ExternalAuthProviders = new List<ExternalAuthProvider>();
+        }
 
-        public MailAddress Email { get; private set; }
+        public Guid Id { get; private set; }
 
-        
+        [MaxLength(1024)]
+        internal string PasswordHash { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        internal string EmailStr { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        internal string UserName { get; set; }
+
+        private DateTime CreatedAt { get; set; }
+
+        public ICollection<ExternalAuthProvider> ExternalAuthProviders { get; set; }
     }
 }

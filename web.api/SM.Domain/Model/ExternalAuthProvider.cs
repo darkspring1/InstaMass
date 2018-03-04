@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SM.Domain.Persistent.EF.State;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SM.Domain.Persistent.EF.State
+namespace SM.Domain.Model
 {
-    public class ExternalAuthProviderState
+    public class ExternalAuthProvider
     {
         [Key, Column(Order = 0)]
         [Required]
@@ -18,6 +19,6 @@ namespace SM.Domain.Persistent.EF.State
         [Required]
         public Guid UserId { get; set; }
 
-        public UserState User { get; set; }
+        public User User { get; set; }
     }
 }

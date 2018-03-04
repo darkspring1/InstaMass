@@ -14,7 +14,6 @@ namespace SM.Domain.Persistent.EF
             _context = context;
             _cacheProvider = cacheProvider;
             UserRepository = new UserRepository(cacheProvider, context);
-            ApplicationRepository = new ApplicationRepository(cacheProvider, context);
             AuthTokenRepository = new AuthTokenRepository(cacheProvider, context);
             AccountRepository = new AccountRepository(cacheProvider, context);
             TaskRepository = new TaskRepository(cacheProvider, context);
@@ -22,8 +21,6 @@ namespace SM.Domain.Persistent.EF
         }
 
         public IUserRepository UserRepository { get; }
-
-        public IApplicationRepository ApplicationRepository { get; }
 
         public IAuthTokenRepository AuthTokenRepository { get; }
 

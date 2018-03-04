@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SM.Domain.Persistent.EF
 {
-    public class UserRepository : BaseRepository<User, UserState>, IUserRepository
+    public class UserRepository : BaseRepository<User, User>, IUserRepository
     {
         public UserRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
@@ -22,7 +22,7 @@ namespace SM.Domain.Persistent.EF
             return CreateAsync(stateTask);
         }
 
-        internal IQueryable<UserState> Include(IQueryable<UserState> users)
+        internal IQueryable<User> Include(IQueryable<User> users)
         {
             return users;
         }
@@ -38,26 +38,23 @@ namespace SM.Domain.Persistent.EF
             return GetExternalAuthProviderTypes().First();
         }
 
-        protected override User Create(UserState state)
+        protected override User Create(User state)
         {
-            return state == null ? null : new User(state);
+            return state;
         }
 
         public void RegisterNewUser(User newUser)
         {
-            newUser.State.Id = Guid.NewGuid();
-
-            if (newUser.State.ExternalAuthProviders.Any())
+            if (newUser.ExternalAuthProviders.Any())
             {
-                foreach (var p in newUser.State.ExternalAuthProviders)
+                foreach (var p in newUser.ExternalAuthProviders)
                 {
-                    p.UserId = newUser.State.Id;
+                    p.UserId = newUser.Id;
                     p.ExternalAuthProviderType = GetExternalAuthProviderTypeByType(p.ExternalAuthProviderType.Type);
                     p.ExternalAuthProviderTypeId = p.ExternalAuthProviderType.Id;
                 }
             }
-            newUser.State.Id = Guid.NewGuid();
-            Set.Add(newUser.State);
+            Set.Add(newUser);
         }
 
         
@@ -65,14 +62,14 @@ namespace SM.Domain.Persistent.EF
         public Task<User> FindAsync(string email, string password)
         {
             var passwordHash = User.SHA(password);
-            var userState = FirstOrDefaultAsync(Set.Entities.Where(u => u.Email == email && u.PasswordHash == passwordHash));
-            return CreateAsync(userState);
+            var user = FirstOrDefaultAsync(Set.Entities.Where(u => u.EmailStr == email && u.PasswordHash == passwordHash));
+            return CreateAsync(user);
         }
 
         public Task<User> FindAsync(string email)
         {
-            var userState = FirstOrDefaultAsync(Set.Entities.Where(u => u.Email == email));
-            return CreateAsync(userState);
+            var user = FirstOrDefaultAsync(Set.Entities.Where(u => u.EmailStr == email));
+            return CreateAsync(user);
         }
     }
 }

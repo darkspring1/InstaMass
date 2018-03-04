@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 using SM.Domain.Persistent.EF.State;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using SM.Domain.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SM.Domain.Persistent.EF
 {
@@ -17,50 +19,49 @@ namespace SM.Domain.Persistent.EF
         public EFDataContext(string connectionString)
         {
             _connectionString = connectionString;
-            /*
-            Database.SetInitializer<EFDataContext>(null);
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.ProxyCreationEnabled = false;
-            */
         }
-
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //"server=localhost;port=5432;database=SocialMass; user=postgres;password=postgres"
-            //optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=usersdb;Username=postgres;Password=password");
-
-            //optionsBuilder.UseNpgsql("server=localhost;port=5432;database=SocialMass; user=postgres;password=postgres");
             optionsBuilder.UseNpgsql(_connectionString);
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<AuthTokenState>()
+            modelBuilder.Entity<AuthToken>()
                 .ToTable("AuthTokens", schema)
                 .HasKey(c => c.Token);
-            modelBuilder.Entity<UserState>().ToTable("Users", schema);
-            modelBuilder.Entity<ApplicationState>().ToTable("Applications", schema);
+            modelBuilder.Entity<User>().ToTable("Users", schema);
 
-            modelBuilder.Entity<ExternalAuthProviderState>()
+            modelBuilder.Entity<ExternalAuthProvider>()
                 .ToTable("ExternalAuthProviders", schema)
                 .HasKey(c => new { c.ExternalUserId, c.ExternalAuthProviderTypeId });
 
         modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
 
-            modelBuilder.Entity<AccountState>().ToTable("Accounts", schema);
-            modelBuilder.Entity<TaskState>().ToTable("Tasks", schema);
             modelBuilder
-                .Entity<TagTaskState>()
-                .ToTable("TagTasks", schema)
-                .HasOne(t => t.Task)
-                .WithOne();
+                .Entity<Account>()
+                .ToTable("Accounts", schema);
                 
-                //.HasRequired(t => t.Task)
-                //.WithRequiredDependent();
+
+            modelBuilder
+                .Entity<SMTask>()
+                .ToTable("Tasks", schema)
+                .HasOne(t => t.Account)
+                .WithMany()
+                .HasForeignKey(t => t.AccountId);
+
+            var tt = modelBuilder
+                .Entity<TagTask>()
+                .ToTable("TagTasks", schema);
+                //.HasOne(t => t.Task)
+                //.WithOne();
+            tt.Property(t => t.TagsJson).HasColumnName("Tags");
+            tt.Property(t => t.LastPostJson).HasColumnName("LastPost");
+            tt.Property(t => t.PostsJson).HasColumnName("Posts");
+            tt.Property(t => t.FollowersJson).HasColumnName("Followers");
+            tt.Property(t => t.FollowingsJson).HasColumnName("Followings");
         }
         /*
         public void ChangeObjectState(object entity, EntityState entityState)

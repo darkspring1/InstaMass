@@ -7,7 +7,7 @@ using SM.Common.Cache;
 
 namespace SM.Domain.Persistent.EF
 {
-    class TagTaskRepository :  BaseRepository<TagTask, TagTaskState>, ITagTaskRepository
+    class TagTaskRepository :  BaseRepository<TagTask, TagTask>, ITagTaskRepository
     {
         public TagTaskRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
@@ -15,7 +15,7 @@ namespace SM.Domain.Persistent.EF
 
         public void AddTagTask(TagTask task)
         {
-            Set.Add(task.State);
+            Set.Add(task);
         }
 
         public Task<TagTask> GetTagTaskByIdAsync(Guid taskId)
@@ -24,9 +24,9 @@ namespace SM.Domain.Persistent.EF
             return CreateAsync(FirstOrDefaultAsync(tasks));
         }
 
-        protected override TagTask Create(TagTaskState state)
+        protected override TagTask Create(TagTask state)
         {
-            return new TagTask(state);
+            return state;
         }
     }
 }

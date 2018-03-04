@@ -49,7 +49,7 @@ class AccountList extends React.Component {
                       type="submit"
                       className="btn btn-primary"
                       onClick={this.props.goToNewAccount}
-                    >Добавить Аккаунт</button>
+                    >Создать Аккаунт</button>
                   </form>
                 </div>
               </div>

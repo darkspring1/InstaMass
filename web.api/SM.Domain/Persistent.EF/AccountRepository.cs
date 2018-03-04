@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
-    class AccountRepository : BaseRepository<Account, AccountState>, IAccountRepository
+    class AccountRepository : BaseRepository<Account, Account>, IAccountRepository
     {
         public AccountRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
@@ -16,7 +16,7 @@ namespace SM.Domain.Persistent.EF
 
         public void CreateNewAccount(Account account)
         {
-            Set.Add(account.State);
+            Set.Add(account);
         }
 
         public async Task<Account[]> FindByUserAsync(Guid userId)
@@ -25,7 +25,7 @@ namespace SM.Domain.Persistent.EF
             return accountStates.Select(s => Create(s)).ToArray();
         }
 
-        Task<AccountState> FindByLogin(string login)
+        Task<Account> FindByLogin(string login)
         {
             return FirstOrDefaultAsync(Set.Entities.Where(a => a.Login == login));
         }
@@ -36,9 +36,9 @@ namespace SM.Domain.Persistent.EF
             return state != null;
         }
 
-        protected override Account Create(AccountState state)
+        protected override Account Create(Account state)
         {
-            return new Account(state);
+            return state;
         }
 
         public Task<Account> GetByIdAsync(Guid accountId)

@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-using SM.Domain.Persistent.EF.State;
 using System;
-
 namespace SM.Domain.Model
 {
-    public class TagTask: Entity<TagTaskState>
+    public class TagTask
     {
         Lazy<string[]> _tagsLazy;
         Lazy<SwitchedProperty> _lastPost;
@@ -12,13 +10,13 @@ namespace SM.Domain.Model
         Lazy<SwitchedRange> _followers;
         Lazy<SwitchedRange> _followings;
 
-        internal TagTask(TagTaskState state) : base(state)
+        internal TagTask()
         {
-            _tagsLazy = PropertyFromJsonLazy<string[]>(state.Tags);
-            _lastPost = PropertyFromJsonLazy<SwitchedProperty>(state.LastPost);
-            _posts = PropertyFromJsonLazy<SwitchedRange>(state.Posts);
-            _followers = PropertyFromJsonLazy<SwitchedRange>(state.Followers);
-            _followings = PropertyFromJsonLazy<SwitchedRange>(state.Followings);
+            _tagsLazy = PropertyFromJsonLazy<string[]>(TagsJson);
+            _lastPost = PropertyFromJsonLazy<SwitchedProperty>(LastPostJson);
+            _posts = PropertyFromJsonLazy<SwitchedRange>(PostsJson);
+            _followers = PropertyFromJsonLazy<SwitchedRange>(FollowersJson);
+            _followings = PropertyFromJsonLazy<SwitchedRange>(FollowingsJson);
         }
 
         private Lazy<T> PropertyFromJsonLazy<T>(string json) => new Lazy<T>(() => PropertyFromJson<T>(json));
@@ -26,22 +24,13 @@ namespace SM.Domain.Model
         static private T PropertyFromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json);
         static private string PropertyToJson(object property) => JsonConvert.SerializeObject(property);
 
-        public Guid Id => State.TaskId;
+        public Guid Id => TaskId;
 
-        public int Version => State.Task.Version;
+        internal Guid TaskId { get; set; }
 
-        public int ExternalSystemVersion
-        {
-            get
-            {
-                return State.Task.ExternalSystemVersion;
-            }
+        public int Version { get; private set; }
 
-            private set
-            {
-                State.Task.ExternalSystemVersion = value;
-            }
-        }
+        private int ExternalSystemVersion { get; set; }
 
         public string[] Tags => _tagsLazy.Value;
 
@@ -66,15 +55,16 @@ namespace SM.Domain.Model
             SwitchedRange followers,
             SwitchedRange followings)
         {
+            /*
             ThrowIfArgumentNull(tags, "tags");
             ThrowIfArgumentNull(lastPost, "lastPost");
             ThrowIfArgumentNull(posts, "posts");
             ThrowIfArgumentNull(followers, "followers");
             ThrowIfArgumentNull(followings, "followings");
+            */
 
-            TaskState baseTaskState = new TaskState
+            SMTask baseTaskState = new SMTask
             {
-                Id = Guid.NewGuid(),
                 AccountId = accountId,
                 TypeId = (int)TaskTypeEnum.Like,
                 CreatedAt = DateTime.UtcNow,
@@ -82,19 +72,29 @@ namespace SM.Domain.Model
                 ExternalSystemVersion = 0
             };
 
-            TagTaskState state = new TagTaskState
+            return new TagTask
             {
                 Task = baseTaskState,
                 AvatarExistDisabled = avatarExistDisabled,
-                Tags = PropertyToJson(tags),
-                LastPost = PropertyToJson(lastPost),
-                Followers = PropertyToJson(followers),
-                Followings = PropertyToJson(followings),
-                Posts = PropertyToJson(posts),
+                TagsJson = PropertyToJson(tags),
+                LastPostJson = PropertyToJson(lastPost),
+                FollowersJson = PropertyToJson(followers),
+                FollowingsJson = PropertyToJson(followings),
+                PostsJson = PropertyToJson(posts),
             };
-
-            return new TagTask(state);
         }
+
+        SMTask Task { get; set; }
+
+        public bool AvatarExistDisabled { get; private set; }
+
+        internal  string TagsJson { get; set; }
+
+        internal string LastPostJson { get; set; }
+
+        internal string PostsJson { get; set; }
+        internal string FollowersJson { get; set; }
+        internal string FollowingsJson { get; set; }
 
 
     }

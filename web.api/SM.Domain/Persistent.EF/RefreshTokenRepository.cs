@@ -8,7 +8,7 @@ using SM.Domain.Persistent.EF.State;
 
 namespace SM.Domain.Persistent.EF
 {
-    class AuthTokenRepository : BaseRepository<Model.AuthToken, State.AuthTokenState>, IAuthTokenRepository
+    class AuthTokenRepository : BaseRepository<AuthToken, AuthToken>, IAuthTokenRepository
     {
         public AuthTokenRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
@@ -16,7 +16,7 @@ namespace SM.Domain.Persistent.EF
 
         public void AddNewToken(AuthToken token)
         {
-            Set.Add(token.State);
+            Set.Add(token);
         }
 
         public Task<AuthToken[]> GetBySubjectAsync(string subject)
@@ -26,12 +26,12 @@ namespace SM.Domain.Persistent.EF
 
         public void Remove(params AuthToken[] tokens)
         {
-            Set.RemoveRange(tokens.Select(t => t.State).ToArray());
+            Set.RemoveRange(tokens);
         }
 
-        protected override AuthToken Create(AuthTokenState state)
+        protected override AuthToken Create(AuthToken state)
         {
-            return new AuthToken(state);
+            return state;
         }
     }
 }

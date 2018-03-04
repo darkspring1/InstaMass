@@ -1,25 +1,25 @@
-﻿using SM.Domain.Persistent.EF.State;
-using System;
+﻿using System;
 
 namespace SM.Domain.Model
 {
-    public class AuthToken : Entity<AuthTokenState>
+    public class AuthToken
     {
-        internal AuthToken(AuthTokenState state) : base(state)
+        internal AuthToken()
         {
         }
 
-        public string Token => State.Token;
-
         public static AuthToken Create(string token, string subject, DateTime? expiresAt)
         {
-            var state = new AuthTokenState
+            return new AuthToken
             {
                 Token = token,
                 Subject = subject,
                 ExpiresAt = expiresAt
             };
-            return new AuthToken(state);
         }
+
+        public string Token { get; private set; }
+        internal string Subject { get; set; }
+        DateTime? ExpiresAt { get; set; }
     }
 }

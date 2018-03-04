@@ -1,5 +1,4 @@
 ﻿using SM.Domain.Model;
-using SM.Domain.Persistent.EF.State;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SM.Domain.Persistent.EF
 {
-    class TaskRepository :  BaseRepository<SMTask, TaskState>, ITaskRepository
+    class TaskRepository :  BaseRepository<SMTask, SMTask>, ITaskRepository
     {
         public TaskRepository(ICacheProvider cacheProvider, IEntityFrameworkDataContext context) : base(cacheProvider, context)
         {
@@ -24,9 +23,9 @@ namespace SM.Domain.Persistent.EF
 
         }
 
-        protected override SMTask Create(TaskState state)
+        protected override SMTask Create(SMTask state)
         {
-            return new SMTask(state);
+            return state;
         }
     }
 }

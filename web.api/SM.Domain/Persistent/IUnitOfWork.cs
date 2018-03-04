@@ -7,8 +7,6 @@ namespace SM.Domain.Persistent
     {
         IUserRepository UserRepository { get; }
 
-        IApplicationRepository ApplicationRepository { get; }
-
         IAuthTokenRepository AuthTokenRepository { get; }
 
         IAccountRepository AccountRepository { get; }
