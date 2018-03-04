@@ -1,6 +1,9 @@
 ﻿using SM.Domain.Persistent.EF.State;
 using Microsoft.EntityFrameworkCore;
 using SM.Domain.Model;
+using System.Linq.Expressions;
+using System;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SM.Domain.Persistent.EF
 {
@@ -23,28 +26,31 @@ namespace SM.Domain.Persistent.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<AuthToken>()
+                .HasColumn(c => c.Subject)
+                .HasColumn(c => c.ExpiresAt)
                 .ToTable("AuthTokens", schema)
                 .HasKey(c => c.Token);
 
-            var userBuilder = modelBuilder.Entity<User>()
-                .ToTable("Users", schema);
 
-            userBuilder.Property(u => u.EmailStr).HasColumnName("Email");
+            modelBuilder.Entity<User>()
+                .HasColumn(u => u.EmailStr, "Email")
+                .ToTable("Users", schema);
 
             modelBuilder.Entity<ExternalAuthProvider>()
                 .ToTable("ExternalAuthProviders", schema)
                 .HasKey(c => new { c.ExternalUserId, c.ExternalAuthProviderTypeId });
 
-        modelBuilder.Entity<ExternalAuthProviderTypeState>().ToTable("ExternalAuthProviderTypes", schema);
+            modelBuilder
+                .Entity<ExternalAuthProviderTypeState>()
+                .ToTable("ExternalAuthProviderTypes", schema);
 
+            
             modelBuilder
                 .Entity<Account>()
-                .ToTable("Accounts", schema)
-                .HasOne(a => a.User)
-                .WithMany()
-                .HasForeignKey(a => a.UserId);
-                
+                .HasColumn(a => a.UserId)
+                .ToTable("Accounts", schema);
 
             modelBuilder
                 .Entity<SMTask>()
@@ -53,21 +59,40 @@ namespace SM.Domain.Persistent.EF
                 .WithMany()
                 .HasForeignKey(t => t.AccountId);
 
-            var tagTaskBuilder = modelBuilder
+            modelBuilder
                 .Entity<TagTask>()
-                .ToTable("TagTasks", schema);
-
-            tagTaskBuilder.HasKey(t => t.TaskId);
-            tagTaskBuilder.Property(t => t.TagsJson).HasColumnName("Tags");
-            tagTaskBuilder.Property(t => t.LastPostJson).HasColumnName("LastPost");
-            tagTaskBuilder.Property(t => t.PostsJson).HasColumnName("Posts");
-            tagTaskBuilder.Property(t => t.FollowersJson).HasColumnName("Followers");
-            tagTaskBuilder.Property(t => t.FollowingsJson).HasColumnName("Followings");
+                .ToTable("TagTasks", schema)
+                .HasColumn(t => t.TagsJson, "Tags")
+                .HasColumn(t => t.LastPostJson, "LastPost")
+                .HasColumn(t => t.PostsJson, "Posts")
+                .HasColumn(t => t.FollowersJson, "Followers")
+                .HasColumn(t => t.FollowingsJson, "Followings")
+                .HasKey(t => t.TaskId);
         }
 
         public DataContext CreateNewInstance()
         {
             return new DataContext(_connectionString);
+        }
+    }
+
+    static class Extensions
+    {
+        public static EntityTypeBuilder<TEntity> HasColumn<TEntity, TProperty>(
+            this EntityTypeBuilder<TEntity> builder,
+            Expression<Func<TEntity, TProperty>> propertyExpression,
+            string columnName = null)
+        
+            where TEntity : class
+        {
+            if (columnName == null)
+            {
+                var body = (MemberExpression)propertyExpression.Body;
+                columnName = body.Member.Name;
+            }
+            
+            builder.Property(propertyExpression).HasColumnName(columnName);
+            return builder;
         }
     }
 }

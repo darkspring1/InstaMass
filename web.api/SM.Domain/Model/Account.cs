@@ -23,8 +23,6 @@ namespace SM.Domain.Model
             };
         }
 
-        
-
         public Guid Id { get; private set; }
 
         [Required]
@@ -38,8 +36,6 @@ namespace SM.Domain.Model
         private DateTime CreatedAt { get; set; }
 
         internal Guid UserId { get; set; }
-
-        public User User { get; set; }
 
     }
 }

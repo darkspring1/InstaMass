@@ -19,7 +19,7 @@ namespace SM.Domain.Model
         }
 
         public string Token { get; private set; }
-        internal string Subject { get; set; }
-        DateTime? ExpiresAt { get; set; }
+        internal string Subject { get; private set; }
+        internal DateTime? ExpiresAt { get; set; }
     }
 }
