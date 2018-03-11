@@ -8,12 +8,16 @@ export default (props) => {
     btnClassName += ' btn-danger';
   } else if (props.success) {
     btnClassName += ' btn-success';
+  } else if (props.info) {
+    btnClassName += ' btn-info';
   } else {
     btnClassName += ' btn-default';
   }
 
   if (props.large) {
     btnClassName += ' btn-lg';
+  } else if (props.small) {
+    btnClassName += ' btn-xs';
   }
 
   let icon = null;
@@ -22,6 +26,7 @@ export default (props) => {
     icon = <i className={props.icon} />;
   }
 
+  btnClassName += ` ${props.className}`;
   const type = props.type ? props.type : 'button';
 
   return (

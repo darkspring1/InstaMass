@@ -6,8 +6,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { Button } from 'controls/';
 import { TasksRequested } from 'actions';
 import ContentTop from '../components/contentTop';
+
 import * as Routes from '../constants/routes';
 
 class TaskList extends React.Component {
@@ -34,6 +36,19 @@ class TaskList extends React.Component {
     }
 
     throw new Error(`unknow statusId: ${statusId}`);
+  }
+
+  static RenderActionButton(text, icon, className) {
+    return <li><Button text={text} icon={icon} small className={className} /></li>;
+  }
+
+  static RenderActionList() {
+    return (<ul className="btn-list clearfix">
+      {TaskList.RenderActionButton('Редактировать', 'ion-edit', 'btn-info')}
+      {TaskList.RenderActionButton('Пауза', 'fa fa-pause', 'btn-warning')}
+      {TaskList.RenderActionButton('Удалить', 'ion-trash-b', 'btn-danger')}
+    </ul>
+    );
   }
 
   componentWillMount() {
@@ -73,10 +88,7 @@ class TaskList extends React.Component {
         {TaskList.RenderTaskStatus(t.statusId)}
       </td>
       <td>
-        <div className="buttons">
-          <button className="btn btn-primary editable-table-button btn-xs">Редактировать</button>
-          <button className="btn btn-danger editable-table-button btn-xs">Удалить</button>
-        </div>
+        {TaskList.RenderActionList()}
       </td>
     </tr>));
 
