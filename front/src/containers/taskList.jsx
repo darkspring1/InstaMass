@@ -12,12 +12,37 @@ import * as Routes from '../constants/routes';
 
 class TaskList extends React.Component {
 
+  static RenderTaskStatus(statusId) {
+    if (statusId === 1) {
+      return <span className="label label-primary">Выполняется</span>;
+    }
+
+    throw new Error(`unknow statusId: ${statusId}`);
+  }
+
+  static RenderTaskType(typeId) {
+    if (typeId === 1) {
+      return <span>Like</span>;
+    }
+
+    throw new Error(`unknow typeId: ${typeId}`);
+  }
+
+  static RenderAccountStatus(statusId) {
+    if (statusId === 1) {
+      return <span className="tag label label-primary">Активный</span>;
+    }
+
+    throw new Error(`unknow statusId: ${statusId}`);
+  }
+
   componentWillMount() {
     this.props.onTasksRequested();
   }
 
   render() {
     const tasks = this.props.tasks;
+
 
     const taskRows = tasks.map(t => (<tr className="editable-row">
       <td>
@@ -33,7 +58,7 @@ class TaskList extends React.Component {
                     <span className="name">{t.account.login}</span>
                   </div>
                   <div style={{ 'line-height': '16px' }}>
-                    <span className="tag label label-primary family">family</span>
+                    {TaskList.RenderAccountStatus(t.account.statusId)}
                   </div>
                 </div>
               </td>
@@ -42,10 +67,10 @@ class TaskList extends React.Component {
         </table>
       </td>
       <td className="select-td">
-        <span className="editable">Likes</span>
+        {TaskList.RenderTaskType(t.typeId)}
       </td>
       <td className="select-td">
-        <span className="editable">Активна</span>
+        {TaskList.RenderTaskStatus(t.statusId)}
       </td>
       <td>
         <div className="buttons">

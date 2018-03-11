@@ -23,6 +23,11 @@ namespace SM.Domain.Model
             };
         }
 
+        /// <summary>
+        /// Захардкодил ативный статус
+        /// </summary>
+        public int StatusId => 1;
+
         public Guid Id { get; private set; }
 
         [Required]

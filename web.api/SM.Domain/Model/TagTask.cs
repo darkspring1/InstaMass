@@ -50,7 +50,7 @@ namespace SM.Domain.Model
             SMTask baseTaskState = new SMTask
             {
                 AccountId = accountId,
-                TypeId = (int)TaskTypeEnum.Like,
+                TypeId = SMTask.TaskTypes.Like,
                 CreatedAt = DateTime.UtcNow,
                 Version = 1,
                 ExternalSystemVersion = 0
