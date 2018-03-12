@@ -23,7 +23,7 @@ class TaskList extends React.Component {
         <div className="row pie-charts">
 
 
-          <Link to={Routes.LIKE_TASK_EDITOR} className="pie-chart-item-container">
+          <Link to={Routes.TAG_TASK_EDITOR} className="pie-chart-item-container">
 
             <div className="panel animated zoomIn">
               <div className="panel-body" >

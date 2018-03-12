@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: 0 */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, getFormValues } from 'redux-form';
@@ -182,7 +184,7 @@ const initialValues = {
   lastPost: { value: 0, disabled: false },
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     tags: state.likeTask.tags || [],
     accounts: state.account || [],

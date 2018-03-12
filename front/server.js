@@ -41,7 +41,7 @@ function appGet(url) {
       res.status(404).send('Not found');
       return;
     }
-    res.sendFile(path.join(`${__dirname + url}/index.html`));
+    res.sendFile(path.join(`${__dirname}/index.html`));
   });
 }
 

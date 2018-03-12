@@ -5,12 +5,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import push from 'utils/';
 import { Button } from 'controls/';
 import { TasksRequested } from 'actions';
 import ContentTop from '../components/contentTop';
 
 import * as Routes from '../constants/routes';
+
 
 class TaskList extends React.Component {
 
@@ -38,13 +39,13 @@ class TaskList extends React.Component {
     throw new Error(`unknow statusId: ${statusId}`);
   }
 
-  static RenderActionButton(text, icon, className) {
-    return <li><Button text={text} icon={icon} small className={className} /></li>;
+  static RenderActionButton(text, icon, className, onClick) {
+    return <li><Button text={text} icon={icon} small className={className} onClick={onClick} /></li>;
   }
 
-  static RenderActionList() {
+  static RenderActionList(task, props) {
     return (<ul className="btn-list clearfix">
-      {TaskList.RenderActionButton('Редактировать', 'ion-edit', 'btn-info')}
+      {TaskList.RenderActionButton('Редактировать', 'ion-edit', 'btn-info', () => props.onEdit(task.id))}
       {TaskList.RenderActionButton('Пауза', 'fa fa-pause', 'btn-warning')}
       {TaskList.RenderActionButton('Удалить', 'ion-trash-b', 'btn-danger')}
     </ul>
@@ -56,23 +57,24 @@ class TaskList extends React.Component {
   }
 
   render() {
-    const tasks = this.props.tasks;
+    const props = this.props;
+    const tasks = props.tasks;
 
 
-    const taskRows = tasks.map(t => (<tr className="editable-row">
+    const taskRows = tasks.map(t => (<tr key={t.id} className="editable-row">
       <td>
         <table>
           <tbody>
             <tr className="side-message-navigation-item little-human shineHover family">
               <td className="little-human photo-td">
-                <img alt="_" className="little-human-picture" src="assets/img/app/profile/Kostya.png" />
+                <img alt="_" className="little-human-picture" src="/assets/img/app/profile/Kostya.png" />
               </td>
               <td>
                 <div className="name-container">
-                  <div style={{ 'line-height': '16px' }}>
+                  <div style={{ lineHeight: '16px' }}>
                     <span className="name">{t.account.login}</span>
                   </div>
-                  <div style={{ 'line-height': '16px' }}>
+                  <div style={{ lineHeight: '16px' }}>
                     {TaskList.RenderAccountStatus(t.account.statusId)}
                   </div>
                 </div>
@@ -88,7 +90,7 @@ class TaskList extends React.Component {
         {TaskList.RenderTaskStatus(t.statusId)}
       </td>
       <td>
-        {TaskList.RenderActionList()}
+        {TaskList.RenderActionList(t, props)}
       </td>
     </tr>));
 
@@ -146,7 +148,12 @@ const taskList = connect(
   stateToProps,
   dispatch => ({
     goToNewTask() {
-      dispatch(push(Routes.TASK_TYPES));
+      dispatch(push(Routes.TAG_TASK_EDITOR, { id: 'new' }));
+    },
+
+    onEdit(taskId) {
+      debugger;
+      dispatch(push(Routes.TAG_TASK_EDITOR, { id: taskId }));
     },
 
     onTasksRequested() {

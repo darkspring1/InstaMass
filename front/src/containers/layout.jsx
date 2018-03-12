@@ -69,9 +69,9 @@ function Layout(/* props */) {
 
 
           <Switch>
-            <Route path={Routes.LIKE_TASK_EDITOR} component={TagTaskEditor} />
+            <Route path={Routes.TAG_TASK_EDITOR} component={TagTaskEditor} />
             <Route path={Routes.TASK_TYPES} component={TaskTypes} />
-            <Route path="/tasks" component={TaskList} />
+            <Route path={Routes.TASK_LIST} component={TaskList} />
           </Switch>
 
 
