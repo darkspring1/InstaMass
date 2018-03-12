@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 import push from 'utils/';
 import { Button } from 'controls/';
 import { TasksRequested } from 'actions';
-import ContentTop from '../components/contentTop';
+import ContentTop from 'components/contentTop';
 
-import * as Routes from '../constants/routes';
+import * as Routes from 'constants/routes';
 
 
 class TaskList extends React.Component {
@@ -148,11 +148,10 @@ const taskList = connect(
   stateToProps,
   dispatch => ({
     goToNewTask() {
-      dispatch(push(Routes.TAG_TASK_EDITOR, { id: 'new' }));
+      dispatch(push(Routes.TAG_TASK_EDITOR, { id: Routes.NEW_ITEM_ID }));
     },
 
     onEdit(taskId) {
-      debugger;
       dispatch(push(Routes.TAG_TASK_EDITOR, { id: taskId }));
     },
 

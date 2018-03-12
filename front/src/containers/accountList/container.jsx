@@ -5,9 +5,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import AccountPanel from '../components/accountPanel';
-import ContentTop from '../components/contentTop';
-import { AccountsRequested } from '../actions';
+import AccountPanel from 'components/accountPanel';
+import ContentTop from 'components/contentTop';
+import { AccountsRequested } from 'actions';
 
 
 class AccountList extends React.Component {

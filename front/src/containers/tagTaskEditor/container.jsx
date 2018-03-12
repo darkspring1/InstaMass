@@ -6,6 +6,8 @@ import { Field, reduxForm, getFormValues } from 'redux-form';
 import { Button } from 'controls';
 import * as Actions from 'actions';
 import { required } from 'form-validators';
+import * as Routes from 'constants/routes';
+
 import {
   ContentTop,
   SwitchedLabel } from 'components';
@@ -185,7 +187,10 @@ const initialValues = {
 };
 
 function mapStateToProps(state, ownProps) {
+  debugger;
   return {
+    isNew: ownProps.match.params.id === Routes.NEW_ITEM_ID,
+    taskId: ownProps.match.params.id,
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
     avatarExistDisabled: false,

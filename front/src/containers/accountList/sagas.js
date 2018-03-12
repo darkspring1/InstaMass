@@ -1,9 +1,9 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 
-import ActionTypes from '../constants/actionTypes';
+import ActionTypes from 'constants/actionTypes';
 
-import * as Actions from '../actions';
-import { GetAccounts } from './../api';
+import * as Actions from 'actions';
+import { GetAccounts } from 'api';
 
 function* fetch(/* action */) {
   try {

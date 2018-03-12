@@ -1,7 +1,8 @@
+import AccountListSagas from 'containers/accountList/sagas';
+import GetTasks from 'containers/taskList/sagas';
 import AddNewAccount from './addNewAccount';
 import AddNewTag from './addNewTag';
-import GetAccounts from './getAccounts';
-import GetTasks from './getTasks';
+
 import AddNewLikeTask from './addNewTagTask';
 import * as Auth from './auth';
 
@@ -9,7 +10,7 @@ export default function* rootSaga() {
   yield [
     AddNewAccount(),
     AddNewTag(),
-    GetAccounts(),
+    AccountListSagas(),
     GetTasks(),
     AddNewLikeTask(),
     Auth.SignIn(),

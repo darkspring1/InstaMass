@@ -2,12 +2,12 @@
 import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AccountList from './accountList';
-import TaskList from './taskList';
+import AccountListContainer from './accountList/container';
+import TaskListContainer from './taskList/container';
 import AccountEditor from './accountEditor';
 import TopPreloader from './topPreloader';
 import Toastr from './toastr';
-import TagTaskEditor from './tagTaskEditor/editor';
+import TagTaskEditor from './tagTaskEditor/container';
 import * as Routes from '../constants/routes';
 import TaskTypes from './taskTypes';
 
@@ -65,13 +65,13 @@ function Layout(/* props */) {
       <div className="al-main">
         <TopPreloader />
         <div className="al-content">
-          <Route path="/accounts" component={AccountList} />
+          <Route path="/accounts" component={AccountListContainer} />
 
 
           <Switch>
             <Route path={Routes.TAG_TASK_EDITOR} component={TagTaskEditor} />
             <Route path={Routes.TASK_TYPES} component={TaskTypes} />
-            <Route path={Routes.TASK_LIST} component={TaskList} />
+            <Route path={Routes.TASK_LIST} component={TaskListContainer} />
           </Switch>
 
 
