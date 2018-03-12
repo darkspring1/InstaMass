@@ -1,8 +1,7 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 
-import ActionTypes from 'constants/actionTypes';
 import { GetTasks } from 'api';
-import { TasksLoaded, RequestStarted, RequestFinished, RequestError } from 'actions';
+import { TasksRequested, TasksLoaded, RequestStarted, RequestFinished, RequestError } from 'actions';
 
 
 function* fetch(/* action */) {
@@ -17,5 +16,5 @@ function* fetch(/* action */) {
 }
 
 export default function* GetTasksSaga() {
-  yield takeEvery(ActionTypes.TASKS_REQUESTED, fetch);
+  yield takeEvery(TasksRequested.type, fetch);
 }

@@ -6,6 +6,12 @@ import Login from './login';
 export { AuthExternalProvider };
 export { Login };
 
+function ActionConstructor(type) {
+  return {
+    type, create: payload => ({ type, payload })
+  };
+}
+
 export function RequestStarted(payload) {
   const p = payload || {};
   p.preloader = p.preloader || 'top';
@@ -87,6 +93,6 @@ export function AuthorizationData(payload) {
   return { type: ActionTypes.AUTHORIZATION_DATA, payload };
 }
 
-export function TasksRequested() {
-  return { type: ActionTypes.TASKS_REQUESTED };
-}
+// загрузка списка задач
+const TasksRequested = ActionConstructor('TASKS_REQUESTED');
+export { TasksRequested };

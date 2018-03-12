@@ -156,7 +156,7 @@ const taskList = connect(
     },
 
     onTasksRequested() {
-      dispatch(TasksRequested());
+      dispatch(TasksRequested.create());
     }
 
   })

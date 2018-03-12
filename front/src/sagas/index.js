@@ -1,5 +1,5 @@
 import AccountListSagas from 'containers/accountList/sagas';
-import GetTasks from 'containers/taskList/sagas';
+import TaskListSagas from 'containers/taskList/sagas';
 import AddNewAccount from './addNewAccount';
 import AddNewTag from './addNewTag';
 
@@ -11,7 +11,7 @@ export default function* rootSaga() {
     AddNewAccount(),
     AddNewTag(),
     AccountListSagas(),
-    GetTasks(),
+    TaskListSagas(),
     AddNewLikeTask(),
     Auth.SignIn(),
     Auth.SignInExternal(),
