@@ -1,9 +1,15 @@
 
-import ActionTypes from 'constants/actionTypes';
+import { LOCATION_CHANGE, TasksLoaded } from 'actions';
 
-export default function account(state = [], action) {
-  if (action.type === ActionTypes.TASKS_LOADED) {
+const defaultState = [];
+
+export default function account(state = defaultState, action) {
+  if (action.type === TasksLoaded.type) {
     return action.payload;
+  }
+
+  if (action.type === LOCATION_CHANGE) {
+    return defaultState;
   }
 
   return state;

@@ -1,23 +1,23 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 
-import ActionTypes from 'constants/actionTypes';
 
-import * as Actions from 'actions';
-import { GetAccounts } from 'api';
+import { TagTaskRequested, TagTaskLoaded, RequestStarted, RequestFinished, RequestError } from 'actions';
 
-function* fetch(/* action */) {
+import { GetTagTask } from 'api';
+
+function* fetch(action) {
+  debugger;
   try {
-    yield put(Actions.RequestStarted());
-    const accounts = yield GetAccounts();
-    yield put(Actions.AccountsLoaded(accounts));
-    yield put(Actions.ShowToastr({ message: 'Аккаунт был успешно создан' }));
+    yield put(RequestStarted.create());
+    const task = yield GetTagTask(action.payload.id);
+    debugger;
+    yield put(TagTaskLoaded.create(task));
   } catch (e) {
-    yield put(Actions.AccountsLoaded());
-    yield put(Actions.RequestError(e));
+    yield put(RequestError.create(e));
   }
-  yield put(Actions.RequestFinished());
+  yield put(RequestFinished.create());
 }
 
 export default function* GetTagTaskSaga() {
-  yield takeEvery(ActionTypes.TAG, fetch);
+  yield takeEvery(TagTaskRequested.type, fetch);
 }

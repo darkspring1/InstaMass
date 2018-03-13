@@ -10,32 +10,38 @@ using System.Threading.Tasks;
 namespace SM.WEB.API.Controllers
 {
     [Authorize]
+    [Route("api/")]
     public class TaskController : BaseController
     {
-        private readonly Func<TaskService> _taskServiceServiceFunc;
+        private readonly TaskService _taskServiceService;
 
-        public TaskController(ILogger logger, Func<TaskService> taskServiceServiceFunc) : base(logger)
+        public TaskController(ILogger logger, TaskService taskServiceService) : base(logger)
         {
-            _taskServiceServiceFunc = taskServiceServiceFunc;
+            _taskServiceService = taskServiceService;
         }
 
         [HttpGet]
-        [Route(Routes.ApiTasks)]
+        [Route(Routes.Tasks_Get)]
         public Task<ActionResult> GetTasks()
         {
-            return ActionResultAsync(_taskServiceServiceFunc().GetTasks(UserId));
+            return ActionResultAsync(_taskServiceService.GetTasks(UserId));
         }
 
 
-        [HttpPost]
-        [Route(Routes.ApiTaskTag)]
-        public Task<ActionResult> CreateTagTask([FromBody]NewTagTaskModel model)
+        [HttpPost(Routes.TagTask_Post)]
+        public Task<ActionResult> TagTaskPost([FromBody]NewTagTaskModel model)
         {
             var lastPost = new SwitchedProperty(model.LastPost.Value, model.LastPost.Disabled);
             var posts = FromModel(model.Posts);
             var followers = FromModel(model.Followers);
             var followings = FromModel(model.Followings);
-            return ActionResultAsync(_taskServiceServiceFunc().CreateTagTask(model.AccountId, model.Tags, model.AvatarExistDisabled, lastPost, posts: posts, followers: followers, followings: followings));
+            return ActionResultAsync(_taskServiceService.CreateTagTaskAsync(model.AccountId, model.Tags, model.AvatarExistDisabled, lastPost, posts: posts, followers: followers, followings: followings));
+        }
+
+        [HttpGet(Routes.TagTask_Get)]
+        public Task<ActionResult> TagTaskGet(Guid id)
+        {
+            return ActionResultAsync(_taskServiceService.GetTagTaskAsync(id));
         }
 
 

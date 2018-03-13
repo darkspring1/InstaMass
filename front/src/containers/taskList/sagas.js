@@ -6,13 +6,13 @@ import { TasksRequested, TasksLoaded, RequestStarted, RequestFinished, RequestEr
 
 function* fetch(/* action */) {
   try {
-    yield put(RequestStarted());
+    yield put(RequestStarted.create());
     const tasks = yield GetTasks();
-    yield put(TasksLoaded(tasks));
+    yield put(TasksLoaded.create(tasks));
   } catch (e) {
-    yield put(RequestError(e));
+    yield put(RequestError.create(e));
   }
-  yield put(RequestFinished());
+  yield put(RequestFinished.create());
 }
 
 export default function* GetTasksSaga() {

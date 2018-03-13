@@ -48,6 +48,9 @@ class TagTaskEditor extends React.Component {
   }
 
   componentWillMount() {
+    if (this.props.taskId !== Routes.NEW_ITEM_ID) {
+      this.props.onTagTaskRequested(this.props.taskId);
+    }
     this.props.onAccountsRequested();
   }
 
@@ -187,9 +190,7 @@ const initialValues = {
 };
 
 function mapStateToProps(state, ownProps) {
-  debugger;
   return {
-    isNew: ownProps.match.params.id === Routes.NEW_ITEM_ID,
     taskId: ownProps.match.params.id,
     tags: state.likeTask.tags || [],
     accounts: state.account || [],
@@ -212,6 +213,10 @@ export default connect(
 
     onAccountsRequested() {
       dispatch(Actions.AccountsRequested());
+    },
+
+    onTagTaskRequested(id) {
+      dispatch(Actions.TagTaskRequested.create({ id }));
     }
 
   })

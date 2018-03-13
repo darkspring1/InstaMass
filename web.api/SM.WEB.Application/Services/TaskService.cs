@@ -19,7 +19,7 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => UnitOfWork.TaskRepository.GetByUserAsync(userId));
         }
 
-        public Task<ServiceResult<TagTask>> CreateTagTask(
+        public Task<ServiceResult<TagTask>> CreateTagTaskAsync(
             Guid accountId,
             string[] tags,
             bool avatarExistDisabled,
@@ -45,6 +45,12 @@ namespace SM.WEB.Application.Services
                 await RaiseAsync(new TagTaskWasCreated(accountTask.Result.Login, task));
                 return task;
             });
+        }
+
+
+        public Task<ServiceResult<TagTask>> GetTagTaskAsync(Guid taskId)
+        {
+            return RunAsync(() => UnitOfWork.TagTaskRepository.GetTagTaskByIdAsync(taskId));
         }
     }
 }

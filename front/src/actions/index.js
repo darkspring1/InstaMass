@@ -6,23 +6,17 @@ import Login from './login';
 export { AuthExternalProvider };
 export { Login };
 
-function ActionConstructor(type) {
+function ActionConstructor(type, payloadModifier) {
+  if (payloadModifier) {
+    return {
+      type, create: payload => ({ type, payload: payloadModifier(payload) })
+    };
+  }
   return {
     type, create: payload => ({ type, payload })
   };
 }
 
-export function RequestStarted(payload) {
-  const p = payload || {};
-  p.preloader = p.preloader || 'top';
-  return { type: ActionTypes.REQUEST_STARTED, payload: p };
-}
-
-export function RequestFinished(payload) {
-  const p = payload || {};
-  p.preloader = p.preloader || 'top';
-  return { type: ActionTypes.REQUEST_FINISHED, payload: p };
-}
 
 export function AddNewAccountSucceeded(payload) {
   return { type: ActionTypes.ADD_NEW_ACCOUNT_SUCCEEDED, payload };
@@ -41,14 +35,6 @@ export function AddNewAccountRequested(payload) {
   return { type: ActionTypes.ADD_NEW_ACCOUNT_REQUESTED, payload };
 }
 
-export function ShowToastr(payload) {
-  return { type: ActionTypes.SHOW_TOASTR, payload };
-}
-
-export function RequestError(payload) {
-  return { type: ActionTypes.REQUEST_ERROR, payload };
-}
-
 export function AccountsRequested(payload) {
   return { type: ActionTypes.ACCOUNTS_REQUESTED, payload };
 }
@@ -57,9 +43,6 @@ export function AccountsLoaded(payload) {
   return { type: ActionTypes.ACCOUNTS_LOADED, payload };
 }
 
-export function TasksLoaded(payload) {
-  return { type: ActionTypes.TASKS_LOADED, payload };
-}
 
 export function AddNewTagRequested(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_REQUESTED, payload };
@@ -93,6 +76,39 @@ export function AuthorizationData(payload) {
   return { type: ActionTypes.AUTHORIZATION_DATA, payload };
 }
 
+const LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
+
+const RequestError = ActionConstructor('REQUEST_ERROR');
+
+const RequestStarted = ActionConstructor('REQUEST_STARTED', (payload) => {
+  const p = payload || {};
+  p.preloader = p.preloader || 'top';
+  return p;
+});
+
+const RequestFinished = ActionConstructor('REQUEST_FINISHED', (payload) => {
+  const p = payload || {};
+  p.preloader = p.preloader || 'top';
+  return p;
+});
+
+const ShowToastr = ActionConstructor('SHOW_TOASTR');
+
 // загрузка списка задач
 const TasksRequested = ActionConstructor('TASKS_REQUESTED');
-export { TasksRequested };
+const TasksLoaded = ActionConstructor('TASKS_LOADED');
+// загрузка Tag task
+const TagTaskRequested = ActionConstructor('TAG_TASK_REQUESTED');
+const TagTaskLoaded = ActionConstructor('TAG_TASK_LOADED');
+
+export {
+  LOCATION_CHANGE,
+  RequestError,
+  RequestStarted,
+  RequestFinished,
+  ShowToastr,
+  TasksRequested,
+  TasksLoaded,
+  TagTaskRequested,
+  TagTaskLoaded
+};
