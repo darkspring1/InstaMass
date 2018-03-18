@@ -7,14 +7,14 @@ export { AuthExternalProvider };
 export { Login };
 
 function ActionConstructor(type, payloadModifier) {
+  let action;
   if (payloadModifier) {
-    return {
-      type, create: payload => ({ type, payload: payloadModifier(payload) })
-    };
+    action = payload => ({ type, payload: payloadModifier(payload) });
+  } else {
+    action = payload => ({ type, payload });
   }
-  return {
-    type, create: payload => ({ type, payload })
-  };
+  action.type = type;
+  return action;
 }
 
 
@@ -46,10 +46,6 @@ export function AccountsLoaded(payload) {
 
 export function AddNewTagRequested(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_REQUESTED, payload };
-}
-
-export function AddNewTagSucceeded(payload) {
-  return { type: ActionTypes.ADD_NEW_TAG_SUCCEEDED, payload };
 }
 
 export function AddNewTagTaskRequested(payload) {
@@ -100,6 +96,8 @@ const TasksLoaded = ActionConstructor('TASKS_LOADED');
 // загрузка Tag task
 const TagTaskRequested = ActionConstructor('TAG_TASK_REQUESTED');
 const TagTaskLoaded = ActionConstructor('TAG_TASK_LOADED');
+// создание новой TagTask
+const TagTaskCreated = ActionConstructor('TAG_TASK_CREATED');
 
 export {
   LOCATION_CHANGE,
@@ -110,5 +108,6 @@ export {
   TasksRequested,
   TasksLoaded,
   TagTaskRequested,
-  TagTaskLoaded
+  TagTaskLoaded,
+  TagTaskCreated
 };

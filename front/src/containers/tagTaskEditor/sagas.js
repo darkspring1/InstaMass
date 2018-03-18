@@ -6,16 +6,14 @@ import { TagTaskRequested, TagTaskLoaded, RequestStarted, RequestFinished, Reque
 import { GetTagTask } from 'api';
 
 function* fetch(action) {
-  debugger;
   try {
-    yield put(RequestStarted.create());
+    yield put(RequestStarted());
     const task = yield GetTagTask(action.payload.id);
-    debugger;
-    yield put(TagTaskLoaded.create(task));
+    yield put(TagTaskLoaded(task));
   } catch (e) {
-    yield put(RequestError.create(e));
+    yield put(RequestError(e));
   }
-  yield put(RequestFinished.create());
+  yield put(RequestFinished());
 }
 
 export default function* GetTagTaskSaga() {

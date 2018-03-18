@@ -10,6 +10,7 @@ function* fetch(action) {
     yield put(Actions.RequestStarted());
     debugger;
     yield CreateTagTask(action.payload);
+    yield put(Actions.TagTaskCreated());
     yield put(Actions.ShowToastr());
   } catch (e) {
     debugger;

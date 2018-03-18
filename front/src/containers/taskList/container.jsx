@@ -137,8 +137,8 @@ class TaskList extends React.Component {
 
 function stateToProps(state) {
   let tasks = [];
-  if (state.task) {
-    tasks = state.task;
+  if (state.taskList) {
+    tasks = state.taskList;
   }
   return { tasks };
 }
@@ -156,7 +156,7 @@ const taskList = connect(
     },
 
     onTasksRequested() {
-      dispatch(TasksRequested.create());
+      dispatch(TasksRequested());
     }
 
   })

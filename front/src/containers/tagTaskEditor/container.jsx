@@ -48,7 +48,7 @@ class TagTaskEditor extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.taskId !== Routes.NEW_ITEM_ID) {
+    if (!this.props.isNewTask) {
       this.props.onTagTaskRequested(this.props.taskId);
     }
     this.props.onAccountsRequested();
@@ -75,9 +75,15 @@ class TagTaskEditor extends React.Component {
 
   render() {
     const props = this.props;
+
+    if (props.isWaiting) {
+      return <p>waiting...</p>;
+    }
+
     const formValues = props.formValues || {};
     const { submitting, handleSubmit } = props;
     const state = this.state;
+
     return (
       <div>
         <form onSubmit={handleSubmit(this.onAddNewTask)}>
@@ -180,22 +186,46 @@ const TagTaskEditorForm = reduxForm({
   form: formName
 })(TagTaskEditor);
 
-const initialValues = {
-  tagsInput: { tags: [/* 'tag1', 'tag2' */], value: '' },
-  posts: range(0, 100, false),
-  followers: range(0, 100, true),
-  followings: range(0, 100, true),
-  account: null,
-  lastPost: { value: 0, disabled: false },
-};
+function createInitialValues(state) {
+  if (state.tagTask) {
+    return {
+      tagsInput: { tags: state.tagTask.tags, value: '' },
+      posts: range(0, 100, false),
+      followers: range(0, 100, true),
+      followings: range(0, 100, true),
+      account: null,
+      lastPost: { value: 0, disabled: false },
+    };
+  }
+
+  return {
+    tagsInput: { tags: ['tag1', 'tag2'], value: '' },
+    posts: range(0, 100, false),
+    followers: range(0, 100, true),
+    followings: range(0, 100, true),
+    account: null,
+    lastPost: { value: 0, disabled: false },
+  };
+}
+
 
 function mapStateToProps(state, ownProps) {
+  const isNewTask = ownProps.match.params.id === Routes.NEW_ITEM_ID;
+  const isWaiting = !isNewTask && !state.tagTask;
+
+  if (isWaiting) {
+    return {
+      taskId: ownProps.match.params.id,
+      isWaiting,
+      isNewTask
+    };
+  }
+
   return {
-    taskId: ownProps.match.params.id,
-    tags: state.likeTask.tags || [],
+    // taskId: ownProps.match.params.id,
     accounts: state.account || [],
     avatarExistDisabled: false,
-    initialValues,
+    initialValues: createInitialValues(state),
     formValues: getFormValues(formName)(state)
   };
 }
@@ -216,7 +246,7 @@ export default connect(
     },
 
     onTagTaskRequested(id) {
-      dispatch(Actions.TagTaskRequested.create({ id }));
+      dispatch(Actions.TagTaskRequested({ id }));
     }
 
   })

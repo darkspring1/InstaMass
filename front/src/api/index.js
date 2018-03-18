@@ -16,13 +16,16 @@ function post(params) {
 function responseWrap(apiPromise) {
   return apiPromise.then(response => response.data)
   .catch((e) => {
-    const r = e.response;
-    const err = {
-      status: r.status,
-      statusText: r.statusText
-    };
-    Object.assign(err, r.data);
-    throw err;
+    const res = e.response;
+    if (res) {
+      const err = {
+        status: res.status,
+        statusText: res.statusText
+      };
+      Object.assign(err, res.data);
+      throw err;
+    }
+    throw e;
   });
 }
 

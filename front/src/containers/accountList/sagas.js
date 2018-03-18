@@ -7,15 +7,15 @@ import { GetAccounts } from 'api';
 
 function* fetch(/* action */) {
   try {
-    yield put(Actions.RequestStarted.create());
+    yield put(Actions.RequestStarted());
     const accounts = yield GetAccounts();
     yield put(Actions.AccountsLoaded(accounts));
-    yield put(Actions.ShowToastr.create({ message: 'Аккаунт был успешно создан' }));
+    yield put(Actions.ShowToastr({ message: 'Аккаунт был успешно создан' }));
   } catch (e) {
     yield put(Actions.AccountsLoaded());
-    yield put(Actions.RequestError.create(e));
+    yield put(Actions.RequestError(e));
   }
-  yield put(Actions.RequestFinished.create());
+  yield put(Actions.RequestFinished());
 }
 
 export default function* GetAccountsSaga() {

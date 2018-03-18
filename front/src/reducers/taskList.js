@@ -3,7 +3,7 @@ import { LOCATION_CHANGE, TasksLoaded } from 'actions';
 
 const defaultState = [];
 
-export default function account(state = defaultState, action) {
+export default function (state = defaultState, action) {
   if (action.type === TasksLoaded.type) {
     return action.payload;
   }
