@@ -20,7 +20,9 @@ namespace SM.Domain.Persistent.EF
 
         public Task<TagTask> GetTagTaskByIdAsync(Guid taskId)
         {
-            return Set.Where(lt => lt.TaskId == taskId).FirstOrDefaultAsync();
+            return Set.Where(lt => lt.TaskId == taskId)
+                .Include(tt => tt.Task)
+                .FirstOrDefaultAsync();
         }
     }
 }

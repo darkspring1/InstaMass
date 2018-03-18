@@ -34,7 +34,7 @@ const authTokenInterceptor = (config) => {
 let refreshTokenPromise = null;
 
 const refreshTokenInterceptor = (store, error) => {
-  if (error.response.status === 401) {
+  if (error.response && error.response.status === 401) {
     const authData = LocalStorage.get(LocalStorageKeys.AUTHORIZATION_DATA);
     if (!refreshTokenPromise && authData && authData.refreshToken) {
       LocalStorage.remove(LocalStorageKeys.AUTHORIZATION_DATA);
@@ -77,11 +77,12 @@ const refreshTokenInterceptor = (store, error) => {
           .catch(reject);
       });
     }
+    store.dispatch(push('/auth'));
   }
-  store.dispatch(push('/auth'));
+
   return Promise.reject(error);
-}
-;
+};
+
 
 function addInterceptor(interceptor, isResponse, isErrorInterceptor) {
   const r = isResponse ? axios.interceptors.response : axios.interceptors.request;
