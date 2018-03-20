@@ -1,10 +1,9 @@
 import AccountListSagas from 'containers/accountList/sagas';
 import TaskListSagas from 'containers/taskList/sagas';
-import TagTaskEditorSagas from 'containers/tagTaskEditor/sagas';
+import { CreateTagTaskSaga, UpdateTagTaskSaga, GetTagTaskSaga } from 'containers/tagTaskEditor/sagas';
 import AddNewAccount from './addNewAccount';
 import AddNewTag from './addNewTag';
 
-import AddNewLikeTask from './addNewTagTask';
 import * as Auth from './auth';
 
 export default function* rootSaga() {
@@ -13,8 +12,9 @@ export default function* rootSaga() {
     AddNewTag(),
     AccountListSagas(),
     TaskListSagas(),
-    TagTaskEditorSagas(),
-    AddNewLikeTask(),
+    CreateTagTaskSaga(),
+    UpdateTagTaskSaga(),
+    GetTagTaskSaga(),
     Auth.SignIn(),
     Auth.SignInExternal(),
     Auth.SignUp(),

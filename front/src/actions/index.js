@@ -48,10 +48,6 @@ export function AddNewTagRequested(payload) {
   return { type: ActionTypes.ADD_NEW_TAG_REQUESTED, payload };
 }
 
-export function AddNewTagTaskRequested(payload) {
-  return { type: ActionTypes.ADD_NEW_TAG_TASK_REQUESTED, payload };
-}
-
 export function SignIn(payload) {
   return { type: ActionTypes.SIGN_IN_REQUESTED, payload };
 }
@@ -93,11 +89,17 @@ const ShowToastr = ActionConstructor('SHOW_TOASTR');
 // загрузка списка задач
 const TasksRequested = ActionConstructor('TASKS_REQUESTED');
 const TasksLoaded = ActionConstructor('TASKS_LOADED');
-// загрузка Tag task
-const TagTaskRequested = ActionConstructor('TAG_TASK_REQUESTED');
-const TagTaskLoaded = ActionConstructor('TAG_TASK_LOADED');
-// создание новой TagTask
-const TagTaskCreated = ActionConstructor('TAG_TASK_CREATED');
+
+// запрос на загрузка с сервера Tag task
+const TagTaskGetRequest = ActionConstructor('TAG_TASK_REQUEST');
+
+// создание или обновление TagTask сторе
+const TagTaskCreateOrUpdate = ActionConstructor('TAG_TASK_CREAT_OR_UPDATE');
+
+// запрос на создание или обновление на сервере
+const TagTaskUpdateRequest = ActionConstructor('TAG_TASK_UPDATE_REQUEST');
+const TagTaskCreateRequest = ActionConstructor('TAG_TASK_CREATE_REQUEST');
+
 
 export {
   LOCATION_CHANGE,
@@ -107,7 +109,8 @@ export {
   ShowToastr,
   TasksRequested,
   TasksLoaded,
-  TagTaskRequested,
-  TagTaskLoaded,
-  TagTaskCreated
+  TagTaskGetRequest,
+  TagTaskCreateOrUpdate,
+  TagTaskCreateRequest,
+  TagTaskUpdateRequest
 };

@@ -12,7 +12,6 @@ namespace SM.Domain.Model
 
         internal TagTask()
         {
-
             _tagsLazy = PropertyFromJsonLazy<string[]>(() => TagsJson);
             _lastPost = PropertyFromJsonLazy<SwitchedProperty>(() => LastPostJson);
             _posts = PropertyFromJsonLazy<SwitchedRange>(() => PostsJson);
@@ -30,6 +29,16 @@ namespace SM.Domain.Model
         internal Guid TaskId { get; set; }
 
         public string[] Tags => _tagsLazy.Value;
+
+        public SwitchedProperty LastPost => _lastPost.Value;
+
+        public SwitchedRange Post => _posts.Value;
+
+        public SwitchedRange Followers => _followers.Value;
+
+        public SwitchedRange Followings => _followings.Value;
+
+        public Guid AccountId => Task.AccountId;
 
         public static TagTask Create(Guid accountId,
             string[] tags,

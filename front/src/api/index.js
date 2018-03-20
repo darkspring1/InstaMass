@@ -89,8 +89,12 @@ function GetTagTask(id) {
   return responseWrap(axios.get(`${Settings.apiServiceBaseUri}tasks/tag/${id}`));
 }
 
+function UpdateTagTask(taskId, task) {
+  return responseWrap(axios.put(`${Settings.apiServiceBaseUri}tasks/tag/${taskId}`, task));
+}
+
 
 export { CreateTagTask, GetAccounts, GetTasks,
   RegisterExternal, Register, ObtainLocalAccessToken,
   Orders, RefreshToken, Login, LoginExternal,
-  AddNewAccount, GetTagTask };
+  AddNewAccount, GetTagTask, UpdateTagTask };

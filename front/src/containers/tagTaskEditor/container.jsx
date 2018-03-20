@@ -39,7 +39,7 @@ class TagTaskEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onAddNewTask = this.onAddNewTask.bind(this);
+    this.onSave = this.onSave.bind(this);
     this.onAvatarExist = this.onAvatarExist.bind(this);
 
     this.state = {
@@ -58,10 +58,10 @@ class TagTaskEditor extends React.Component {
     this.setState({ avatarExistDisabled });
   }
 
-  onAddNewTask() {
+  onSave() {
     const { avatarExistDisabled } = this.state;
     const { lastPost, followers, followings, posts, tagsInput, account } = this.props.formValues;
-    this.props.onAddNewTask({
+    const task = {
       lastPost,
       followers,
       followings,
@@ -69,7 +69,12 @@ class TagTaskEditor extends React.Component {
       avatarExistDisabled,
       tags: tagsInput.tags,
       accountId: account.id,
-    });
+    };
+    if (this.props.isNewTask) {
+      this.props.onCreateTagTask(task);
+    } else {
+      this.props.onUpdateTagTask(this.props.taskId, task);
+    }
   }
 
 
@@ -86,7 +91,7 @@ class TagTaskEditor extends React.Component {
 
     return (
       <div>
-        <form onSubmit={handleSubmit(this.onAddNewTask)}>
+        <form onSubmit={handleSubmit(this.onSave)}>
           <ContentTop title="Новая задача" />
 
           <div className="panel animated zoomIn">
@@ -187,25 +192,29 @@ const TagTaskEditorForm = reduxForm({
 })(TagTaskEditor);
 
 function createInitialValues(state) {
-  if (state.tagTask) {
-    return {
-      tagsInput: { tags: state.tagTask.tags, value: '' },
-      posts: range(0, 100, false),
-      followers: range(0, 100, true),
-      followings: range(0, 100, true),
-      account: null,
-      lastPost: { value: 0, disabled: false },
-    };
+  if (!createInitialValues.cache) {
+    if (state.tagTask) {
+      createInitialValues.cache = {
+        tagsInput: { tags: state.tagTask.tags, value: '' },
+        posts: state.tagTask.post,
+        followers: state.tagTask.followers,
+        followings: state.tagTask.followings,
+        account: { id: state.tagTask.accountId },
+        lastPost: state.tagTask.lastPost
+      };
+    } else {
+      createInitialValues.cache = {
+        tagsInput: { tags: ['tag1', 'tag2'], value: '' },
+        posts: range(0, 100, false),
+        followers: range(0, 100, true),
+        followings: range(0, 100, true),
+        account: null,
+        lastPost: { value: 0, disabled: false },
+      };
+    }
   }
 
-  return {
-    tagsInput: { tags: ['tag1', 'tag2'], value: '' },
-    posts: range(0, 100, false),
-    followers: range(0, 100, true),
-    followings: range(0, 100, true),
-    account: null,
-    lastPost: { value: 0, disabled: false },
-  };
+  return createInitialValues.cache;
 }
 
 
@@ -222,7 +231,8 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
-    // taskId: ownProps.match.params.id,
+    taskId: ownProps.match.params.id,
+    isNewTask,
     accounts: state.account || [],
     avatarExistDisabled: false,
     initialValues: createInitialValues(state),
@@ -237,8 +247,13 @@ export default connect(
       dispatch(Actions.AddNewTagRequested(tag));
     },
 
-    onAddNewTask(task) {
-      dispatch(Actions.AddNewTagTaskRequested(task));
+    onCreateTagTask(task) {
+      dispatch(Actions.TagTaskCreateRequest(task));
+    },
+
+    onUpdateTagTask(taskId, task) {
+      debugger;
+      dispatch(Actions.TagTaskUpdateRequest({ taskId, task }));
     },
 
     onAccountsRequested() {
@@ -246,7 +261,7 @@ export default connect(
     },
 
     onTagTaskRequested(id) {
-      dispatch(Actions.TagTaskRequested({ id }));
+      dispatch(Actions.TagTaskGetRequest({ id }));
     }
 
   })

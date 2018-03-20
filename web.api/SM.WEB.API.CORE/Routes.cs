@@ -19,6 +19,7 @@
 
         public const string TagTask_Get = "tasks/tag/{id}";
         public const string TagTask_Post = "tasks/tag";
+        public const string TagTask_Put = "tasks/tag/{id}";
     }
 }
 

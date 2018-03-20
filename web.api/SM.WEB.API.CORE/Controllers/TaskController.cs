@@ -44,6 +44,12 @@ namespace SM.WEB.API.Controllers
             return ActionResultAsync(_taskServiceService.GetTagTaskAsync(id));
         }
 
+        [HttpPut(Routes.TagTask_Put)]
+        public Task<ActionResult> TagTaskGet(Guid id, [FromBody]object task)
+        {
+            return Task.FromResult<ActionResult>(Ok());
+        }
+
 
         SwitchedRange FromModel(SwitchedRangeModel model) {
             return new SwitchedRange(model.From, model.To, model.Disabled);
