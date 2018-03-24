@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SM.Domain.Model;
 using System.Threading.Tasks;
 
 namespace SM.Domain.Persistent
@@ -11,7 +11,7 @@ namespace SM.Domain.Persistent
 
         IAccountRepository AccountRepository { get; }
         ITaskRepository TaskRepository { get; }
-        ITagTaskRepository TagTaskRepository { get; }
+        IRepository<TagTask> TagTaskRepository { get; }
 
         void Complete();
 

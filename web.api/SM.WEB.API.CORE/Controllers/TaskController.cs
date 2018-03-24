@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
+using SM.Domain.Dto.TagTask;
 using SM.Domain.Model;
 using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
@@ -29,13 +30,13 @@ namespace SM.WEB.API.Controllers
 
 
         [HttpPost(Routes.TagTask_Post)]
-        public Task<ActionResult> TagTaskPost([FromBody]NewTagTaskModel model)
+        public Task<ActionResult> TagTaskPost([FromBody]TagTaskDto model)
         {
             var lastPost = new SwitchedProperty(model.LastPost.Value, model.LastPost.Disabled);
             var posts = FromModel(model.Posts);
             var followers = FromModel(model.Followers);
             var followings = FromModel(model.Followings);
-            return ActionResultAsync(_taskServiceService.CreateTagTaskAsync(model.AccountId, model.Tags, model.AvatarExistDisabled, lastPost, posts: posts, followers: followers, followings: followings));
+            return ActionResultAsync(_taskServiceService.CreateTagTaskAsync(model));
         }
 
         [HttpGet(Routes.TagTask_Get)]
@@ -45,13 +46,13 @@ namespace SM.WEB.API.Controllers
         }
 
         [HttpPut(Routes.TagTask_Put)]
-        public Task<ActionResult> TagTaskGet(Guid id, [FromBody]object task)
+        public Task<ActionResult> TagTaskPut(Guid id, [FromBody]TagTaskDto model)
         {
-            return Task.FromResult<ActionResult>(Ok());
+            return ActionResultAsync(_taskServiceService.UpdateTagTaskAsync(id, model));
         }
 
 
-        SwitchedRange FromModel(SwitchedRangeModel model) {
+        SwitchedRange FromModel(SwitchedRangeDto model) {
             return new SwitchedRange(model.From, model.To, model.Disabled);
         }
 

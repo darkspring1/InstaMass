@@ -1,6 +1,6 @@
-﻿namespace SM.WEB.API.Models
+﻿namespace SM.Domain.Dto.TagTask
 {
-    public class SwitchedRangeModel
+    public class SwitchedRangeDto
     {
         public int From { get; set; }
         public int To { get; set; }

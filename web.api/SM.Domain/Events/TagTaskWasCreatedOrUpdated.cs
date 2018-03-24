@@ -2,9 +2,9 @@
 
 namespace SM.Domain.Events
 {
-    public class TagTaskWasCreated : IDomainEvent
+    public class TagTaskWasCreatedOrUpdated : IDomainEvent
     {
-        public TagTaskWasCreated(string instagramAccountLogin, TagTask task)
+        public TagTaskWasCreatedOrUpdated(string instagramAccountLogin, TagTask task)
         {
             InstagramAccountLogin = instagramAccountLogin;
             Task = task;

@@ -1,8 +1,10 @@
 ﻿using SM.Common.Log;
 using SM.Common.Services;
+using SM.Domain.Dto.TagTask;
 using SM.Domain.Events;
 using SM.Domain.Model;
 using SM.Domain.Persistent;
+using SM.Domain.Specification;
 using System;
 using System.Threading.Tasks;
 
@@ -19,30 +21,40 @@ namespace SM.WEB.Application.Services
             return RunAsync(() => UnitOfWork.TaskRepository.GetByUserAsync(userId));
         }
 
-        public Task<ServiceResult<TagTask>> CreateTagTaskAsync(
-            Guid accountId,
-            string[] tags,
-            bool avatarExistDisabled,
-            SwitchedProperty lastPost,
-            SwitchedRange posts,
-            SwitchedRange followers,
-            SwitchedRange followings)
+        public Task<ServiceResult<TagTask>> CreateTagTaskAsync(TagTaskDto dto)
         {
             return RunAsync(async () =>
             {
-                TagTask task = TagTask.Create(
-                    accountId, tags, avatarExistDisabled, 
-                    lastPost, posts: posts, followers: followers, followings: followings);
+                TagTask task = TagTask.Create(dto);
 
-                UnitOfWork.TagTaskRepository.AddTagTask(task);
+                UnitOfWork.TagTaskRepository.Add(task);
                 var completeTask = UnitOfWork.CompleteAsync();
 
                 Task<Account> accountTask;
                 //2 паралельных запроса
                 var unitOfWork2 = UnitOfWork.CreateNewInstance();
-                accountTask = unitOfWork2.AccountRepository.GetByIdAsync(accountId);
+                accountTask = unitOfWork2.AccountRepository.GetByIdAsync(dto.AccountId);
                 await Task.WhenAll(accountTask, completeTask);
-                await RaiseAsync(new TagTaskWasCreated(accountTask.Result.Login, task));
+                await RaiseAsync(new TagTaskWasCreatedOrUpdated(accountTask.Result.Login, task));
+                return task;
+            });
+        }
+
+        public Task<ServiceResult<TagTask>> UpdateTagTaskAsync(Guid taskId,TagTaskDto dto)
+        {
+            return RunAsync(async () =>
+            {
+                var task = await UnitOfWork.TagTaskRepository.FirstAsync(TagTaskSpecifications.GetById(taskId));
+
+                task.Update(dto);
+                var completeTask = UnitOfWork.CompleteAsync();
+
+                Task<Account> accountTask;
+                //2 паралельных запроса
+                var unitOfWork2 = UnitOfWork.CreateNewInstance();
+                accountTask = unitOfWork2.AccountRepository.GetByIdAsync(dto.AccountId);
+                await Task.WhenAll(accountTask, completeTask);
+                await RaiseAsync(new TagTaskWasCreatedOrUpdated(accountTask.Result.Login, task));
                 return task;
             });
         }
@@ -50,7 +62,7 @@ namespace SM.WEB.Application.Services
 
         public Task<ServiceResult<TagTask>> GetTagTaskAsync(Guid taskId)
         {
-            return RunAsync(() => UnitOfWork.TagTaskRepository.GetTagTaskByIdAsync(taskId));
+            return RunAsync(() => UnitOfWork.TagTaskRepository.FirstAsync(TagTaskSpecifications.GetById(taskId)));
         }
     }
 }

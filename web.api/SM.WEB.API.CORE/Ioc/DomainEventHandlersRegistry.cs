@@ -9,7 +9,7 @@ namespace SM.WEB.API.Ioc
     {
         public DomainEventHandlersRegistry(IActorRef taskApi)
         {
-            For<ICanHandle<TagTaskWasCreated>>()
+            For<ICanHandle<TagTaskWasCreatedOrUpdated>>()
                 .Use<TagTaskCreatedHandler>()
                 .Ctor<IActorRef>()
                 .Is(taskApi);

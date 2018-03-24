@@ -8,7 +8,7 @@ namespace SM.Domain.Model
 
         internal static class TaskTypes
         {
-            public static int Like => 1;
+            public static int Tag => 1;
         }
 
         internal SMTask()

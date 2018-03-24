@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SM.Domain.Dto.TagTask;
 using System;
 namespace SM.Domain.Model
 {
@@ -40,13 +41,18 @@ namespace SM.Domain.Model
 
         public Guid AccountId => Task.AccountId;
 
-        public static TagTask Create(Guid accountId,
-            string[] tags,
-            bool avatarExistDisabled,
-            SwitchedProperty lastPost,
-            SwitchedRange posts,
-            SwitchedRange followers,
-            SwitchedRange followings)
+        static void FromDto(TagTask tagTask, TagTaskDto dto)
+        {
+            tagTask.Task.AccountId = dto.AccountId;
+            tagTask.AvatarExistDisabled = dto.AvatarExistDisabled;
+            tagTask.TagsJson = PropertyToJson(dto.Tags);
+            tagTask.LastPostJson = PropertyToJson(dto.LastPost);
+            tagTask.FollowersJson = PropertyToJson(dto.Followers);
+            tagTask.FollowingsJson = PropertyToJson(dto.Followings);
+            tagTask.PostsJson = PropertyToJson(dto.Posts);
+        }
+
+        public static TagTask Create(TagTaskDto dto)
         {
             /*
             ThrowIfArgumentNull(tags, "tags");
@@ -56,25 +62,25 @@ namespace SM.Domain.Model
             ThrowIfArgumentNull(followings, "followings");
             */
 
-            SMTask baseTaskState = new SMTask
+            SMTask baseTask = new SMTask
             {
-                AccountId = accountId,
-                TypeId = SMTask.TaskTypes.Like,
+                TypeId = SMTask.TaskTypes.Tag,
                 CreatedAt = DateTime.UtcNow,
                 Version = 1,
                 ExternalSystemVersion = 0
             };
 
-            return new TagTask
+            var tagTask = new TagTask
             {
-                Task = baseTaskState,
-                AvatarExistDisabled = avatarExistDisabled,
-                TagsJson = PropertyToJson(tags),
-                LastPostJson = PropertyToJson(lastPost),
-                FollowersJson = PropertyToJson(followers),
-                FollowingsJson = PropertyToJson(followings),
-                PostsJson = PropertyToJson(posts),
+                Task = baseTask
             };
+            FromDto(tagTask, dto);
+            return tagTask;
+        }
+
+        public void Update(TagTaskDto dto)
+        {
+            FromDto(this, dto);
         }
 
         internal SMTask Task { get; set; }

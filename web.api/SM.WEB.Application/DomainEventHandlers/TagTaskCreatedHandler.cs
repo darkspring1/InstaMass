@@ -4,7 +4,7 @@ using SM.Domain.Events;
 
 namespace SM.WEB.Application.DomainEventHandlers
 {
-    public class TagTaskCreatedHandler : ICanHandle<TagTaskWasCreated>
+    public class TagTaskCreatedHandler : ICanHandle<TagTaskWasCreatedOrUpdated>
     {
         IActorRef _taskApi;
         public TagTaskCreatedHandler(IActorRef  taskApi)
@@ -12,13 +12,13 @@ namespace SM.WEB.Application.DomainEventHandlers
             _taskApi = taskApi;
         }
 
-        public void Handle(TagTaskWasCreated @event)
+        public void Handle(TagTaskWasCreatedOrUpdated @event)
         {
             var t = @event.Task;
             _taskApi.Tell(new SM.TaskEngine.Api.ActorModel.Commands.CreateTagTask(t.Version, t.Id.ToString(), @event.InstagramAccountLogin, t.Tags));
         }
 
-        public Task HandleAsync(TagTaskWasCreated domainEvent)
+        public Task HandleAsync(TagTaskWasCreatedOrUpdated domainEvent)
         {
             Handle(domainEvent);
             return Task.FromResult(0);

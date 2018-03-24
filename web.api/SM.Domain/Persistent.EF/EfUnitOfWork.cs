@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SM.Common.Cache;
+using SM.Domain.Model;
 
 namespace SM.Domain.Persistent.EF
 {
@@ -17,7 +18,7 @@ namespace SM.Domain.Persistent.EF
             AuthTokenRepository = new AuthTokenRepository(cacheProvider, context);
             AccountRepository = new AccountRepository(cacheProvider, context);
             TaskRepository = new TaskRepository(cacheProvider, context);
-            TagTaskRepository = new TagTaskRepository(cacheProvider, context);
+            TagTaskRepository = new BaseRepository<TagTask>(cacheProvider, context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -28,7 +29,7 @@ namespace SM.Domain.Persistent.EF
 
         public ITaskRepository TaskRepository { get; }
 
-        public ITagTaskRepository TagTaskRepository { get; }
+        public IRepository<TagTask> TagTaskRepository { get; }
 
         public void Complete()
         {
