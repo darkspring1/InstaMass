@@ -15,8 +15,8 @@ class Toastr extends React.Component {
 
   addAlert() {
     this.container.success(
-    'my-title',
-    'my-fascinating-toast-message', {
+    this.props.message,
+    this.props.title, {
       timeOut: 5000,
       extendedTimeOut: 3000
     });

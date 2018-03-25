@@ -1,6 +1,7 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 import push from 'utils/';
 import * as Routes from 'constants/routes';
+import messages from 'constants/messages';
 
 import { TagTaskGetRequest, ShowToastr,
   RequestStarted,
@@ -32,10 +33,8 @@ function* fetchCreateTagTask(action) {
   function* r() {
     yield put(RequestStarted());
     const task = yield CreateTagTask(action.payload);
-    debugger;
     yield put(push(Routes.TAG_TASK_EDITOR, { id: task.id }));
-    // yield put(TagTaskCreateOrUpdate(task));
-    // yield put(ShowToastr());
+    yield put(ShowToastr(messages.TASK_WAS_SUCCEFFULLY_CREATED));
   }
   yield run(r);
 }
