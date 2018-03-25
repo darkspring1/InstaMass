@@ -192,31 +192,25 @@ const TagTaskEditorForm = reduxForm({
 })(TagTaskEditor);
 
 function createInitialValues(state) {
-  if (!createInitialValues.cache) {
-    if (state.tagTask) {
-      createInitialValues.cache = {
-        tagsInput: { tags: state.tagTask.tags, value: '' },
-        posts: state.tagTask.post,
-        followers: state.tagTask.followers,
-        followings: state.tagTask.followings,
-        account: { id: state.tagTask.accountId },
-        lastPost: state.tagTask.lastPost
-      };
-    } else {
-      createInitialValues.cache = {
-        tagsInput: { tags: ['tag1', 'tag2'], value: '' },
-        posts: range(0, 100, false),
-        followers: range(0, 100, true),
-        followings: range(0, 100, true),
-        account: null,
-        lastPost: { value: 0, disabled: false },
-      };
-    }
+  if (state.tagTask) {
+    return {
+      tagsInput: { tags: state.tagTask.tags, value: '' },
+      posts: state.tagTask.post,
+      followers: state.tagTask.followers,
+      followings: state.tagTask.followings,
+      account: { id: state.tagTask.accountId },
+      lastPost: state.tagTask.lastPost
+    };
   }
-
-  return createInitialValues.cache;
+  return {
+    tagsInput: { tags: [], value: '' },
+    posts: range(0, 100, false),
+    followers: range(0, 100, true),
+    followings: range(0, 100, true),
+    account: null,
+    lastPost: { value: 0, disabled: false },
+  };
 }
-
 
 function mapStateToProps(state, ownProps) {
   const isNewTask = ownProps.match.params.id === Routes.NEW_ITEM_ID;
