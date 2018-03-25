@@ -7,10 +7,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import push from 'utils/';
 import { Button } from 'controls/';
-import { TasksRequested } from 'actions';
+import { TasksRequested, TaskDeleteRequest } from 'actions';
 import ContentTop from 'components/contentTop';
-
 import * as Routes from 'constants/routes';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 
 class TaskList extends React.Component {
@@ -43,23 +43,50 @@ class TaskList extends React.Component {
     return <li><Button text={text} icon={icon} small className={className} onClick={onClick} /></li>;
   }
 
-  static RenderActionList(task, props) {
-    return (<ul className="btn-list clearfix">
-      {TaskList.RenderActionButton('Редактировать', 'ion-edit', 'btn-info', () => props.onEdit(task.id))}
-      {TaskList.RenderActionButton('Пауза', 'fa fa-pause', 'btn-warning')}
-      {TaskList.RenderActionButton('Удалить', 'ion-trash-b', 'btn-danger')}
-    </ul>
-    );
+  constructor(props) {
+    super(props);
+    this.onDelete = this.onDelete.bind(this);
+    this.onDeleteCancel = this.onDeleteCancel.bind(this);
+    this.onDeleteConfirm = this.onDeleteConfirm.bind(this);
+    this.state = {};
   }
 
   componentWillMount() {
     this.props.onTasksRequested();
   }
 
+  onDeleteConfirm() {
+    this.setState({ taskIdForDelete: null });
+    this.props.onTaskDeleteRequest(this.state.taskIdForDelete);
+  }
+
+  onDeleteCancel() {
+    this.setState({ taskIdForDelete: null });
+  }
+
+  onDelete(taskId) {
+    this.setState({ taskIdForDelete: taskId });
+  }
+
+  RenderActionList(task) {
+    return (<ul className="btn-list clearfix">
+      {TaskList.RenderActionButton('Редактировать', 'ion-edit', 'btn-info', () => this.props.onEdit(task.id))}
+      {TaskList.RenderActionButton('Пауза', 'fa fa-pause', 'btn-warning')}
+      {TaskList.RenderActionButton('Удалить', 'ion-trash-b', 'btn-danger', () => this.onDelete(task.id))}
+    </ul>
+    );
+  }
+
+  RenderDeleteConfirmationModal() {
+    if (this.state.taskIdForDelete) {
+      return <DeleteConfirmationModal onCancel={this.onDeleteCancel} onConfirm={this.onDeleteConfirm} />;
+    }
+    return null;
+  }
+
   render() {
     const props = this.props;
     const tasks = props.tasks;
-
 
     const taskRows = tasks.map(t => (<tr key={t.id} className="editable-row">
       <td>
@@ -90,12 +117,14 @@ class TaskList extends React.Component {
         {TaskList.RenderTaskStatus(t.statusId)}
       </td>
       <td>
-        {TaskList.RenderActionList(t, props)}
+        {this.RenderActionList(t)}
       </td>
     </tr>));
 
+
     return (
       <div>
+        {this.RenderDeleteConfirmationModal()}
 
         <ContentTop title="Задачи" />
 
@@ -157,6 +186,11 @@ const taskList = connect(
 
     onTasksRequested() {
       dispatch(TasksRequested());
+    },
+
+    onTaskDeleteRequest(taskId) {
+      debugger;
+      dispatch(TaskDeleteRequest(taskId));
     }
 
   })

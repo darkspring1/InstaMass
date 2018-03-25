@@ -101,6 +101,8 @@ const TagTaskUpdateRequest = ActionConstructor('TAG_TASK_UPDATE_REQUEST');
 const TagTaskCreateRequest = ActionConstructor('TAG_TASK_CREATE_REQUEST');
 
 
+const TaskDeleteRequest = ActionConstructor('TASK_DELETE_REQUEST');
+
 export {
   LOCATION_CHANGE,
   RequestError,
@@ -112,5 +114,6 @@ export {
   TagTaskGetRequest,
   TagTaskCreateOrUpdate,
   TagTaskCreateRequest,
-  TagTaskUpdateRequest
+  TagTaskUpdateRequest,
+  TaskDeleteRequest
 };
