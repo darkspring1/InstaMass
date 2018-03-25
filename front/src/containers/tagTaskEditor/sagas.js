@@ -32,6 +32,7 @@ function* fetchCreateTagTask(action) {
   function* r() {
     yield put(RequestStarted());
     const task = yield CreateTagTask(action.payload);
+    debugger;
     yield put(push(Routes.TAG_TASK_EDITOR, { id: task.id }));
     // yield put(TagTaskCreateOrUpdate(task));
     // yield put(ShowToastr());

@@ -1,12 +1,8 @@
-/* eslint no-unused-vars: 0 */
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm, getFormValues } from 'redux-form';
+import { Field } from 'redux-form';
 import { Button } from 'controls';
-import * as Actions from 'actions';
 import { required } from 'form-validators';
-import * as Routes from 'constants/routes';
 
 import {
   ContentTop,
@@ -31,11 +27,7 @@ const requiredAccount = required('Выберите аккаунт');
 const tagInputRequired = TagInputRequiredValidator('Введите тэги');
 const tagInputUnique = TagInputUniqueValidator('Хэш-тэг "{tag_name}" уже добавлен');
 
-function range(from, to, disabled) {
-  return { from, to, disabled };
-}
-
-class TagTaskEditor extends React.Component {
+export default class TagTaskEditor extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,13 +37,6 @@ class TagTaskEditor extends React.Component {
     this.state = {
       avatarExistDisabled: props.avatarExistDisabled
     };
-  }
-
-  componentWillMount() {
-    if (!this.props.isNewTask) {
-      this.props.onTagTaskRequested(this.props.taskId);
-    }
-    this.props.onAccountsRequested();
   }
 
   onAvatarExist(avatarExistDisabled) {
@@ -77,13 +62,33 @@ class TagTaskEditor extends React.Component {
     }
   }
 
+  loadTask() {
+    if (!this.isTaskLoading) {
+      this.isTaskLoading = true;
+      this.props.onTagTaskRequested(this.props.taskId);
+    }
+  }
+
+  loadAccounts() {
+    if (!this.isAccountsLoading) {
+      this.isAccountsLoading = true;
+      this.props.onAccountsRequested();
+    }
+  }
 
   render() {
     const props = this.props;
 
-    if (props.isWaiting) {
+    if (props.isDataLoading) {
+      this.loadAccounts();
+      if (!props.isNewTask) {
+        this.loadTask();
+      }
       return <p>waiting...</p>;
     }
+
+    this.isTaskLoading = false;
+    this.isAccountsLoading = false;
 
     const formValues = props.formValues || {};
     const { submitting, handleSubmit } = props;
@@ -184,79 +189,3 @@ class TagTaskEditor extends React.Component {
   }
 
 }
-
-const formName = 'TagTaskEditorForm';
-
-const TagTaskEditorForm = reduxForm({
-  form: formName
-})(TagTaskEditor);
-
-function createInitialValues(state) {
-  if (state.tagTask) {
-    return {
-      tagsInput: { tags: state.tagTask.tags, value: '' },
-      posts: state.tagTask.post,
-      followers: state.tagTask.followers,
-      followings: state.tagTask.followings,
-      account: { id: state.tagTask.accountId },
-      lastPost: state.tagTask.lastPost
-    };
-  }
-  return {
-    tagsInput: { tags: [], value: '' },
-    posts: range(0, 100, false),
-    followers: range(0, 100, true),
-    followings: range(0, 100, true),
-    account: null,
-    lastPost: { value: 0, disabled: false },
-  };
-}
-
-function mapStateToProps(state, ownProps) {
-  const isNewTask = ownProps.match.params.id === Routes.NEW_ITEM_ID;
-  const isWaiting = !isNewTask && !state.tagTask;
-
-  if (isWaiting) {
-    return {
-      taskId: ownProps.match.params.id,
-      isWaiting,
-      isNewTask
-    };
-  }
-
-  return {
-    taskId: ownProps.match.params.id,
-    isNewTask,
-    accounts: state.account || [],
-    avatarExistDisabled: false,
-    initialValues: createInitialValues(state),
-    formValues: getFormValues(formName)(state)
-  };
-}
-
-export default connect(
-  mapStateToProps, // map state to props
-  dispatch => ({
-    onAddNewTag(tag) {
-      dispatch(Actions.AddNewTagRequested(tag));
-    },
-
-    onCreateTagTask(task) {
-      dispatch(Actions.TagTaskCreateRequest(task));
-    },
-
-    onUpdateTagTask(taskId, task) {
-      debugger;
-      dispatch(Actions.TagTaskUpdateRequest({ taskId, task }));
-    },
-
-    onAccountsRequested() {
-      dispatch(Actions.AccountsRequested());
-    },
-
-    onTagTaskRequested(id) {
-      dispatch(Actions.TagTaskGetRequest({ id }));
-    }
-
-  })
-)(TagTaskEditorForm);
