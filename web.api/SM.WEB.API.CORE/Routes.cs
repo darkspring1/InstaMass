@@ -16,6 +16,7 @@
         public const string ApiAccount = "api/account";
 
         public const string Tasks_Get = "tasks";
+        public const string Tasks_Delete = "tasks/{id}";
 
         public const string TagTask_Get = "tasks/tag/{id}";
         public const string TagTask_Post = "tasks/tag";

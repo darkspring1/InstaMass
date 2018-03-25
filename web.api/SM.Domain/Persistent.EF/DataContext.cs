@@ -59,6 +59,7 @@ namespace SM.Domain.Persistent.EF
                 .HasColumn(t => t.AccountId)
                 .HasColumn(t => t.Version)
                 .HasColumn(t => t.ExternalSystemVersion)
+                .HasColumn(t => t.EntityStatusId)
                 .ToTable("Tasks", schema)
                 .HasOne(t => t.Account)
                 .WithMany()
@@ -80,6 +81,10 @@ namespace SM.Domain.Persistent.EF
 
             tagTaskBuilder
                 .HasKey(t => t.TaskId);
+
+            modelBuilder
+               .Entity<EntityStatus>()
+               .ToTable("EntityStatuses", schema);
         }
 
         public DataContext CreateNewInstance()

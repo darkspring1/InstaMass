@@ -11,6 +11,19 @@ namespace SM.Domain.Model
             public static int Tag => 1;
         }
 
+        internal static class TaskStatuses
+        {
+            /// <summary>
+            /// активная задача
+            /// </summary>
+            public static int Active => 1;
+
+            /// <summary>
+            /// задача удалена
+            /// </summary>
+            public static int Delete => 2;
+        }
+
         internal SMTask()
         {
             Id = Guid.NewGuid();
@@ -23,8 +36,8 @@ namespace SM.Domain.Model
         public Account Account { get; set; }
         internal int Version { get; set; }
         internal int ExternalSystemVersion { get; set; }
-
-        public int StatusId => 1; //пока захардкодил 1 - активна
+        internal int EntityStatusId { get; set; }
+        public int TaskStatusId => 1; //пока захардкодил 1 - активна
 
         /// <summary>
         /// Устанавливает новое значений ExternalSystemVersion.
