@@ -17,7 +17,7 @@ namespace SM.Domain.Persistent.EF
             UserRepository = new UserRepository(cacheProvider, context);
             AuthTokenRepository = new AuthTokenRepository(cacheProvider, context);
             AccountRepository = new AccountRepository(cacheProvider, context);
-            TaskRepository = new TaskRepository(cacheProvider, context);
+            TaskRepository = new BaseRepository<SMTask>(cacheProvider, context);
             TagTaskRepository = new BaseRepository<TagTask>(cacheProvider, context);
         }
 
@@ -27,7 +27,7 @@ namespace SM.Domain.Persistent.EF
 
         public IAccountRepository AccountRepository { get; }
 
-        public ITaskRepository TaskRepository { get; }
+        public IRepository<SMTask> TaskRepository { get; }
 
         public IRepository<TagTask> TagTaskRepository { get; }
 

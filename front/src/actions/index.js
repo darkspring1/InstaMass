@@ -102,6 +102,8 @@ const TagTaskCreateRequest = ActionConstructor('TAG_TASK_CREATE_REQUEST');
 
 
 const TaskDeleteRequest = ActionConstructor('TASK_DELETE_REQUEST');
+// удалить задачу из списка в store
+const TaskDelete = ActionConstructor('TASK_DELETE');
 
 export {
   LOCATION_CHANGE,
@@ -115,5 +117,6 @@ export {
   TagTaskCreateOrUpdate,
   TagTaskCreateRequest,
   TagTaskUpdateRequest,
-  TaskDeleteRequest
+  TaskDeleteRequest,
+  TaskDelete
 };

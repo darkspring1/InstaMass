@@ -1,9 +1,9 @@
-﻿using SM.Domain.Persistent.EF.State;
+﻿using SM.Domain.ConstantValues;
 using System;
 
 namespace SM.Domain.Model
 {
-    public class SMTask
+    public class SMTask : IEntity<Guid>
     {
 
         internal static class TaskTypes
@@ -11,22 +11,14 @@ namespace SM.Domain.Model
             public static int Tag => 1;
         }
 
-        internal static class TaskStatuses
-        {
-            /// <summary>
-            /// активная задача
-            /// </summary>
-            public static int Active => 1;
-
-            /// <summary>
-            /// задача удалена
-            /// </summary>
-            public static int Delete => 2;
-        }
-
         internal SMTask()
         {
             Id = Guid.NewGuid();
+        }
+
+        public void MarkAsDeleted()
+        {
+            EntityStatusId = EntityStatuses.Deleted;
         }
 
         public Guid Id { get; private set; }

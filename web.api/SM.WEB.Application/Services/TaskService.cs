@@ -18,7 +18,7 @@ namespace SM.WEB.Application.Services
 
         public Task<ServiceResult<SMTask[]>> GetTasks(Guid userId)
         {
-            return RunAsync(() => UnitOfWork.TaskRepository.GetByUserAsync(userId));
+            return RunAsync(() => UnitOfWork.TaskRepository.GetItemsAsync(SMTaskSpecifications.GetActiveTasksByUserId(userId)));
         }
 
         public Task<ServiceResult<TagTask>> CreateTagTaskAsync(TagTaskDto dto)
@@ -48,7 +48,7 @@ namespace SM.WEB.Application.Services
 
                 task.Update(dto);
                 var completeTask = UnitOfWork.CompleteAsync();
-
+                //todo: подумать как хранить логин вместе с задачей, что бы экономить на join'ах
                 Task<Account> accountTask;
                 //2 паралельных запроса
                 var unitOfWork2 = UnitOfWork.CreateNewInstance();
@@ -56,6 +56,25 @@ namespace SM.WEB.Application.Services
                 await Task.WhenAll(accountTask, completeTask);
                 await RaiseAsync(new TagTaskWasCreatedOrUpdated(accountTask.Result.Login, task));
                 return task;
+            });
+        }
+
+        public Task<ServiceResult> DeleteTaskAsync(Guid taskId)
+        {
+            return RunAsync(async () =>
+            {
+                var task = await UnitOfWork.TaskRepository.FirstAsync(CommonSpecifications.GetById<SMTask, Guid>(taskId));
+
+                task.MarkAsDeleted();
+                await UnitOfWork.CompleteAsync();
+
+                //Task<Account> accountTask;
+                ////2 паралельных запроса
+                //var unitOfWork2 = UnitOfWork.CreateNewInstance();
+                //accountTask = unitOfWork2.AccountRepository.GetByIdAsync(dto.AccountId);
+                //await Task.WhenAll(accountTask, completeTask);
+                //await RaiseAsync(new TagTaskWasCreatedOrUpdated(accountTask.Result.Login, task));
+                //return task;
             });
         }
 

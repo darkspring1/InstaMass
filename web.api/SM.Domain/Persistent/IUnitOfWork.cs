@@ -10,7 +10,7 @@ namespace SM.Domain.Persistent
         IAuthTokenRepository AuthTokenRepository { get; }
 
         IAccountRepository AccountRepository { get; }
-        ITaskRepository TaskRepository { get; }
+        IRepository<SMTask> TaskRepository { get; }
         IRepository<TagTask> TagTaskRepository { get; }
 
         void Complete();

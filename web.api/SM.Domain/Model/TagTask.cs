@@ -3,7 +3,8 @@ using SM.Domain.Dto.TagTask;
 using System;
 namespace SM.Domain.Model
 {
-    public class TagTask
+
+    public class TagTask : IEntity<Guid>
     {
         Lazy<string[]> _tagsLazy;
         Lazy<SwitchedProperty> _lastPost;

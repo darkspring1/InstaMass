@@ -81,6 +81,10 @@ function GetTasks() {
   return responseWrap(axios.get(`${Settings.apiServiceBaseUri}tasks`));
 }
 
+function DeleteTask(taskId) {
+  return responseWrap(axios.delete(`${Settings.apiServiceBaseUri}tasks/${taskId}`));
+}
+
 function CreateTagTask(task) {
   return responseWrap(axios.post(`${Settings.apiServiceBaseUri}tasks/tag`, task));
 }
@@ -97,4 +101,4 @@ function UpdateTagTask(taskId, task) {
 export { CreateTagTask, GetAccounts, GetTasks,
   RegisterExternal, Register, ObtainLocalAccessToken,
   Orders, RefreshToken, Login, LoginExternal,
-  AddNewAccount, GetTagTask, UpdateTagTask };
+  AddNewAccount, GetTagTask, UpdateTagTask, DeleteTask };

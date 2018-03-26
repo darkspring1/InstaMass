@@ -4,8 +4,8 @@ import { Modal, Button } from 'react-bootstrap';
 
 const btnDefaultStyleFix = {
   color: '#333',
-  'background-color': '#fff',
-  'border-color': '#ccc'
+  backgroundColor: '#fff',
+  borderColor: '#ccc'
 };
 
 export default class DeleteConfirmationModal extends React.Component {

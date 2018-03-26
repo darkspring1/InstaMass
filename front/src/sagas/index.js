@@ -1,5 +1,5 @@
 import AccountListSagas from 'containers/accountList/sagas';
-import TaskListSagas from 'containers/taskList/sagas';
+import { GetTasksSaga, DeleteTaskSaga } from 'containers/taskList/sagas';
 import { CreateTagTaskSaga, UpdateTagTaskSaga, GetTagTaskSaga } from 'containers/tagTaskEditor/sagas';
 import AddNewAccount from './addNewAccount';
 import AddNewTag from './addNewTag';
@@ -11,7 +11,8 @@ export default function* rootSaga() {
     AddNewAccount(),
     AddNewTag(),
     AccountListSagas(),
-    TaskListSagas(),
+    GetTasksSaga(),
+    DeleteTaskSaga(),
     CreateTagTaskSaga(),
     UpdateTagTaskSaga(),
     GetTagTaskSaga(),

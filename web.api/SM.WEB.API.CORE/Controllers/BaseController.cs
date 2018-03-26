@@ -46,6 +46,11 @@ namespace SM.WEB.API.Controllers
             return ActionResult(await serviceResultTask);
         }
 
+        protected async Task<ActionResult> ActionResultAsync(Task<ServiceResult> serviceResultTask)
+        {
+            return ActionResult(await serviceResultTask);
+        }
+
         protected ActionResult ActionResult(ServiceResult serviceResult)
         {
             if (!serviceResult.IsSuccess)

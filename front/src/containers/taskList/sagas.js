@@ -1,10 +1,14 @@
 import { put, /* select, */takeEvery } from 'redux-saga/effects';
 
-import { GetTasks } from 'api';
-import { TasksRequested, TasksLoaded, RequestStarted, RequestFinished, RequestError } from 'actions';
+import { GetTasks, DeleteTask } from 'api';
+import { TasksRequested, TasksLoaded,
+  RequestStarted,
+  RequestFinished, RequestError,
+  TaskDeleteRequest, TaskDelete,
+  ShowToastr } from 'actions';
 
 
-function* fetch(/* action */) {
+function* getTasksFetch(/* action */) {
   try {
     yield put(RequestStarted());
     const tasks = yield GetTasks();
@@ -15,6 +19,23 @@ function* fetch(/* action */) {
   yield put(RequestFinished());
 }
 
-export default function* GetTasksSaga() {
-  yield takeEvery(TasksRequested.type, fetch);
+function* deleteTaskFetch(action) {
+  try {
+    const taskId = action.payload;
+    yield put(RequestStarted());
+    yield DeleteTask(taskId);
+    yield put(TaskDelete(taskId));
+    yield put(ShowToastr('Задача удалена'));
+  } catch (e) {
+    yield put(RequestError(e));
+  }
+  yield put(RequestFinished());
+}
+
+export function* GetTasksSaga() {
+  yield takeEvery(TasksRequested.type, getTasksFetch);
+}
+
+export function* DeleteTaskSaga() {
+  yield takeEvery(TaskDeleteRequest.type, deleteTaskFetch);
 }

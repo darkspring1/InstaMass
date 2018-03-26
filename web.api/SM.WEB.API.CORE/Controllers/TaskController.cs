@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
 using SM.Domain.Dto.TagTask;
 using SM.Domain.Model;
-using SM.WEB.API.Models;
 using SM.WEB.Application.Services;
 using System;
 using System.Threading.Tasks;
@@ -52,19 +51,15 @@ namespace SM.WEB.API.Controllers
         }
 
 
-        [HttpPut(Routes.Tasks_Delete)]
+        [HttpDelete(Routes.Tasks_Delete)]
         public Task<ActionResult> TaskDelte(Guid id)
         {
-            //return ActionResultAsync(_taskServiceService.UpdateTagTaskAsync(id, model));
-            return Task.FromResult((ActionResult)Ok());
+            return ActionResultAsync(_taskServiceService.DeleteTaskAsync(id));
         }
-
 
         SwitchedRange FromModel(SwitchedRangeDto model) {
             return new SwitchedRange(model.From, model.To, model.Disabled);
         }
-
-
     }
     
 }

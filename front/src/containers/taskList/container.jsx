@@ -114,7 +114,7 @@ class TaskList extends React.Component {
         {TaskList.RenderTaskType(t.typeId)}
       </td>
       <td className="select-td">
-        {TaskList.RenderTaskStatus(t.statusId)}
+        {TaskList.RenderTaskStatus(t.taskStatusId)}
       </td>
       <td>
         {this.RenderActionList(t)}
