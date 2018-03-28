@@ -1,0 +1,4 @@
+[submodule "web.api/InstaSharper"]
+	path = web.api/InstaSharper
+	url = https://github.com/a-legotin/InstaSharper.git
+	branch = master
