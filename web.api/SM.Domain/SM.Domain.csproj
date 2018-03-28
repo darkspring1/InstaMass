@@ -22,4 +22,8 @@
     <ProjectReference Include="..\SM.Common\SM.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>

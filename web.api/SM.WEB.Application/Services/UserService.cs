@@ -10,10 +10,11 @@ using SM.WEB.Application.DTO;
 using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using SM.Domain.Services;
 
 namespace SM.WEB.Application.Services
 {
-    public class UserService : ApplicationService
+    public class UserService : DomainService
     {
         public UserService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {

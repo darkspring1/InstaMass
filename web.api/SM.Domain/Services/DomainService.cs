@@ -4,14 +4,14 @@ using SM.Domain.Persistent;
 using SM.Domain.Events;
 using System.Threading.Tasks;
 
-namespace SM.WEB.Application.Services
+namespace SM.Domain.Services
 {
-    public class ApplicationService : BaseService
+    public class DomainService : BaseService
     {
         protected IUnitOfWork UnitOfWork { get; private set; }
         private readonly IDomainEventDispatcher _eventDispatcher;
 
-        public ApplicationService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(logger)
+        public DomainService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(logger)
         {
             UnitOfWork = unitOfWork;
             _eventDispatcher = eventDispatcher;

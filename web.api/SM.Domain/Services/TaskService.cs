@@ -8,9 +8,9 @@ using SM.Domain.Specification;
 using System;
 using System.Threading.Tasks;
 
-namespace SM.WEB.Application.Services
+namespace SM.Domain.Services
 {
-    public class TaskService : ApplicationService
+    public class TaskService : DomainService
     {
         public TaskService(IUnitOfWork unitOfWork, ILogger logger, IDomainEventDispatcher eventDispatcher) : base(unitOfWork, logger, eventDispatcher)
         {

@@ -6,10 +6,10 @@ using System;
 using System.Threading.Tasks;
 using SM.Domain.Events;
 
-namespace SM.WEB.Application.Services
+namespace SM.Domain.Services
 {
 
-    public class AccountService : ApplicationService
+    public class AccountService : DomainService
     {
         public const int AccountAlreadyRegistred = 1;
 
