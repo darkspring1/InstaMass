@@ -13,10 +13,14 @@ namespace SM.WEB.API.Controllers
     [Route("api/")]
     public class TaskController : BaseController
     {
+        private readonly TagTaskService _tagTaskServiceService;
         private readonly TaskService _taskServiceService;
 
-        public TaskController(ILogger logger, TaskService taskServiceService) : base(logger)
+        public TaskController(ILogger logger,
+            TagTaskService tagTaskServiceService,
+            TaskService taskServiceService) : base(logger)
         {
+            this._tagTaskServiceService = tagTaskServiceService;
             _taskServiceService = taskServiceService;
         }
 
@@ -35,19 +39,19 @@ namespace SM.WEB.API.Controllers
             var posts = FromModel(model.Posts);
             var followers = FromModel(model.Followers);
             var followings = FromModel(model.Followings);
-            return ActionResultAsync(_taskServiceService.CreateTagTaskAsync(model));
+            return ActionResultAsync(_tagTaskServiceService.CreateTagTaskAsync(model));
         }
 
         [HttpGet(Routes.TagTask_Get)]
         public Task<ActionResult> TagTaskGet(Guid id)
         {
-            return ActionResultAsync(_taskServiceService.GetTagTaskAsync(id));
+            return ActionResultAsync(_tagTaskServiceService.GetTagTaskAsync(id));
         }
 
         [HttpPut(Routes.TagTask_Put)]
         public Task<ActionResult> TagTaskPut(Guid id, [FromBody]TagTaskDto model)
         {
-            return ActionResultAsync(_taskServiceService.UpdateTagTaskAsync(id, model));
+            return ActionResultAsync(_tagTaskServiceService.UpdateTagTaskAsync(id, model));
         }
 
 
