@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SM.Domain.ConstantValues;
 using SM.Domain.Model;
 using SM.Domain.Persistent;
 using System;
@@ -23,6 +24,7 @@ namespace SM.Domain.Specification
             public IQueryable<TagTask> Build(IQueryable<TagTask> source)
             {
                 return source
+                    .Where(tt => tt.Task.EntityStatusId == EntityStatuses.Active) 
                     .Include(tt => tt.Task)
                     .ThenInclude(tt => tt.Account);
             }

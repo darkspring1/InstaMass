@@ -110,7 +110,8 @@ namespace SM.Crawler
                 return await LikeAsync(api, tagTask, tag, userPk, maxPagesToLoad + 5, curIteration++, maxIteration);
             }
 
-            dto.MediaId = media.Pk;
+            dto.MediaPk = media.Pk;
+            dto.MediaCode = media.Code;
 
             var likeResult = await api.LikeMediaAsync(media.Pk);
 

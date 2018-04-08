@@ -19,7 +19,11 @@ namespace SM.Domain.Model
         /// <summary>
         /// Id media что лайкнули
         /// </summary>
-        internal string MediaId { get; set; }
+        public string MediaPk { get; set; }
+
+        public string MediaCode { get; set; }
+
+        public string MediaUrl { get; set; }
 
         public static TagTaskAction Create(TagTaskActionDto dto)
         {
@@ -34,7 +38,9 @@ namespace SM.Domain.Model
             return new TagTaskAction
             {
                 Action = action,
-                MediaId = dto.MediaId,
+                MediaPk = dto.MediaPk,
+                MediaCode = dto.MediaCode,
+                MediaUrl = $"https://www.instagram.com/p/{dto.MediaCode}/",
                 Tag = dto.Tag,
             };
         }

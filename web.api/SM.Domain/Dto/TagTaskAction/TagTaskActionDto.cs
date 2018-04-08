@@ -4,9 +4,7 @@ namespace SM.Domain.Dto.TagTaskAction
 {
     public class TagTaskActionDto
     {
-
         public Guid TaskId { get; set; }
-
         /// <summary>
         /// время начала дейсвия в UTC
         /// </summary>
@@ -25,8 +23,9 @@ namespace SM.Domain.Dto.TagTaskAction
         /// <summary>
         /// Id media что лайкнули
         /// </summary>
-        public string MediaId { get; set; }
+        public string MediaPk { get; set; }
 
         public bool IsSuccess { get; set; }
+        public string MediaCode { get; set; }
     }
 }

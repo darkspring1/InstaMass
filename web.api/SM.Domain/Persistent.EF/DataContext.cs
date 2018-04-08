@@ -85,6 +85,30 @@ namespace SM.Domain.Persistent.EF
             modelBuilder
                .Entity<EntityStatus>()
                .ToTable("EntityStatuses", schema);
+
+            modelBuilder
+                .Entity<TaskAction>()
+                .ToTable("TaskActions", schema)
+                .HasColumn(x => x.TaskId)
+                .HasColumn(x => x.IsSuccess)
+                .HasColumn(x => x.StartedAt)
+                .HasColumn(x => x.FinishedAt);
+
+            var tagTaskActionBuilder = modelBuilder.Entity<TagTaskAction>();
+
+            tagTaskActionBuilder
+                .HasColumn(x => x.Tag)
+                .HasColumn(x => x.MediaPk)
+                .HasColumn(x => x.MediaCode)
+                .HasColumn(x => x.MediaUrl);
+
+            tagTaskActionBuilder
+                .HasOne(x => x.Action)
+                .WithMany()
+                .HasForeignKey(x => x.ActionId);
+
+            tagTaskActionBuilder.HasKey(x => x.ActionId);
+                tagTaskActionBuilder.ToTable("TagTaskActions", schema);
         }
 
         public DataContext CreateNewInstance()

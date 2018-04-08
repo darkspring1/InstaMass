@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SM.Domain.ConstantValues;
 using SM.Domain.Dto.TagTask;
 using System;
 namespace SM.Domain.Model
@@ -64,6 +65,7 @@ namespace SM.Domain.Model
             SMTask baseTask = new SMTask
             {
                 TypeId = SMTask.TaskTypes.Tag,
+                EntityStatusId = EntityStatuses.Active,
                 CreatedAt = DateTime.UtcNow,
                 Version = 1,
                 ExternalSystemVersion = 0
