@@ -19,6 +19,7 @@ namespace SM.Domain.Persistent.EF
             AccountRepository = new AccountRepository(cacheProvider, context);
             TaskRepository = new BaseRepository<SMTask>(cacheProvider, context);
             TagTaskRepository = new BaseRepository<TagTask>(cacheProvider, context);
+            TagTaskActionRepository = new BaseRepository<TagTaskAction>(cacheProvider, context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -30,6 +31,8 @@ namespace SM.Domain.Persistent.EF
         public IRepository<SMTask> TaskRepository { get; }
 
         public IRepository<TagTask> TagTaskRepository { get; }
+
+        public IRepository<TagTaskAction> TagTaskActionRepository { get; }
 
         public void Complete()
         {

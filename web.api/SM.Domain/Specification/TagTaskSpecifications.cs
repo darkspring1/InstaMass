@@ -3,7 +3,6 @@ using SM.Domain.Model;
 using SM.Domain.Persistent;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace SM.Domain.Specification
 {
@@ -13,26 +12,38 @@ namespace SM.Domain.Specification
         {
             return new GetByIdSpecification(id);
         }
-    }
 
-
-    class GetByIdSpecification : ISpecification<TagTask>
-    {
-        private readonly Guid _id;
-
-        public GetByIdSpecification(Guid id)
+        public static ISpecification<TagTask> WithAccount()
         {
-            _id = id;
+            return new WithAccountSpecification();
         }
 
-        public IQueryable<TagTask> Include(IQueryable<TagTask> source)
+        class WithAccountSpecification : ISpecification<TagTask>
         {
-            return source.Include(tt => tt.Task);
+            public IQueryable<TagTask> Build(IQueryable<TagTask> source)
+            {
+                return source
+                    .Include(tt => tt.Task)
+                    .ThenInclude(tt => tt.Account);
+            }
         }
 
-        public Expression<Func<TagTask, bool>> IsSatisfiedBy()
+        class GetByIdSpecification : ISpecification<TagTask>
         {
-            return tt => tt.TaskId == _id;
+            private readonly Guid _id;
+
+            public GetByIdSpecification(Guid id)
+            {
+                _id = id;
+            }
+
+            public IQueryable<TagTask> Build(IQueryable<TagTask> source)
+            {
+                return source
+                    .Where(tt => tt.TaskId == _id)
+                    .Include(tt => tt.Task);
+            }
         }
+
     }
 }

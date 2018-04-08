@@ -1,11 +1,10 @@
 ﻿using AngularJSAuthentication.API.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SM.Common.Log;
+using SM.Common.Settings;
 using SM.WEB.API.CORE;
 using SM.WEB.API.CORE.Auth;
-using SM.WEB.API.CORE.Settings;
 using SM.WEB.Application.Services;
 using System;
 using System.Collections.Generic;

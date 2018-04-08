@@ -25,14 +25,9 @@ namespace SM.Domain.Specification
             _id = id;
         }
 
-        public virtual IQueryable<T> Include(IQueryable<T> source)
+        public virtual IQueryable<T> Build(IQueryable<T> source)
         {
-            return source;
-        }
-
-        public Expression<Func<T, bool>> IsSatisfiedBy()
-        {
-            return t => t.Id.Equals(_id);
+            return source.Where(t => t.Id.Equals(_id));
         }
     }
 

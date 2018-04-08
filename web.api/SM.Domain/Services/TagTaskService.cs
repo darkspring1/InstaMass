@@ -1,11 +1,13 @@
 ﻿using SM.Common.Log;
 using SM.Common.Services;
 using SM.Domain.Dto.TagTask;
+using SM.Domain.Dto.TagTaskAction;
 using SM.Domain.Events;
 using SM.Domain.Model;
 using SM.Domain.Persistent;
 using SM.Domain.Specification;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SM.Domain.Services
@@ -57,6 +59,21 @@ namespace SM.Domain.Services
         public Task<ServiceResult<TagTask>> GetTagTaskAsync(Guid taskId)
         {
             return RunAsync(() => UnitOfWork.TagTaskRepository.FirstAsync(TagTaskSpecifications.GetById(taskId)));
+        }
+
+        public Task<ServiceResult<TagTask[]>> GetTagTasksWithLastActionAsync()
+        {
+            return RunAsync(() => UnitOfWork.TagTaskRepository.GetItemsAsync(TagTaskSpecifications.WithAccount()));
+        }
+
+
+        public Task<ServiceResult> SaveActionsAsync(TagTaskActionDto[] dtos)
+        {
+            return RunAsync(() => {
+                var actions = dtos.Select(dto => TagTaskAction.Create(dto)).ToArray();
+                UnitOfWork.TagTaskActionRepository.Add(actions);
+                return UnitOfWork.CompleteAsync();
+            });
         }
     }
 }

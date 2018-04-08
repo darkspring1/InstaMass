@@ -18,14 +18,12 @@ namespace SM.Domain.Persistent.EF
 
         IQueryable<TEntity> Queryable(ISpecification<TEntity> specification)
         {
-            return specification
-               .Include(Set)
-               .Where(specification.IsSatisfiedBy());
+            return specification.Build(Set);
         }
 
-        public void Add(TEntity entity)
+        public void Add(params TEntity[] entities)
         {
-            Set.Add(entity);
+            Set.AddRange(entities);
         }
 
         public Task<TEntity> FirstAsync(ISpecification<TEntity> specification)
@@ -41,6 +39,11 @@ namespace SM.Domain.Persistent.EF
         public Task<TEntity[]> GetItemsAsync(ISpecification<TEntity> specification)
         {
             return Queryable(specification).ToArrayAsync();
+        }
+
+        public Task<TEntity[]> GetItemsAsync()
+        {
+            return Set.ToArrayAsync();
         }
     }
 }

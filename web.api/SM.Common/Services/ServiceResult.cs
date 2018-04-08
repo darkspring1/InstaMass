@@ -2,7 +2,6 @@
 
 namespace SM.Common.Services
 {
-
     public class ServiceResult
     {
         protected ServiceResult(bool isSuccess) {
@@ -15,54 +14,74 @@ namespace SM.Common.Services
 
         public Exception Exception { get; protected set; }
 
-        public int ErrorCode { get; protected set; }
-
-        public string ErrorDescription { get; protected set; }
+        public ServiceError Error { get; protected set; }
 
         public static ServiceResult Success()
         {
             return new ServiceResult(true);
         }
 
-        public static ServiceResult Error(Exception e)
+        public static ServiceResult<T> Success<T>(T result)
+        {
+            return new ServiceResult<T>(result);
+        }
+
+        public static ServiceResult Fault(Exception e)
         {
             return new ServiceResult(false) { Exception = e };
         }
 
-        public static ServiceResult Error(int errorCode, string errorDescription)
+
+
+        public static ServiceResult Fault(ServiceError error)
         {
-            return new ServiceResult(false) { ErrorCode = errorCode, ErrorDescription = errorDescription };
+            return new ServiceResult(false) { Error = error };
+        }
+
+        public static ServiceResult<T> Fault<T>(ServiceError error)
+        {
+            return new ServiceResult<T>() { Error = error };
+        }
+
+        public static ServiceResult<T> Fault<T>(ServiceError error, T result)
+        {
+            return new ServiceResult<T>() { Error = error, Result = result };
+        }
+
+
+        public static new ServiceResult<T> Fault<T>(Exception e)
+        {
+            return new ServiceResult<T>() { Exception = e };
         }
     }
 
     public class ServiceResult<T> : ServiceResult
     {
-        private ServiceResult(T result) : base(true)
+        internal ServiceResult(T result) : base(true)
         {
             Result = result;
         }
 
-        private ServiceResult() : base(false) { }
+        internal ServiceResult() : base(false) { }
 
-        public T Result { get; }
+        public T Result { get; internal set; }
 
         public bool IsFaultedOrNullResult => IsFaulted || Result == null;
 
         public bool IsSuccessAndNotNullResult => IsSuccess && Result != null;
 
-        public static ServiceResult<T> Success(T result)
+        public ServiceResult<TDestination> CastToFault<TDestination>()
         {
-            return new ServiceResult<T>(result);
+            if (IsSuccess)
+            {
+                throw new Exception("ServiceResult should be faulted");
+            }
+            return new ServiceResult<TDestination>() {
+                Exception = this.Exception,
+                Error = this.Error
+            };
         }
 
-        public static new ServiceResult<T> Error(Exception e)
-        {
-            return new ServiceResult<T>() { Exception = e };
-        }
 
-        public static new ServiceResult<T> Error(int errorCode, string errorDescription)
-        {
-            return new ServiceResult<T>() { ErrorCode = errorCode, ErrorDescription = errorDescription };
-        }
     }
 }

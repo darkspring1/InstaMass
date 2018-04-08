@@ -22,7 +22,7 @@ namespace SM.Domain.Model
         }
 
         public Guid Id { get; private set; }
-        public int TypeId { get; set; }
+        public int TypeId { get; internal set; }
         internal DateTime CreatedAt { get; set; }
         internal Guid AccountId { get; set; }
         public Account Account { get; set; }

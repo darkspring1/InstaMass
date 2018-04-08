@@ -19,13 +19,13 @@ namespace SM.Common.Services
         {
             try
             {
-                return ServiceResult<T>.Success(action());
+                return ServiceResult.Success<T>(action());
             }
 
             catch (Exception e)
             {
                 Logger.Error(e);
-                return ServiceResult<T>.Error(e);
+                return ServiceResult.Fault<T>(e);
             }
         }
 
@@ -40,7 +40,7 @@ namespace SM.Common.Services
             catch (Exception e)
             {
                 Logger.Error(e);
-                return ServiceResult.Error(e);
+                return ServiceResult.Fault(e);
             }
         }
 
@@ -48,13 +48,13 @@ namespace SM.Common.Services
         {
             try
             {
-                return ServiceResult<T>.Success(await action());
+                return ServiceResult.Success<T>(await action());
             }
 
             catch (Exception e)
             {
                 Logger.Error(e);
-                return ServiceResult<T>.Error(e);
+                return ServiceResult.Fault<T>(e);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SM.Common.Services
             catch (Exception e)
             {
                 Logger.Error(e);
-                return ServiceResult.Error(e);
+                return ServiceResult.Fault(e);
             }
         }
 

@@ -36,17 +36,7 @@ namespace SM.WEB.API.Controllers
 
             var svResult = await _accountServiceServiceFunc().CreateAync(UserId, model.Login, model.Password);
 
-            if (svResult.IsSuccessAndNotNullResult)
-            {
-                return Ok(svResult.Result);
-            }
-
-            if (svResult.ErrorCode == AccountService.AccountAlreadyRegistred)
-            {
-                return ApiErrorCode(API.ApiErrorCode.AccountAlreadyRegistred, "Account was already registred");
-            }
-
-            return BadRequest();
+            return ActionResult(svResult);
         }
     }
     

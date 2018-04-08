@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
 
 namespace SM.Domain.Persistent
 {
     public interface ISpecification<T>
     {
-        Expression<Func<T, bool>> IsSatisfiedBy();
-
-        IQueryable<T> Include(IQueryable<T> source);
+        IQueryable<T> Build(IQueryable<T> source);
     }
 }

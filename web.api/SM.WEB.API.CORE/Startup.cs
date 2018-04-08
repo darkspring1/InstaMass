@@ -8,12 +8,12 @@ using SM.Domain.Events;
 using StructureMap;
 using Akka.Actor;
 using SM.WEB.API.Akka;
-using SM.TaskEngine.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
-using SM.WEB.API.CORE.Settings;
+using SM.Common.Settings;
+using SM.TaskEngine.Common;
 
 namespace SM.WEB.API.CORE
 {

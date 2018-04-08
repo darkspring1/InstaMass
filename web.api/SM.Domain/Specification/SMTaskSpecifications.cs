@@ -25,14 +25,11 @@ namespace SM.Domain.Specification
             _userId = userId;
         }
 
-        public IQueryable<SMTask> Include(IQueryable<SMTask> source)
+        public IQueryable<SMTask> Build(IQueryable<SMTask> source)
         {
-            return source.Include(t => t.Account);
-        }
-
-        public Expression<Func<SMTask, bool>> IsSatisfiedBy()
-        {
-            return t => t.EntityStatusId == EntityStatuses.Active && t.Account.UserId == _userId;
+            return source
+                .Where(t => t.EntityStatusId == EntityStatuses.Active && t.Account.UserId == _userId)
+                .Include(t => t.Account);
         }
     }
 

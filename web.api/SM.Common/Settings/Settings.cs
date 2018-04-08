@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace SM.WEB.API.CORE.Settings
+namespace SM.Common.Settings
 {
     public class SMSettings
     {

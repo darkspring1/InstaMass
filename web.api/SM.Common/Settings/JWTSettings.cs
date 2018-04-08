@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Text;
 
-namespace SM.WEB.API.CORE.Settings
+namespace SM.Common.Settings
 {
     public class JWTSettings
     {

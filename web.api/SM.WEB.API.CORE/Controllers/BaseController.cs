@@ -30,7 +30,7 @@ namespace SM.WEB.API.Controllers
         {
             if (!serviceResult.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(serviceResult.Error);
             }
 
             if (serviceResult.Result == null)
@@ -43,7 +43,7 @@ namespace SM.WEB.API.Controllers
 
         protected async Task<ActionResult> ActionResultAsync<T>(Task<ServiceResult<T>> serviceResultTask)
         {
-            return ActionResult(await serviceResultTask);
+            return ActionResult<T>(await serviceResultTask);
         }
 
         protected async Task<ActionResult> ActionResultAsync(Task<ServiceResult> serviceResultTask)
@@ -55,17 +55,10 @@ namespace SM.WEB.API.Controllers
         {
             if (!serviceResult.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(serviceResult.Error);
             }
 
             return Ok();
-        }
-
-
-        protected ActionResult ApiErrorCode(ApiErrorCode code, string description)
-        {
-            //return Content<object>(HttpStatusCode.BadRequest, new { ErrorCode = (int)code, ErrorDescription = description });
-            return BadRequest(new { ErrorCode = (int)code, ErrorDescription = description });
-        }
+        }       
     }
 }

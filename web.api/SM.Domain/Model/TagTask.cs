@@ -40,8 +40,6 @@ namespace SM.Domain.Model
 
         public SwitchedRange Followings => _followings.Value;
 
-        public Guid AccountId => Task.AccountId;
-
         static void FromDto(TagTask tagTask, TagTaskDto dto)
         {
             tagTask.Task.AccountId = dto.AccountId;
@@ -85,6 +83,8 @@ namespace SM.Domain.Model
         }
 
         internal SMTask Task { get; set; }
+
+        public Account Account => Task.Account;
 
         public int Version => Task.Version;
 

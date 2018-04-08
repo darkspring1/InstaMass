@@ -32,7 +32,7 @@ namespace SM.Domain.Model
 
         [Required]
         [MaxLength(1024)]
-        private string Password { get; set; }
+        public string Password { get; internal set; }
 
         [Required]
         [MaxLength(100)]

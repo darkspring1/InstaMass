@@ -24,12 +24,12 @@ namespace SM.Domain.Services
             var existResult = await RunAsync(() => UnitOfWork.AccountRepository.IsExistAsync(instagramLogin));
             if (existResult.IsFaulted)
             {
-                return ServiceResult<Account>.Error(existResult.Exception);
+                return existResult.CastToFault<Account>();
             }
 
             if (existResult.Result)
             {
-                return ServiceResult<Account>.Error(AccountAlreadyRegistred, "AccountAlreadyRegistred");
+                return ServiceResult.Fault<Account>(ServiceErrors.Error2());
             }
 
             return await RunAsync(async () => {

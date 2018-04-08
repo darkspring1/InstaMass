@@ -4,12 +4,14 @@ namespace SM.Domain.Persistent
 {
     public interface IRepository<T>
     {
+        Task<T[]> GetItemsAsync();
+
         Task<T[]> GetItemsAsync(ISpecification<T> specification);
 
         Task<T> FirstAsync(ISpecification<T> specification);
 
         Task<T> FirstOrDefaultAsync(ISpecification<T> specification);
 
-        void Add(T entity);
+        void Add(params T[] entity);
     }
 }

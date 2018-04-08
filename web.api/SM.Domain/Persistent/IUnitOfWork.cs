@@ -13,6 +13,8 @@ namespace SM.Domain.Persistent
         IRepository<SMTask> TaskRepository { get; }
         IRepository<TagTask> TagTaskRepository { get; }
 
+        IRepository<TagTaskAction> TagTaskActionRepository { get; }
+
         void Complete();
 
         Task CompleteAsync();
