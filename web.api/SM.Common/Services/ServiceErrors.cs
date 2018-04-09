@@ -26,5 +26,18 @@
         /// </summary>
         /// <returns></returns>
         public static ServiceError Error4() => new ServiceError(4, "Like action max iteration");
+
+        /// <summary>
+        /// Requests limit
+        /// </summary>
+        /// <returns></returns>
+        public static ServiceError Error5() => new ServiceError(5, "Requests limit");
+
+        /// <summary>
+        /// Instagram login error
+        /// </summary>
+        /// <returns></returns>
+        public static ServiceError Error6() => new ServiceError(6, "Instagram login error");
+
     }
 }

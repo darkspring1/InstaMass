@@ -61,7 +61,21 @@ namespace SM.Crawler
             {
                 var startedAt = DateTime.UtcNow;
                 var api = _apiFactory.Create(tagTask.Account.Login, tagTask.Account.Password);
-                var r = await api.LoginAsync();
+                if (!api.IsUserAuthenticated)
+                {
+                    var loginResult = await api.LoginAsync();
+                    if (!loginResult.Succeeded)
+                    {
+                        if (loginResult.Info.ResponseType == ResponseType.UnExpectedResponse)
+                        {
+                            ServiceResult.Fault(ServiceErrors.Error5());
+                        }
+                        else
+                        {
+                            ServiceResult.Fault(ServiceErrors.Error6());
+                        }
+                    }
+                }
                 var currentUser = await api.GetCurrentUserAsync();
                 var tag = GetRandomTag(tagTask.Tags);
                 var serviceResult = await LikeAsync(api, tagTask, tag, currentUser.Value.Pk, 1, 1, MaxIteration);
